@@ -19,7 +19,7 @@ cd ../kernel
 cd ../build
 echo linking...
 
-     ld  -mi386pe  -T../kernel/x86/link.ld  -nostdlib -nostdinc -o krnl32.exe  stage3.o main.o
+     ld  -mi386pe  -T../kernel/x86/linker.ld  -nostdlib -nostdinc -o krnl32.exe  stage3.o main.o
       objcopy -O binary krnl32.exe krnl32.sys
 
 cd ../
