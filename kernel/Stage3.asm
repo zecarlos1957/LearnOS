@@ -8,11 +8,8 @@
 ;*******************************************************
 
 [GLOBAL mboot]  
-[global start]
+[global _start]
                 ; Make 'mboot' accessible from C.
-[EXTERN code]                   ; Start of the '.text' section.
-[EXTERN bss]                    ; Start of the .bss section.
-[EXTERN end]  
 [extern _kmain]
 
                   ; End of the last loadable section.
@@ -33,7 +30,7 @@ MBOOT_CHECKSUM      equ -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGS)
 
 bits	32				; 32 bit code
 
-SECTION .mulboot    align 4
+SECTION .text    align 4
 
 mboot:
     dd  MBOOT_HEADER_MAGIC      ; GRUB will search for this value on each
@@ -41,16 +38,15 @@ mboot:
     dd  MBOOT_HEADER_FLAGS      ; How GRUB should load your file / settings
     dd  MBOOT_CHECKSUM          ; To ensure that the above values are correct   
     dd  mboot                   ; Location of this descriptor
-    dd  code                    ; Start of kernel '.text' (code) section.
-    dd  bss                     ; End of kernel.
-    dd  end                     ; End of kernel '.data' section.
-    dd  start                   ; Kernel entry point (initial EIP).
+    dd  0                    ; Start of kernel '.text' (code) section.
+    dd  0                     ; End of kernel.
+    dd  0                     ; End of kernel '.data' section.
+    dd  0                   ; Kernel entry point (initial EIP).
 
 
-section .text  align 4
 
 
-start:
+_start:
 
     push ebx
 
