@@ -1,9 +1,32 @@
+/*
+  * @ File : main.cc
+  * @ Description : defines kmain the Entry point of our kernel
+*/
 
- 
-extern "C" int kmain();
+// Include the System File from the SDK
+#include <system.h>
 
 
-int kmain()
+// Declared as a C function so as to remove name manglng and call it from the assembly file
+extern "C" int kmain(struct multiboot *mboot_ptr);
+
+// The Main Function
+int kmain(struct multiboot *mboot_ptr)
 {
-    return 0;
+
+   clrscr();
+
+  // Initialise the Descritor Tables
+  init_desc_tables();
+
+  // Reenable Interrupts
+    asm volatile("sti");
+
+  // All device Intialisations Go Here
+  init_keyboard_driver();
+
+  // Print Hello On to the Screen
+  boot();
+
+  return 1;
 }

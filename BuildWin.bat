@@ -11,16 +11,33 @@ cd ./boot
     nasm -f bin Boot.asm -o ../build/Boot.bin
     nasm -f bin Stage2.asm -o ../build/KRNLDR.SYS
 
-cd ../kernel   
-    nasm -f win stage3.asm -o ../build/stage3.o 
-    gcc  -fno-builtin -ffreestanding  -I include -c main.cpp -o ../build/main.o
-
-
+cd ../kernel/arch
+    nasm -f win entry.asm -o ../../build/entry.o 
+    nasm -f win gdt.asm -o ../../build/_gdt.o 
+    nasm -f win idt.asm -o ../../build/_idt.o 
+    nasm -f win interrupt.asm -o ../../build/interrupt.o 
+    
+cd ../core
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c io.cpp -o ../../build/io.o
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c gdt.cpp -o ../../build/gdt.o
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c idt.cpp -o ../../build/idt.o
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c isr.cpp -o ../../build/isr.o
+ 
+cd ../modules
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c timer.cpp -o ../../build/timer.o
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c memory.cpp -o ../../build/memory.o
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c common.cpp -o ../../build/common.o
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c display.cpp -o ../../build/display.o
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c keyboard.cpp -o ../../build/keyboard.o
+    
+cd ../
+    gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ./include -c main.cpp -o ../build/main.o
+    
 cd ../build
 echo linking...
-
-     ld  -mi386pe  -T../kernel/x86/linker.ld  -nostdlib -nostdinc -o krnl32.exe  stage3.o main.o
-      objcopy -O binary krnl32.exe krnl32.sys
+    ar rsc libcore.a _gdt.o _idt.o interrupt.o gdt.o idt.o isr.o io.o common.o display.o keyboard.o memory.o timer.o
+    ld  -mi386pe  -T../kernel/arch/link.ld  -nostdlib -nostdinc -o krnl32.exe  entry.o main.o libcore.a 
+    objcopy -O binary krnl32.exe krnl32.sys
 
 cd ../
     path  d:/tools
