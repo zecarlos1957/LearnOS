@@ -36,11 +36,14 @@ mboot:
 [EXTERN _kmain]                   ; This is the entry point of our C code
 
 start:
-  push    ebx                   ; Load multiboot header location
+      push    ebx                   ; Load multiboot header location
 
   ; Execute the kernel:
-  cli                         ; Disable interrupts.
-  call _kmain                   ; call our main() function.
-  jmp $                       ; Enter an infinite loop, to stop the processor
+      cli                         ; Disable interrupts.
+      call _kmain                 ; call our main() function.
+  
+  halt:
+      hlt                 
+      jmp halt                       ; Enter an infinite loop, to stop the processor
                               ; executing whatever rubbish is in the memory
                               ; after our kernel!
