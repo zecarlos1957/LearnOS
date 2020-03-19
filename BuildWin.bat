@@ -12,8 +12,7 @@ cd ./boot
     nasm -f bin Stage2.asm -o ../build/KRNLDR.SYS
 
 cd ../kernel/arch
-    nasm -f win entry.asm -o ../../build/entry.o 
-    nasm -f win gdt.asm -o ../../build/_gdt.o 
+     nasm -f win gdt.asm -o ../../build/_gdt.o 
     nasm -f win idt.asm -o ../../build/_idt.o 
     nasm -f win interrupt.asm -o ../../build/interrupt.o 
     
@@ -31,12 +30,13 @@ cd ../modules
     gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ../include -c keyboard.cpp -o ../../build/keyboard.o
     
 cd ../
+    nasm -f win entry.asm -o ../../build/entry.o 
     gcc  -fno-builtin -nostdlib -nostdinc -ffreestanding  -I ./include -c main.cpp -o ../build/main.o
     
 cd ../build
 echo linking...
     ar rsc libcore.a _gdt.o _idt.o interrupt.o gdt.o idt.o isr.o io.o common.o display.o keyboard.o memory.o timer.o
-    ld  -mi386pe  -T../link.ld  -nostdlib -nostdinc -o krnl32.exe  entry.o main.o libcore.a 
+    ld  -mi386pe  -Tlink.ld  -nostdlib -nostdinc -o krnl32.exe  entry.o main.o libcore.a 
     objcopy -O binary krnl32.exe krnl32.sys
     del *.o
 cd ../
