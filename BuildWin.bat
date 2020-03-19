@@ -36,9 +36,9 @@ cd ../
 cd ../build
 echo linking...
     ar rsc libcore.a _gdt.o _idt.o interrupt.o gdt.o idt.o isr.o io.o common.o display.o keyboard.o memory.o timer.o
-    ld  -mi386pe  -T../kernel/arch/link.ld  -nostdlib -nostdinc -o krnl32.exe  entry.o main.o libcore.a 
+    ld  -mi386pe  -T../link.ld  -nostdlib -nostdinc -o krnl32.exe  entry.o main.o libcore.a 
     objcopy -O binary krnl32.exe krnl32.sys
-
+    del *.o
 cd ../
     path  d:/tools
     partcopy build/boot.bin 0 200 LearnOS.img 0 
@@ -51,7 +51,8 @@ echo Mounting disk image...
 
 rem echo Dismount disk...
     imdisk -D -m B:
-    d:/programas/oracle/virtualbox/vboxmanage startvm LearnOS
+     d:/programas/oracle/virtualbox/vboxmanage startvm LearnOS
+  rem  d:/programas/qemu/qemu-system-i386 -kernel build/ultron.bin
 rem echo Done.
  
 echo on
