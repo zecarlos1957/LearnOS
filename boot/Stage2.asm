@@ -157,32 +157,79 @@ Stage3:
 
 	call	EnablePaging
 
-CopyImage:
-  	 mov	eax, dword [ImageSize]
-  	 movzx	ebx, word [bpbBytesPerSector]
-  	 mul	ebx
-  	 mov	ebx, 4
-  	 div	ebx
-   	 cld
-   	 mov    esi, IMAGE_RMODE_BASE
-   	 mov	edi, IMAGE_PMODE_BASE
-   	 mov	ecx, eax
-   	 rep	movsd                   ; copy image to its protected mode address
 
 TestImage:
-  	  mov    ebx,  IMAGE_PMODE_BASE 
-  	  mov    esi, ebx
-  	  mov    edi, ImageSig
-  	  cmpsw
-  	  je     EXECUTE
-  	  mov	ebx, BadImage
-  	  call	Puts32
-  	  cli
-  	  hlt
+  	mov    ebx, IMAGE_RMODE_BASE    ; ebx  points to Multiboot sig  ?  
+    mov    edi, MultibootID         
+  	mov    esi, ebx
+    cmpsd
+    je     CopyFLATimage
+ 
+ 	mov    ebx, [IMAGE_RMODE_BASE+60]
+  	add    ebx, IMAGE_RMODE_BASE    ; ebx  points to file sig (PE00)?
+  	mov    edi, ImagePEsig
+  	mov    esi, ebx
+  	cmpsd
+  	je     CopyPEimage
 
-ImageSig dd 0x1BADB002
+  	mov    ebx, IMAGE_RMODE_BASE    ; ebx  points to file sig (#ELF)?
+  	mov    edi, ImageELFsig
+  	mov    esi, ebx
+  	cmpsd
+  	je     CopyELFimage
 
-EXECUTE:
+  	mov	ebx, BadImage
+  	call	Puts32
+  	cli
+  	hlt
+
+ImagePEsig db 'PE',0x0,0x0
+ImageELFsig db 0x7f,'ELF'
+MultibootID dd 0x1BADB002
+
+CopyFLATimage:
+  	mov	   eax, dword [ImageSize]
+  	movzx  ebx, word [bpbBytesPerSector]
+  	mul	   ebx
+ 	mov	   ebx, 4
+  	div	   ebx
+   	cld
+   	mov    esi, IMAGE_RMODE_BASE
+   	mov	   edi, IMAGE_PMODE_BASE
+   	mov	   ecx, eax
+   	rep	movsd                   ; copy image to its protected mode address
+
+	mov		ebp, IMAGE_PMODE_BASE+0x20   ; add multiboot header
+	cli
+
+	mov		eax, 0x2badb002			; multiboot specs say eax should be this
+	mov		ebx, boot_info
+	mov		edx, [ImageSize]
+
+	call		ebp               	      ; Execute Kernel
+	add		esp, 4
+
+    	cli
+	hlt
+
+
+
+CopyPEimage:
+    mov    ebx,  0xd4      ; pointer to size of headers
+    mov    ecx, [IMAGE_RMODE_BASE+ebx]     
+  	mov	   eax, dword [ImageSize]
+  	movzx  ebx, word [bpbBytesPerSector]
+  	mul	   ebx
+    sub    eax, ecx        ; sub headers size  
+  	mov	   ebx, 4
+  	div	   ebx
+   	cld
+   	mov    esi, IMAGE_RMODE_BASE
+    add    esi, ecx             ; start reading at code section
+   	mov	   edi, IMAGE_PMODE_BASE
+   	mov	   ecx, eax
+   	rep	movsd                   ; copy image to its protected mode address
+ 
 
 	;---------------------------------------;
 	;   Execute Kernel
@@ -190,29 +237,60 @@ EXECUTE:
 
     ; parse the programs header info structures to get its entry point
 
-;	add		ebx, 24
-;	mov		eax, [ebx]			; _IMAGE_FILE_HEADER is 20 bytes + size of sig (4 bytes)
-;	add		ebx, 20-4			; address of entry point
-;	mov		ebp, dword [ebx]		; get entry point offset in code section	
-;	add		ebx, 12				; image base is offset 8 bytes from entry point
-;	mov		eax, dword [ebx]		; add image base
-;	add		ebp, eax
-;	cli
-
-    mov eax, IMAGE_PMODE_BASE + 0x20  ; add multiboot header size
-    mov ebp, eax
+  	mov    ebx, [IMAGE_RMODE_BASE+60]
+  	add    ebx, IMAGE_RMODE_BASE    ; ebx now points to file sig (PE00)
+	add		ebx, 24
+	mov		eax, [ebx]			; _IMAGE_FILE_HEADER is 20 bytes + size of sig (4 bytes)
+	add		ebx, 20-4			; address of entry point
+	mov		ebp, dword [ebx]		; get entry point offset in code section	
+	add		ebx, 12				; image base is offset 8 bytes from entry point
+	mov		eax, dword [ebx]		; add image base
+	add		ebp, eax
+	cli
 
 	mov		eax, 0x2badb002			; multiboot specs say eax should be this
-	mov		ebx, 0
+	mov		ebx, boot_info
 	mov		edx, [ImageSize]
 
-	push		dword boot_info
 	call		ebp               	      ; Execute Kernel
 	add		esp, 4
 
     	cli
 	hlt
 
+
+CopyELFimage:
+    mov    ebx,  0x50      ; pointer to size of headers
+    mov    ecx, [IMAGE_RMODE_BASE+ebx]     
+  	mov	   eax, dword [ImageSize]
+  	movzx  ebx, word [bpbBytesPerSector]
+  	mul	   ebx
+    sub    eax, ecx        ; sub headers size  
+  	mov	   ebx, 4
+  	div	   ebx
+   	cld
+   	mov    esi, IMAGE_RMODE_BASE
+    add    esi, ecx             ; start reading at code section
+   	mov	   edi, IMAGE_PMODE_BASE
+   	mov	   ecx, eax
+   	rep	movsd                   ; copy image to its protected mode address
+
+
+	mov		ebx, 0x18			; address of entry point
+	mov		ebp, [IMAGE_RMODE_BASE+ebx]		; get entry point offset in code section	
+
+	cli
+
+	mov		eax, 0x2badb002			; multiboot specs say eax should be this
+	mov		ebx, boot_info
+	mov		edx, [ImageSize]
+
+	call		ebp               	      ; Execute Kernel
+	add		esp, 4
+
+    	cli
+	hlt
+ 
 ;-- header information format for PE files -------------------
 
 ;typedef struct _IMAGE_DOS_HEADER {  // DOS .EXE header
