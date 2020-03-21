@@ -74,6 +74,6 @@ void pit_start_counter(uint32_t freq, uint8_t counter, uint8_t mode)
 }
 
 void pit_initialize()
-{
-	irq_set_hook(2, pit_irq);
+{   
+	irq_set_hook(0, pit_irq);
 }
