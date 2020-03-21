@@ -19,20 +19,20 @@ struct register_set
 extern "C" {
 #endif
 
-static struct register_set regs;
+
 
 
 static inline __attribute__((__always_inline__)) struct register_set get_registers(void)
 {
-    struct register_set *regset = &regs;
+    struct register_set regset;
     __asm__ __volatile__ (
         "pusha;"
          "mov  %%esp, %0;"
         "add  %1, %%esp;":
-         "=g"( *regset):
+         "=g"(regset):
         "Z"(sizeof(struct register_set))
     ); 
-    return *regset;
+    return regset;
 }
 
 static inline __attribute__((__always_inline__)) uint32_t get_eflags(void)
