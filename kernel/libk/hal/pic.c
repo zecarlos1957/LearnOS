@@ -109,18 +109,14 @@ int pic_set_enabled(int irqnum, int enabled)
   
     if (irqnum < 8)
     {
-        mask = master_get_mask();
- printf("Master Mask 0x%x ->",mask);       
+        mask = master_get_mask();       
         mask = enabled ? (mask & ~irqbit) : (mask | irqbit);
-        master_set_mask(mask);
- printf(" 0x%x\n",mask);       
+        master_set_mask(mask);      
     } else
     {
         mask = slave_get_mask();
- printf("Slave Mask 0x%x ->",mask);
         mask = enabled ? (mask & ~irqbit) : (mask | irqbit);
-        slave_set_mask(mask);
-printf(" 0x%x\n",mask);       
+        slave_set_mask(mask);      
     }
 
     return 0;

@@ -29,7 +29,7 @@ void paging_enable()
     uint32_t cr0;
     asm volatile("mov %0, %%cr3":: "r"(page_dir_loc));
     asm volatile("mov %%cr0, %0": "=r"(cr0));
-    cr0 |= 0x80000000; // Enable paging!
+    cr0 |= 0x80000001; // Enable paging!
     asm volatile("mov %0, %%cr0":: "r"(cr0));
  /*   
     __asm__ __volatile__ ("mov %0, %%eax" : : "m"(page_dir_loc));

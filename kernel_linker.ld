@@ -2,33 +2,31 @@ OUTPUT_FORMAT("pei-i386")
 ENTRY(start)
 SECTIONS
 {
-
-    .text 0x100000 :
+    . = 0x100000;
+    .text   : ALIGN(4096) 
     {
         code = .; 
         *(.text)
-        . = ALIGN(4096);
     }
     
-    .rodata :
+    .rodata : ALIGN(4096) 
     {
         rodata = .;  
         *(.rodata)
-        . = ALIGN(4096);
     }
 
-    .data :
+    .data : ALIGN(4096) 
     {
         data = .;  
         *(.data)
-        . = ALIGN(4096);
+
     }
 
-    .bss :
+    .bss : ALIGN(4096) 
     {
         bss = .;  
         *(.bss)
-        . = ALIGN(4096);
+        *(.stack)
     }
 
     PROVIDE(kernel_end = .); PROVIDE(_kernel_end = .); 

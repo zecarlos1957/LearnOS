@@ -16,8 +16,8 @@ typedef struct
 void mm_init(uint32_t kernel_end);
 void mm_print_out();
 
-///void paging_init();
-///void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys);
+void paging_init();
+void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys);
 
 void m_free(void* mem);
 char* m_alloc(size_t size);

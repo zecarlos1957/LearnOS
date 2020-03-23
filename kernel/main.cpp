@@ -66,7 +66,7 @@ static void init(multiboot_info* bootinfo)
      hal_init();
      kb_init();
  
- //   paging_init();
+      paging_init();
 	
     int bits = sizeof(void*) * 8;
     printf("- BonsOS %i bits -\n", bits);
@@ -79,7 +79,7 @@ extern "C" void kmain(multiboot_info* bootinfo)
      init(bootinfo);
  	kb_add_listener(on_key_event);
 
-    //floppy_detect_drives();
+     floppy_detect_drives();
 
      pit_start_counter(100, I86_PIT_OCW_COUNTER_0, I86_PIT_OCW_MODE_SQUAREWAVEGEN);
 
