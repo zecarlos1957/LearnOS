@@ -67,7 +67,7 @@ int pic_remap(int master, int slave)
 
     // Set masks, disabling all interrupts
     outportb(PIC_PORT_MASTER_DATA, 0xff);
-    outportb(PIC_PORT_SLAVE_DATA, 0xfb);
+    outportb(PIC_PORT_SLAVE_DATA, 0xff);
 
     return 0;
 }
