@@ -14,12 +14,15 @@ struct idt_entry
     uint16_t handler_offset_high_word;  // High word of handler offset.
 } __attribute__((__packed__));
 
+#pragma pack(push, 2)
+
 struct idt_descriptor
 {
- //   uint16_t size;                      // Number of entries in the IDT.
- //   struct idt_entry *base;             // Address of the first entry of the IDT.
-    uint8_t data[6];
+     uint16_t size;                      // Number of entries in the IDT.
+     struct idt_entry *base;             // Address of the first entry of the IDT.
 } __attribute__((__packed__));
+
+#pragma pack(pop)
 
 static struct idt_entry s_idt[IDT_MAX];
 
@@ -41,11 +44,10 @@ static int initialsie_entry(struct idt_entry *entry, void *handler_offset, int g
 static void load_descriptor(int size, void *base)
 {
     struct idt_descriptor descriptor;
-    //descriptor.size = size;
-    //descriptor.base = base;
-    *(uint16_t*)&descriptor.data[0] = size;
-    *(uint32_t*)&descriptor.data[2] = base;
-    __asm__ __volatile__ ("lidt (%0)" : : "r"(&descriptor));
+    descriptor.size = size;
+    descriptor.base = base;
+ 
+     __asm__ __volatile__ ("lidt (%0)" : : "r"(&descriptor));
 }
 
 int idt_init(void)

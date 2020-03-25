@@ -14,12 +14,15 @@ typedef struct gdt_entry
     uint8_t  base_high;
 } __attribute__((packed)) gdt_entry_t;
 
+#pragma pack(push, 2)
+
 typedef struct gdt_ptr
 {
-   // uint16_t limit;
-   // uint32_t base;
-      uint8_t data[6];
+    uint16_t limit;
+    uint32_t base;
 } __attribute__((packed)) gdt_ptr_t;
+
+#pragma pack(pop) 
 
 #ifdef __cplusplus
 extern "C" {

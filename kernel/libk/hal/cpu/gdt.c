@@ -7,10 +7,8 @@ static gdt_ptr_t gdt_ptr;
 
 void gdt_init()
 {
-  // gdt_ptr.limit = sizeof(gdt_entries) - 1;
-  // gdt_ptr.base = (uint32_t)gdt_entries;
-    *(uint16_t*)&gdt_ptr.data[0] = sizeof(gdt_entries) - 1;
-    *(uint32_t*)&gdt_ptr.data[2] = (uint32_t)gdt_entries;
+    gdt_ptr.limit = sizeof(gdt_entries) - 1;
+    gdt_ptr.base = (uint32_t)gdt_entries;
 
     gdt_set_entry(0, 0, 0, 0, 0);
     gdt_set_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
