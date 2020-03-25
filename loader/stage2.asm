@@ -131,6 +131,8 @@ Kernel:
 	mov	ds, ax
 	mov	ss, ax
 	mov	es, ax
+	mov fs, ax
+	mov gs, ax
 	mov	esp, 0x90000		; stack begins from 90000h
 
 ;---------------------------------------------------;
