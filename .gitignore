@@ -1,5 +1,8 @@
+#
+# bin files
+#
 *.a
 *.exe
 *.sys
 *.o
-bin/*.*
+bin/
