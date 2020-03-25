@@ -2,4 +2,4 @@
 *.exe
 *.sys
 *.o
-bin
+bin/*.*

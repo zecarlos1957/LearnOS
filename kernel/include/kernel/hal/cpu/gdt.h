@@ -16,8 +16,9 @@ typedef struct gdt_entry
 
 typedef struct gdt_ptr
 {
-    uint16_t limit;
-    uint32_t base;
+   // uint16_t limit;
+   // uint32_t base;
+      uint8_t data[6];
 } __attribute__((packed)) gdt_ptr_t;
 
 #ifdef __cplusplus
