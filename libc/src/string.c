@@ -71,3 +71,30 @@ char* __attribute__((__cdecl__)) strrev(char *str)
       }
       return str;
 }
+
+char* __attribute__((__cdecl__)) strcpy(char *dst,const char *src)
+{
+    int i = 0;
+    while(src[i])
+    {
+        dst[i] = src[i]; 
+        i++; 
+    }
+    dst[i] = '\0';
+    return dst;
+}
+
+char* __attribute__((__cdecl__)) strcat(char *s2,const char *s1)
+{
+    int i1 = 0;
+    int i2 = 0;
+    while(s2[i2])i2++;
+    
+    while(s1[i1])
+    {
+        s2[i2++] = s1[i1++]; 
+    }
+    s2[i2] = '\0';
+    return s2;
+    
+}

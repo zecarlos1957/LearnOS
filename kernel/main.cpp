@@ -69,7 +69,7 @@ static void init(multiboot_info* bootinfo)
       paging_init();
 	
     int bits = sizeof(void*) * 8;
-    printf("- BonsOS %i bits -\n", bits);
+    printf("- BonsOS %i bits RAM free %d\n", bits, bootinfo->m_memoryLo);
 }
 
 extern "C" void floppy_detect_drives();
