@@ -10,6 +10,10 @@
 
 int hal_init(void)
 {
+ 	char cpu_name[256];
+	cpu_vendor_name(cpu_name);
+    printf("%s\n",cpu_name);
+
     hal_disable();
 
     gdt_init();

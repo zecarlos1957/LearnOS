@@ -5,10 +5,8 @@
 struct multiboot_info
 {
 	uint32_t m_flags;
-	uint64_t m_memorySize;
-
-	//uint32_t m_memoryLo;
-	//uint32_t m_memoryHi;
+	uint32_t m_memoryLo;
+	uint32_t m_memoryHi;
     uint32_t m_bootDevice;
 	uint32_t m_cmdLine;
 	uint32_t m_modsCount;

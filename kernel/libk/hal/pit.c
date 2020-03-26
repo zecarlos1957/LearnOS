@@ -20,7 +20,6 @@ static volatile uint32_t _pit_ticks = 0;
 //!	pit timer interrupt handler
 int pit_irq(int irqnum)
 {
-     printf("MIMMO");
 	_pit_ticks++;
 
 	irq_done(irqnum);

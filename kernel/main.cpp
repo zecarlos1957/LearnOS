@@ -67,7 +67,7 @@ static void init(multiboot_info* bootinfo)
      kb_init();
  
       paging_init();
-	
+	    
     int bits = sizeof(void*) * 8;
     printf("- BonsOS %i bits RAM free %d\n", bits, bootinfo->m_memoryLo);
 }
@@ -83,6 +83,8 @@ extern "C" void kmain(multiboot_info* bootinfo)
 
      pit_start_counter(100, I86_PIT_OCW_COUNTER_0, I86_PIT_OCW_MODE_SQUAREWAVEGEN);
 
+
+      
     while(pit_get_tick_count() < 500)
     {
       //  printf("%d ", pit_get_tick_count());

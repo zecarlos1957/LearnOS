@@ -53,9 +53,9 @@ cd ../
     nasm -f win32 kernel.s -o ../bin/kernel.o
     
 cd ../bin 
-    ar rsc libc.a assert.o ctype.o errno.o stdio.o stdlib.o string.o 
-    ar rsc libcpu.a   fdc.o cpustat.o gdt.o idt.o  isr.o hal.o irq.o pic.o pit.o 
-    ar rsc libio.a  keyboard.o ps2.o tty.o vga.o memory.o  paging.o panic.o 
+ rem   ar rsc libc.a assert.o ctype.o errno.o stdio.o stdlib.o string.o 
+ rem   ar rsc libcpu.a   fdc.o cpustat.o gdt.o idt.o  isr.o hal.o irq.o pic.o pit.o 
+ rem   ar rsc libio.a  keyboard.o ps2.o tty.o vga.o memory.o  paging.o panic.o 
 
 echo linking kernel...
     ld -T ../kernel_linker.ld -o  krnl32.exe kernel.o fdc.o cpustat.o gdt.o idt.o  isr.o hal.o irq.o pic.o pit.o  keyboard.o ps2.o tty.o vga.o memory.o  paging.o panic.o  main.o assert.o ctype.o errno.o stdio.o stdlib.o string.o cstd.o _gdt.o
