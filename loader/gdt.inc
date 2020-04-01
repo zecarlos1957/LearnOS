@@ -34,6 +34,13 @@ gdt_data:
 	db 11001111b        ; granularity
 	db 0                ; base high
 	
+; gdt stack:	            ; data descriptor
+	dw 0ffffh           ; limit low (Same as code)10:56 AM 7/8/2007
+	dw 0                ; base low
+	db 0                ; base middle
+	db 10010110b        ; access
+	db 11001111b        ; granularity
+	db 0                ; base high
 end_of_gdt:
 toc: 
 	dw end_of_gdt - gdt_data - 1 	; limit (Size of GDT)
