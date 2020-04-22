@@ -2,4 +2,5 @@
 # bin files
 #
 
+*.img
 bin
