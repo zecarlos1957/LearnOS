@@ -3,24 +3,24 @@
 #include <stdint.h>
 #include <stddef.h>
 
-struct register_set
+typedef struct register_set
 {
-    uint32_t di;
-    uint32_t si;
-    uint32_t bp;
-    uint32_t sp;
-    uint32_t b;
-    uint32_t d;
-    uint32_t c;
-    uint32_t a;
-};
+    uint32_t edi;
+    uint32_t esi;
+    uint32_t ebp;
+    uint32_t esp;
+    uint32_t ebx;
+    uint32_t edx;
+    uint32_t ecx;
+    uint32_t eax;
+}register_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 
-
+char *cpu_vendor_name(char *name);
 
 static inline __attribute__((__always_inline__)) struct register_set get_registers(void)
 {

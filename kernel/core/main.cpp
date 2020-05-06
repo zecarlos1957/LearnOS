@@ -5,6 +5,7 @@
 #include <core/panic.h>
 #include <core/bootinfo.h>
 #include <core/memory.h>
+#include <arch/x86/cpustat.h>
 
 #include <stdio.h>
 #include <stdint.h>
@@ -55,6 +56,7 @@ static void init(multiboot_info* bootinfo)
 {
     uint32_t kernelSize = 0;
     extern uint32_t kernel_end;
+    char cpu_vendor[32];
 
       __asm__ __volatile__("mov %%dx, %0" : "=m"(kernelSize));
 
@@ -69,7 +71,7 @@ static void init(multiboot_info* bootinfo)
     paging_init();
 	
     int bits = sizeof(void*) * 8;
-    printf("- BonsOS %i bits RAM free %dKb\n", bits, bootinfo->m_memoryLo);
+    printf("- %s %i bits RAM free %dKb\n", cpu_vendor_name(cpu_vendor), bits, bootinfo->m_memoryLo);
 }
 
 extern "C" void floppy_detect_drives();
