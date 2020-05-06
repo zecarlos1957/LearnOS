@@ -9,4 +9,5 @@ start:
 
  
 .hang:
+    hlt
     jmp .hang
