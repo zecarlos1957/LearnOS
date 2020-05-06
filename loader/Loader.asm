@@ -155,7 +155,7 @@ CopyImage:
 	cli
 
 	mov eax, 0x2badb002			        ; multiboot specs say eax should be this
-	mov ebx, 0
+	mov ebx, boot_info
 	mov edx, [ImageSize]
 	
 	push dword boot_info
