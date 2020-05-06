@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Project" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Project" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Project" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename=".gitignore" />
+		<Unit filename="build_img.bat" />
+		<Unit filename="kernel/arch/x86/cpustat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/arch/x86/cpustat.h" />
+		<Unit filename="kernel/arch/x86/gdt.asm" />
+		<Unit filename="kernel/arch/x86/gdt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/arch/x86/gdt.h" />
+		<Unit filename="kernel/arch/x86/idt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/arch/x86/idt.h" />
+		<Unit filename="kernel/arch/x86/interrupt.s" />
+		<Unit filename="kernel/arch/x86/isr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/arch/x86/isr.h" />
+		<Unit filename="kernel/arch/x86/kernel.s" />
+		<Unit filename="kernel/config.h" />
+		<Unit filename="kernel/core/api/dev/clock.h" />
+		<Unit filename="kernel/core/api/dev/fb.h" />
+		<Unit filename="kernel/core/api/dev/ioctl.h" />
+		<Unit filename="kernel/core/api/dev/ipc.h" />
+		<Unit filename="kernel/core/api/dev/keyboard.h" />
+		<Unit filename="kernel/core/api/dev/proc.h" />
+		<Unit filename="kernel/core/api/dev/tty.h" />
+		<Unit filename="kernel/core/api/kernel/syscall.h" />
+		<Unit filename="kernel/core/api/kernel/syscall_table.h" />
+		<Unit filename="kernel/core/bootinfo.h" />
+		<Unit filename="kernel/core/hal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/core/hal.h" />
+		<Unit filename="kernel/core/irq.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/core/irq.h" />
+		<Unit filename="kernel/core/kheap.h" />
+		<Unit filename="kernel/core/main.cpp" />
+		<Unit filename="kernel/core/memory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/core/memory.h" />
+		<Unit filename="kernel/core/paging.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/core/panic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/core/panic.h" />
+		<Unit filename="kernel/core/pic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/core/pic.h" />
+		<Unit filename="kernel/core/pit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/core/pit.h" />
+		<Unit filename="kernel/core/ports.h" />
+		<Unit filename="kernel/core/process.s" />
+		<Unit filename="kernel/modules/fdc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/modules/keyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/modules/keyboard.h" />
+		<Unit filename="kernel/modules/ps2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/modules/ps2.h" />
+		<Unit filename="kernel/modules/tty.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/modules/tty.h" />
+		<Unit filename="kernel/modules/vga.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/modules/vga.h" />
+		<Unit filename="kernel/runtime/assert.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/runtime/assert.h" />
+		<Unit filename="kernel/runtime/cstd.cpp" />
+		<Unit filename="kernel/runtime/ctype.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/runtime/ctype.h" />
+		<Unit filename="kernel/runtime/errno.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/runtime/errno.h" />
+		<Unit filename="kernel/runtime/iso646.h" />
+		<Unit filename="kernel/runtime/limits.h" />
+		<Unit filename="kernel/runtime/stdarg.h" />
+		<Unit filename="kernel/runtime/stdbool.h" />
+		<Unit filename="kernel/runtime/stddef.h" />
+		<Unit filename="kernel/runtime/stdint.h" />
+		<Unit filename="kernel/runtime/stdio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/runtime/stdio.h" />
+		<Unit filename="kernel/runtime/stdlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/runtime/stdlib.h" />
+		<Unit filename="kernel/runtime/string.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/runtime/string.h" />
+		<Unit filename="kernel_linker.ld" />
+		<Unit filename="loader/Boot.asm" />
+		<Unit filename="loader/Loader.asm" />
+		<Unit filename="loader/a20.inc" />
+		<Unit filename="loader/bootinfo.inc" />
+		<Unit filename="loader/common.inc" />
+		<Unit filename="loader/fat12.inc" />
+		<Unit filename="loader/floppy16.inc" />
+		<Unit filename="loader/gdt.inc" />
+		<Unit filename="loader/memory.inc" />
+		<Unit filename="loader/paging.inc" />
+		<Unit filename="loader/stdio.inc" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
