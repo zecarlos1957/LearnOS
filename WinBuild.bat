@@ -38,7 +38,7 @@ cd ../bin
    path  d:/tools
 
 cd ../
-    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  build
+    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o build/learnos.iso  build
  rem  mkisofs -R -b boot/grub/loader.bin -no-emul-boot -boot-load-size 4 -boot-info-table   -o mtask.iso  build
 
 
