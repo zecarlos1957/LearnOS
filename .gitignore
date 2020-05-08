@@ -2,4 +2,8 @@
 # bin files
 #
 
- 
+*.img
+*.iso
+
+bin
+

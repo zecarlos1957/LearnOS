@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="Debug" />
+	<File name="kernel\fs.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="752" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\isr.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="783" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\common.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="453" topLine="2" />
+		</Cursor>
+	</File>
+	<File name="kernel\initrd.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="960" topLine="16" />
+		</Cursor>
+	</File>
+	<File name="kernel\multiboot.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1202" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\kheap.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1719" topLine="25" />
+		</Cursor>
+	</File>
+	<File name="kernel\main.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="913" topLine="21" />
+		</Cursor>
+	</File>
+	<File name="kernel\ordered_array.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="245" topLine="7" />
+		</Cursor>
+	</File>
+	<File name="kernel\paging.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2173" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\paging.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8632" topLine="239" />
+		</Cursor>
+	</File>
+	<File name="kernel\gdt.s" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="334" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="WinBuild.bat" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2837" topLine="39" />
+		</Cursor>
+	</File>
+	<File name="kernel\monitor.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3577" topLine="93" />
+		</Cursor>
+	</File>
+	<File name="kernel\isr.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1164" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="kernel\timer.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="908" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="kernel\ordered_array.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="824" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="cd_boot\link.ld" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="228" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\boot.s" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1897" topLine="17" />
+		</Cursor>
+	</File>
+	<File name="kernel\kheap.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4191" topLine="156" />
+		</Cursor>
+	</File>
+	<File name="kernel\descriptor_tables.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6746" topLine="150" />
+		</Cursor>
+	</File>
+	<File name="kernel\link.ld" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="284" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\initrd.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="412" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\monitor.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="543" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\task.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6340" topLine="151" />
+		</Cursor>
+	</File>
+	<File name="kernel\task.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1053" topLine="12" />
+		</Cursor>
+	</File>
+	<File name="kernel\descriptor_tables.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3904" topLine="76" />
+		</Cursor>
+	</File>
+	<File name="kernel\interrupt.s" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1398" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\common.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="466" topLine="7" />
+		</Cursor>
+	</File>
+	<File name="kernel\fs.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2257" topLine="31" />
+		</Cursor>
+	</File>
+	<File name="kernel\timer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="211" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\process.s" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="974" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="kernel\syscall.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="501" topLine="0" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>
