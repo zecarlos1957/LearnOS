@@ -3,4 +3,9 @@
 #
 
 bin
+doc
 
+# CodeBlock files
+
+*.layout
+*.cbp
