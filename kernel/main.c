@@ -10,6 +10,8 @@
 #include "initrd.h"
 #include "task.h"
 #include "syscall.h"
+#include "common.h"
+
 
 extern uint32_t placement_address;
 uint32_t initial_esp;
@@ -21,6 +23,13 @@ int kmain(struct multiboot *mboot_ptr, uint32_t initial_stack)
     init_descriptor_tables();
     // Initialise the screen (by clearing it)
     monitor_clear();
+
+    char name[32];
+    uint32_t hfp = cpu_vendor(name);
+    monitor_write(name);
+    monitor_write(" ");
+    monitor_write_hex(hfp);
+    monitor_write("\n");
 
     // Initialise the PIT to 100Hz
     asm volatile("sti");
