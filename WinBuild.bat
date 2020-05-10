@@ -46,8 +46,8 @@ rem  mkisofs -R -b boot/grub/loader.bin -no-emul-boot -boot-load-size 4 -boot-in
 
 
    d:/programas/oracle/virtualbox/vboxmanage startvm LearnOS
-rem d:/programas/qemu/qemu-system-i386 -cdrom build/learnos.iso
-
+rem    d:/programas/qemu/qemu-system-i386 -cdrom build/learnos.iso
+rem    d:/programas/bochs-2.6.9/bochs
 
 echo DoneOK.
 
