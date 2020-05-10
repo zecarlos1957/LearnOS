@@ -2,17 +2,17 @@
 echo Build script for Windows
 echo.
 
-cd ./cd_boot 
+cd ./cd_boot
 rem     nasm -felf -o ../bin/boot.o start_eltorito.asm
 rem     nasm -felf -o ../bin/asm.o asm.asm
 rem      gcc -ffreestanding -nostdinc     -c cstuff.c -o ../bin/cstuff.o
 
 rem  cd ../bin
 rem echo Linking MiniLoader...
-rem     ld -T../cd_boot/link.ld  -o loader.exe boot.o asm.o cstuff.o       
+rem     ld -T../cd_boot/link.ld  -o loader.exe boot.o asm.o cstuff.o
 rem     objcopy -O binary loader.exe ../build/boot/grub/loader.bin
 
- cd ../kernel 
+cd ../kernel 
     gcc -ffreestanding -c -o ../bin/common.o common.c
     gcc -ffreestanding -c -o ../bin/descriptor_tables.o descriptor_tables.c
     gcc -ffreestanding -c -o ../bin/fs.o fs.c
@@ -42,16 +42,16 @@ cd ../bin
 cd ../
     if exist build\learnos.iso del build\learnos.iso
     mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o build/learnos.iso  build
- rem  mkisofs -R -b boot/grub/loader.bin -no-emul-boot -boot-load-size 4 -boot-info-table   -o mtask.iso  build
+rem  mkisofs -R -b boot/grub/loader.bin -no-emul-boot -boot-load-size 4 -boot-info-table   -o mtask.iso  build
 
 
    d:/programas/oracle/virtualbox/vboxmanage startvm LearnOS
- rem d:/programas/qemu/qemu-system-i386 -cdrom build/learnos.iso
- 
- 
+rem d:/programas/qemu/qemu-system-i386 -cdrom build/learnos.iso
+
+
 echo DoneOK.
- 
+
 pause
 
 
-echo on 
+echo on

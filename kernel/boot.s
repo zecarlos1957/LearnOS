@@ -17,7 +17,7 @@ MBOOT_CHECKSUM      equ -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGS)
 section .text
 
 ; Publics in this file
-global mboot               
+global mboot
 global _CpuEnableFpu
 global _CpuEnableGpe
 global start   
@@ -54,7 +54,7 @@ start:
                                 ; after our kernel!
 
 
- 
+
 ; Assembly routine to enable fpu support
 _CpuEnableFpu:
 	mov eax, cr0

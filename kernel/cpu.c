@@ -21,7 +21,7 @@ typedef struct SystemCpu {
     uintptr_t           Data[4];        // data available for usage
     int                 NumberOfCores;  // always minimum 1
   //  SystemCpuCore_t*    Cores;
-    
+
     struct SystemCpu*   Link;
 } SystemCpu_t;
 
@@ -98,7 +98,7 @@ SystemCpu_t* Processor;
 
 void __get_cpuid(int code)
 {
-	asm volatile("cpuid":"=a"(CpuRegisters.eax),"=b"(CpuRegisters.ebx),
+    asm volatile("cpuid":"=a"(CpuRegisters.eax),"=b"(CpuRegisters.ebx),
                  "=c"(CpuRegisters.ecx),"=d"(CpuRegisters.edx):"0"(code));
 
 }
@@ -150,36 +150,38 @@ CpuInitializeFeatures(void)
 {
     // Can we use global pages? We will use this for kernel mappings
     // to speed up refill performance
-    if (CpuHasFeatures(0, CPUID_FEAT_EDX_PGE)) {
+    if (CpuHasFeatures(0, CPUID_FEAT_EDX_PGE)) 
+    {
         CpuEnableGpe();
-monitor_write("CpuEnableGpe");monitor_write("\n");
+        monitor_write("CpuEnableGpe");monitor_write("\n");
     }
 
-	// Can we enable FPU?
-	if (CpuHasFeatures(0, CPUID_FEAT_EDX_FPU)) {
-		CpuEnableFpu();
-monitor_write("CpuEnableFpu");monitor_write("\n");
-	}
+    // Can we enable FPU?
+    if (CpuHasFeatures(0, CPUID_FEAT_EDX_FPU)) 
+    {
+        CpuEnableFpu();
+        monitor_write("CpuEnableFpu");monitor_write("\n");
+    }
 
 }
 
 
 void init_cpu()
 {
-     SystemCpu_t cpu_data;
+    SystemCpu_t cpu_data;
     Processor = &cpu_data;
 
     char     TemporaryBrand[64] = { 0 };
     char*    BrandPointer       = &TemporaryBrand[0];
 
 
-	__get_cpuid(0x00);
+    __get_cpuid(0x00);
 
-    Processor->Data[CPU_DATA_MAXLEVEL] = CpuRegisters.eax;		
-	memcpy(Processor->Vendor, (char *) &CpuRegisters.ebx, 4);
-	memcpy(Processor->Vendor+4, (char *) &CpuRegisters.edx, 4);
-	memcpy(Processor->Vendor+8, (char *) &CpuRegisters.ecx, 4);
-    Processor->Vendor[12] = '\0';  
+    Processor->Data[CPU_DATA_MAXLEVEL] = CpuRegisters.eax;
+    memcpy(Processor->Vendor, (char *) &CpuRegisters.ebx, 4);
+    memcpy(Processor->Vendor+4, (char *) &CpuRegisters.edx, 4);
+    memcpy(Processor->Vendor+8, (char *) &CpuRegisters.ecx, 4);
+    Processor->Vendor[12] = '\0';
  
     // Does it support retrieving features?
     if (Processor->Data[CPU_DATA_MAXLEVEL] >= 1) {
@@ -190,7 +192,7 @@ void init_cpu()
             Processor->NumberOfCores = (CpuRegisters.ebx >> 16) & 0xFF;
    //         PrimaryCore->Id          = (CpuRegisters.ebx >> 24) & 0xFF;
         }
-        
+
         // This can be reported as 0, which means we assume a single cpu
         if (Processor->NumberOfCores == 0) {
             Processor->NumberOfCores = 1;
@@ -213,13 +215,13 @@ void init_cpu()
         BrandPointer = TrimWhitespaces(BrandPointer);
         memcpy(&Processor->Brand[0], BrandPointer, strlen(BrandPointer));
     }
- 
+
     monitor_write(Processor->Vendor);
     monitor_write(" ");
     monitor_write(Processor->Brand);
     monitor_write("\n");
- 
+
     // Enable cpu features
     CpuInitializeFeatures();
- 
+
 }
