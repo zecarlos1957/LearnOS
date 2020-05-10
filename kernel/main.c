@@ -38,7 +38,7 @@ int kmain(struct multiboot *mboot_ptr, uint32_t initial_stack)
     placement_address = initrd_end;
 
     // Start paging.
-    initialise_paging();
+    initialise_paging(mboot_ptr->mem_upper + mboot_ptr->mem_lower);
 
     // Start multitasking.
     initialise_tasking();

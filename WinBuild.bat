@@ -38,13 +38,15 @@ cd ../bin
     objcopy -O elf32-i386 krnl32.exe ../build/sys/krnl32.elf
    path  d:/tools
 
+
 cd ../
     if exist build\learnos.iso del build\learnos.iso
     mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o build/learnos.iso  build
  rem  mkisofs -R -b boot/grub/loader.bin -no-emul-boot -boot-load-size 4 -boot-info-table   -o mtask.iso  build
 
 
-  d:/programas/oracle/virtualbox/vboxmanage startvm LearnOS
+   d:/programas/oracle/virtualbox/vboxmanage startvm LearnOS
+ rem d:/programas/qemu/qemu-system-i386 -cdrom build/learnos.iso
  
  
 echo DoneOK.

@@ -20,16 +20,18 @@ extern uint32_t placement_address;
 extern heap_t *kheap;
 
 // Macros used in the bitset algorithms.
-#define INDEX_FROM_BIT(a) (a/(8*4))
-#define OFFSET_FROM_BIT(a) (a%(8*4))
+#define INDEX_FROM_BIT(a) (a/0x20)
+#define OFFSET_FROM_BIT(a) (a%0x20)
 
 // Static function to set a bit in the frames bitset
 static void set_frame(uint32_t frame_addr)
 {
-    uint32_t frame = frame_addr/0x1000;
-    uint32_t idx = INDEX_FROM_BIT(frame);
-    uint32_t off = OFFSET_FROM_BIT(frame);
-    frames[idx] |= (0x1 << off);
+	if (frame_addr < nframes * 4 * 0x400) {
+		uint32_t frame  = frame_addr / 0x1000;
+		uint32_t index  = INDEX_FROM_BIT(frame);
+		uint32_t offset = OFFSET_FROM_BIT(frame);
+		frames[index] |= ((uint32_t)0x1 << offset);
+	}
 }
 
 // Static function to clear a bit in the frames bitset
@@ -64,7 +66,7 @@ static uint32_t first_frame()
                 uint32_t toTest = 0x1 << j;
                 if ( !(frames[i]&toTest) )
                 {
-                    return i*4*8+j;
+                    return i*0x20+j;
                 }
             }
         }
@@ -76,6 +78,7 @@ void alloc_frame(page_t *page, int is_kernel, int is_writeable)
 {
     if (page->frame != 0)
     {
+monitor_write("!!!page->frame != 0\n");
         return;
     }
     else
@@ -103,20 +106,27 @@ void free_frame(page_t *page)
     }
     else
     {
-        clear_frame(frame);
+monitor_write("clear_frame()\n");
+        clear_frame(frame * 0x1000);
         page->frame = 0x0;
     }
 }
 
-void initialise_paging()
+void initialise_paging(uint32_t mem_end_page)
 {
+
+monitor_write("Free mem ");
+monitor_write_hex(mem_end_page);
+monitor_write(" (");
+monitor_write_dec(mem_end_page);
+monitor_write(")Kb\n");
     // The size of physical memory. For the moment we 
     // assume it is 16MB big.
-    uint32_t mem_end_page = 0x1000000;
+ //   uint32_t mem_end_page = 0x1000000;
     
-    nframes = mem_end_page / 0x1000;
-    frames = (uint32_t*)kmalloc(INDEX_FROM_BIT(nframes));
-    memset((uint8_t*)frames, 0, INDEX_FROM_BIT(nframes));
+    nframes = mem_end_page / 4;
+    frames = (uint32_t*)kmalloc(INDEX_FROM_BIT(nframes * 8));
+    memset((uint8_t*)frames, 0, INDEX_FROM_BIT(nframes * 8));
     
     // Let's make a page directory.
     uint32_t phys;
