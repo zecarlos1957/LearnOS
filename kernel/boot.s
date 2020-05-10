@@ -16,10 +16,16 @@ MBOOT_CHECKSUM      equ -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGS)
 
 section .text
 
-[GLOBAL mboot]                  ; Make 'mboot' accessible from C.
-[EXTERN code]                   ; Start of the '.text' section.
-[EXTERN bss]                    ; Start of the .bss section.
-[EXTERN end]                    ; End of the last loadable section.
+; Publics in this file
+global mboot               
+global _CpuEnableFpu
+global _CpuEnableGpe
+global start   
+                
+extern _kmain                   ; This is the entry point of our C code
+extern code                   ; Start of the '.text' section.
+extern bss                    ; Start of the .bss section.
+extern end                    ; End of the last loadable section.
 
 mboot:
     dd  MBOOT_HEADER_MAGIC      ; GRUB will search for this value on each
@@ -33,8 +39,6 @@ mboot:
     dd  end                     ; End of kernel.
     dd  start                   ; Kernel entry point (initial EIP).
 
-[GLOBAL start]                  ; Kernel entry point.
-[EXTERN _kmain]                   ; This is the entry point of our C code
 
 start:
     ; Load multiboot information:
@@ -48,3 +52,24 @@ start:
     jmp $                       ; Enter an infinite loop, to stop the processor
                                 ; executing whatever rubbish is in the memory
                                 ; after our kernel!
+
+
+ 
+; Assembly routine to enable fpu support
+_CpuEnableFpu:
+	mov eax, cr0
+	bts eax, 1		; Set Monitor co-processor (Bit 1)
+	btr eax, 2		; Clear Emulation (Bit 2)
+	bts eax, 5		; Set Native Exception (Bit 5)
+	btr eax, 3		; Clear TS
+	mov cr0, eax
+
+	finit           ;  Initialize Floating-Point Unit
+	ret
+
+; Assembly routine to enable global page support
+_CpuEnableGpe:
+	mov eax, cr4
+	bts eax, 7		; Set Operating System Support for Page Global Enable (Bit 7)
+	mov cr4, eax
+	ret

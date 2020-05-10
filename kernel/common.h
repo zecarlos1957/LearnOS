@@ -30,6 +30,6 @@ char *strcpy(char *dest, const char *src);
 char *strcat(char *dest, const char *src);
 int strlen(char *src);
 
-uint32_t cpu_vendor(char *name);
+void init_cpu();
 
 #endif // COMMON_H
