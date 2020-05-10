@@ -4,6 +4,7 @@
 #include "paging.h"
 #include "kheap.h"
 #include "monitor.h"
+#include "common.h"
 
 // The kernel's page directory
 page_directory_t *kernel_directory=0;
@@ -78,7 +79,7 @@ void alloc_frame(page_t *page, int is_kernel, int is_writeable)
 {
     if (page->frame != 0)
     {
-monitor_write("!!!page->frame != 0\n");
+monitor_write("!!!page->frame != 0 return\n");
         return;
     }
     else
@@ -87,6 +88,7 @@ monitor_write("!!!page->frame != 0\n");
         if (idx == (uint32_t)-1)
         {
             // PANIC! no free frames!!
+          monitor_write("!!!idx == -1 rPANIC\n");
         }
         set_frame(idx*0x1000);
         page->present = 1;
@@ -114,16 +116,9 @@ monitor_write("clear_frame()\n");
 
 void initialise_paging(uint32_t mem_end_page)
 {
+    monitor_write_dec(mem_end_page/1024);
+    monitor_write("Mb RAM\n");
 
-monitor_write("Free mem ");
-monitor_write_hex(mem_end_page);
-monitor_write(" (");
-monitor_write_dec(mem_end_page);
-monitor_write(")Kb\n");
-    // The size of physical memory. For the moment we 
-    // assume it is 16MB big.
- //   uint32_t mem_end_page = 0x1000000;
-    
     nframes = mem_end_page / 4;
     frames = (uint32_t*)kmalloc(INDEX_FROM_BIT(nframes * 8));
     memset((uint8_t*)frames, 0, INDEX_FROM_BIT(nframes * 8));
@@ -132,6 +127,21 @@ monitor_write(")Kb\n");
     uint32_t phys;
     kernel_directory = (page_directory_t*)kmalloc_a(sizeof(page_directory_t));
     memset((uint8_t*)kernel_directory, 0, sizeof(page_directory_t));
+
+    if(CpuHasFeatures(0, CPUID_FEAT_EDX_MSR))
+    {
+    /* Set PAT 111b to Write-Combining */
+        asm volatile (
+            "mov $0x277, %%ecx\n" /* IA32_MSR_PAT */
+            "rdmsr\n"
+            "or $0x1000000, %%edx\n" /* set bit 56 */
+            "and $0xf9ffffff, %%edx\n" /* unset bits 57, 58 */
+            "wrmsr\n"
+            : : : "ecx", "edx", "eax"
+        );
+        monitor_write("CPUID_FEAT_EDX_MSR\n");
+    }
+
     kernel_directory->physicalAddr = (uint32_t)kernel_directory->tablesPhysical;
 
     // Map some pages in the kernel heap area.
