@@ -21,6 +21,7 @@ global mboot
 global _CpuEnableFpu
 global _CpuEnableGpe
 global start   
+
                 
 extern _kmain                   ; This is the entry point of our C code
 extern code                   ; Start of the '.text' section.

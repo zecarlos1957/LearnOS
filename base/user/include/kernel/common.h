@@ -4,6 +4,12 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#ifdef _BUILD_DLL_
+#define _DLL __declspec(dllexport)
+#else
+#define _DLL __declspec(dllimport)
+#endif
+
 // Some nice typedefs, to standardise sizes across platforms.
 // These typedefs are written for 32-bit X86.
 typedef unsigned int   uint32_t;

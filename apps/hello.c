@@ -5,9 +5,10 @@
  *
  * hello - Prints "Hello, world."
  */
-#include <stdio.h>
+//#include <stdio.h>
+#include <kernel/monitor.h>
 
-int main(int argc, char * argv[]) {
-	puts("Hello, world.");
+int _main(int argc, char * argv[]) {
+	monitor_write("Hello, world.");
 	return 0;
 }
