@@ -4,7 +4,7 @@
 #ifndef SYSCALL_H
 #define SYSCALL_H
 
-#include "common.h"
+#include <kernel/common.h>
 
 void initialise_syscalls();
 

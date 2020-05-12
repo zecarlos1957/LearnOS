@@ -9,7 +9,7 @@
 #include <kernel/fs.h>
 #include <kernel/initrd.h>
 #include <kernel/task.h>
-#include <kernel/syscall.h>
+#include <syscall.h>
 #include <kernel/common.h>
 
 
