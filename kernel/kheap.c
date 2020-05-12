@@ -3,8 +3,8 @@
 //            initialised.
 //            Written for JamesM's kernel development tutorials.
 
-#include "kheap.h"
-#include "paging.h"
+#include <kernel/kheap.h>
+#include <kernel/paging.h>
 
 // end is defined in the linker script.
 extern uint32_t end;

@@ -13,20 +13,20 @@ rem     ld -T../cd_boot/link.ld  -o loader.exe boot.o asm.o cstuff.o
 rem     objcopy -O binary loader.exe ../build/boot/grub/loader.bin
 
 cd ../kernel 
-    gcc -ffreestanding -c -o ../bin/common.o common.c
-    gcc -ffreestanding -c -o ../bin/descriptor_tables.o descriptor_tables.c
-    gcc -ffreestanding -c -o ../bin/fs.o fs.c
-    gcc -ffreestanding -c -o ../bin/initrd.o initrd.c
-    gcc -ffreestanding -c -o ../bin/isr.o isr.c
-    gcc -ffreestanding -c -o ../bin/kheap.o kheap.c
-    gcc -ffreestanding -c -o ../bin/main.o main.c
-    gcc -ffreestanding -c -o ../bin/monitor.o monitor.c
-    gcc -ffreestanding -c -o ../bin/ordered_array.o ordered_array.c
-    gcc -ffreestanding -c -o ../bin/paging.o paging.c
-    gcc -ffreestanding -c -o ../bin/syscall.o syscall.c
-    gcc -ffreestanding -c -o ../bin/task.o task.c
-    gcc -ffreestanding -c -o ../bin/timer.o timer.c
-    gcc -ffreestanding -c -o ../bin/cpu.o cpu.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/common.o common.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/descriptor_tables.o descriptor_tables.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/fs.o fs.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/initrd.o initrd.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/isr.o isr.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/kheap.o kheap.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/main.o main.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/monitor.o monitor.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/ordered_array.o ordered_array.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/paging.o paging.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/syscall.o syscall.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/task.o task.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/timer.o timer.c
+    gcc -ffreestanding -I../base/user/include -c -o ../bin/cpu.o cpu.c
     nasm -fwin32 boot.s -o ../bin/entry.o 
     nasm -fwin32 gdt.s -o ../bin/gdt.o
     nasm -fwin32 interrupt.s -o ../bin/interrupt.o

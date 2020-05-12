@@ -3,10 +3,10 @@
 //          Written for JamesM's kernel development tutorials.
 //
 
-#include "task.h"
-#include "kheap.h"
-#include "paging.h"
-#include "descriptor_tables.h"
+#include <kernel/task.h>
+#include <kernel/kheap.h>
+#include <kernel/paging.h>
+#include <kernel/descriptor_tables.h>
 
 extern void perform_task_switch(uint32_t, uint32_t, uint32_t, uint32_t);
 

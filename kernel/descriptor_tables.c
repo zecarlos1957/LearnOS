@@ -5,9 +5,9 @@
 //                       Rewritten for JamesM's kernel development tutorials.
 //
 
-#include "common.h"
-#include "descriptor_tables.h"
-#include "isr.h"
+#include <kernel/common.h>
+#include <kernel/descriptor_tables.h>
+#include <kernel/isr.h>
 
 // Lets us access our ASM functions from our C code.
 extern void gdt_flush(uint32_t);

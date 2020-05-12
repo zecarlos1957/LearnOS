@@ -1,6 +1,6 @@
-#include "common.h"
-#include "monitor.h"
-#include "isr.h"
+#include <kernel/common.h>
+#include <kernel/monitor.h>
+#include <kernel/isr.h>
 
 #define CPU_DATA_MAXLEVEL           0
 #define CPU_DATA_MAXEXTENDEDLEVEL   1

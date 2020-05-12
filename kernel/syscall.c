@@ -1,10 +1,10 @@
 // syscall.c -- Defines the implementation of a system call system.
 //              Written for JamesM's kernel development tutorials.
 
-#include "syscall.h"
-#include "isr.h"
+#include <kernel/syscall.h>
+#include <kernel/isr.h>
 
-#include "monitor.h"
+#include <kernel/monitor.h>
 
 static void syscall_handler(registers_t *regs);
 

@@ -2,8 +2,8 @@
 //                    from ordered arrays.
 //                    Written for JamesM's kernel development tutorials.
 
-#include "ordered_array.h"
-#include "kheap.h"
+#include <kernel/ordered_array.h>
+#include <kernel/kheap.h>
 
 int8_t standard_lessthan_predicate(type_t a, type_t b)
 {
