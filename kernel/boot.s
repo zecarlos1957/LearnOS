@@ -14,7 +14,7 @@ MBOOT_CHECKSUM      equ -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGS)
 
 [BITS 32]                       ; All instructions should be 32-bit.
 
-section .text
+section .mulboot
 
 ; Publics in this file
 global mboot
@@ -40,6 +40,7 @@ mboot:
     dd  end                     ; End of kernel.
     dd  start                   ; Kernel entry point (initial EIP).
 
+section .text
 
 start:
     ; Load multiboot information:
@@ -50,7 +51,8 @@ start:
     cli                         ; Disable interrupts.
     call _kmain                   ; call our main() function.
 
-    jmp $                       ; Enter an infinite loop, to stop the processor
+    hlt
+    jmp $-1                       ; Enter an infinite loop, to stop the processor
                                 ; executing whatever rubbish is in the memory
                                 ; after our kernel!
 
