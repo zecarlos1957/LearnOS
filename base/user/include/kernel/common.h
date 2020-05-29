@@ -4,6 +4,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+ 
 #ifdef _BUILD_DLL_
 #define _DLL __declspec(dllexport)
 #else

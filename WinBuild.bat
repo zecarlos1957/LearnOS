@@ -41,7 +41,7 @@ rem     gcc -T../kernel/link.ld -shared -o ../build/sys/krnl32.dll entry.o gdt.o
     objcopy -O elf32-i386 krnl32.exe ../build/sys/krnl32.elf
 
 rem static link
-    gcc -nostdlib -o ../build/sys/hello.exe hello.o -L. -lkrnl32
+    gcc  -nostdinc -nostdlib -o  hello.exe hello.o -L. -lkrnl32
     path  d:/tools
 
 
