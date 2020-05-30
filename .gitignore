@@ -2,9 +2,12 @@
 # bin files
 #
 
+*.iso
+
 bin
 doc
-build
+
+#build
 
 # CodeBlock files
 

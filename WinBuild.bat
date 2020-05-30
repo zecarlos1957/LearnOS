@@ -33,21 +33,21 @@ cd ../kernel
     nasm -fwin32 process.s -o ../bin/process.o
 
 cd ../apps
-    gcc -ffreestanding  -I../base/user/include     -c hello.c -o ../bin/hello.o 
+ rem   gcc -ffreestanding  -I../base/user/include     -c hello.c -o ../bin/hello.o 
 
 cd ../bin
-    ld -T../kernel/link.ld  -shared -o krnl32.exe entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o main.o monitor.o ordered_array.o paging.o task.o timer.o syscall.o
-rem     gcc -T../kernel/link.ld -shared -o ../build/sys/krnl32.dll entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o  monitor.o ordered_array.o main.o paging.o task.o timer.o syscall.o -Wl,--out-implib,libkrnl32.a
+     ld -T../kernel/link.ld  -shared -o krnl32.exe entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o main.o monitor.o ordered_array.o paging.o task.o timer.o syscall.o
+rem      gcc -T../kernel/link.ld -shared -o krnl32.dll entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o  monitor.o ordered_array.o main.o paging.o task.o timer.o syscall.o -Wl,--out-implib,libkrnl32.a
     objcopy -O elf32-i386 krnl32.exe ../build/sys/krnl32.elf
 
 rem static link
-    gcc  -nostdinc -nostdlib -o  hello.exe hello.o -L. -lkrnl32
+     gcc  -nostdinc -nostdlib  -I../base/user/include  -o  hello.exe ../apps/hello.c -L. -lkrnl32.exe
     path  d:/tools
 
 
 cd ../
-    if exist build\learnos.iso del build\learnos.iso
-    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o build/learnos.iso  build
+  rem  if exist build\learnos.iso del build\learnos.iso
+    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  build
 rem  mkisofs -R -b boot/grub/loader.bin -no-emul-boot -boot-load-size 4 -boot-info-table   -o mtask.iso  build
 
 

@@ -45,7 +45,7 @@ static _inline void * memcpy(void * restrict dest, const void * restrict src, lo
 	return dest;
 }
 
-static _inline void * memset(void * dest, int c, long n) {
+static _inline void * memset(void * dest, int c, size_t n) {
 	asm volatile("cld; rep stosb"
 	             : "=c"((int){0})
 	             : "D"(dest), "a"(c), "c"(n)

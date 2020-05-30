@@ -25,18 +25,20 @@ uint16_t inw(uint16_t port)
 }
 
 // Copy len bytes from src to dest.
-void memcpy(uint8_t *dest, const uint8_t *src, uint32_t len)
+void *memcpy(void *dest, const void *src, long len)
 {
     const uint8_t *sp = (const uint8_t *)src;
     uint8_t *dp = (uint8_t *)dest;
     for(; len != 0; len--) *dp++ = *sp++;
+    return dest;
 }
 
 // Write len copies of val into dest.
-void memset(uint8_t *dest, uint8_t val, uint32_t len)
+void *memset(void *dest, int val, size_t len)
 {
     uint8_t *temp = (uint8_t *)dest;
     for ( ; len != 0; len--) *temp++ = val;
+    return dest;
 }
 
 // Compare two strings. Should return -1 if 
