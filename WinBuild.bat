@@ -37,11 +37,11 @@ cd ../apps
 
 cd ../bin
      ld -T../kernel/link.ld  -shared -o krnl32.exe entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o main.o monitor.o ordered_array.o paging.o task.o timer.o syscall.o
-rem      gcc -T../kernel/link.ld -shared -o krnl32.dll entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o  monitor.o ordered_array.o main.o paging.o task.o timer.o syscall.o -Wl,--out-implib,libkrnl32.a
+      gcc -T../kernel/link.ld -shared -o krnl32.dll entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o  monitor.o ordered_array.o main.o paging.o task.o timer.o syscall.o -Wl,--out-implib,libkrnl32.a
     objcopy -O elf32-i386 krnl32.exe ../build/sys/krnl32.elf
 
 rem static link
-     gcc  -nostdinc -nostdlib  -I../base/user/include  -o  hello.exe ../apps/hello.c -L. -lkrnl32.exe
+     gcc  -nostdinc -nostdlib  -I../base/user/include  -o  hello.exe ../apps/hello.c   ../bin/krnl32.dll
     path  d:/tools
 
 

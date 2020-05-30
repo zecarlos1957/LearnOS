@@ -6,9 +6,9 @@
  * hello - Prints "Hello, world."
  */
 //#include <stdio.h>
-#include <kernel/monitor.h>
+#include <syscall.h>
 
 int _main(int argc, char * argv[]) {
-	monitor_write("Hello, world.");
+	syscall_monitor_write("Hello, world.");
 	return 0;
 }
