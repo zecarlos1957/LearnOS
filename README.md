@@ -6,5 +6,5 @@ Training C++ & Assembly by building an operating system from scratch in protecte
     You can participate by opening a new branch and a Pull Requeste.
 To build on Windows: 
       Create bin directory in root dir, that store all bin files.
-      Double click WinBuild.bat in the root directory
+       Double click WinBuild.bat in the root directory
 
