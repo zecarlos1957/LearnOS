@@ -2,16 +2,10 @@
 echo Build script for Windows
 echo.
 
+ if not exist bin   mkdir bin
+
 cd ./cd_boot
-rem     nasm -felf -o ../bin/boot.o start_eltorito.asm
-rem     nasm -felf -o ../bin/asm.o asm.asm
-rem      gcc -ffreestanding -nostdinc     -c cstuff.c -o ../bin/cstuff.o
-
-rem  cd ../bin
-rem echo Linking MiniLoader...
-rem     ld -T../cd_boot/link.ld  -o loader.exe boot.o asm.o cstuff.o
-rem     objcopy -O binary loader.exe ../build/boot/grub/loader.bin
-
+ 
 cd ../kernel 
     gcc -ffreestanding -D_BUILD_DLL_ -D_KERNEL_ -I../base/user/include -c -o ../bin/common.o common.c
     gcc -ffreestanding -D_BUILD_DLL_ -D_KERNEL_ -I../base/user/include -c -o ../bin/descriptor_tables.o descriptor_tables.c
