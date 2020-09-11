@@ -6,7 +6,7 @@
 
 bin
 doc
-build
+build/sys
 cd_boot
 libc_tmp
 OldBuild.bat
