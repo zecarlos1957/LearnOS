@@ -46,11 +46,52 @@ int kmain(struct multiboot *mboot_ptr, uint32_t initial_stack)
     // Initialise the initial ramdisk, and set it as the filesystem root.
     fs_root = initialise_initrd(initrd_location);
 
+     int ret = fork();
+    
+    monitor_write("fork() returned ");
+    monitor_write_hex(ret);
+    monitor_write(" pid ");
+    monitor_write_hex(getpid());
+    monitor_write("\n================================================\n");
+    
+    asm volatile("cli");
+ 
+    int i = 0;
+   struct dirent *node = 0;
+   while ( (node = readdir_fs(fs_root, i)) != 0)
+   {
+       monitor_write("Found file ");
+       monitor_write(node->name);
+       fs_node_t *fsnode = finddir_fs(fs_root, node->name);
+
+       if ((fsnode->flags&0x7) == FS_DIRECTORY)
+       {
+           monitor_write("\n\t(directory)\n");
+       }
+       else
+       {
+           monitor_write("\n\t contents: \"");
+           char buf[256];
+           uint32_t sz = read_fs(fsnode, 0, 256, buf);
+           int j;
+           for (j = 0; j < sz; j++)
+               monitor_put(buf[j]);
+
+           monitor_write("\"\n");
+       }
+       i++;
+   }
+    
+   monitor_write("\n");
+
+   asm volatile("sti");
+
+/*
     initialise_syscalls();
 
     switch_to_user_mode();
 
     syscall_monitor_write("Hello, user world!\n");
-
+*/
     return 0;
 }
