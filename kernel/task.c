@@ -41,7 +41,7 @@ void initialise_tasking()
     current_task->eip = 0;
     current_task->page_directory = current_directory;
     current_task->next = 0;
-    current_task->kernel_stack = kmalloc_a(KERNEL_STACK_SIZE);
+ //   current_task->kernel_stack = kmalloc_a(KERNEL_STACK_SIZE);
 
     // Reenable interrupts.
     asm volatile("sti");
