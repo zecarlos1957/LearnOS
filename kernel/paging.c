@@ -116,12 +116,13 @@ monitor_write("clear_frame()\n");
 
 void initialise_paging(uint32_t mem_end_page)
 {
-    monitor_write_dec(mem_end_page/1024);
-    monitor_write("Mb RAM\n");
+    // The size of physical memory. For the moment we
+    // assume it is 16MB big.
+    mem_end_page = 0x1000000;
 
-    nframes = mem_end_page / 4;
-    frames = (uint32_t*)kmalloc(INDEX_FROM_BIT(nframes * 8));
-    memset((uint8_t*)frames, 0, INDEX_FROM_BIT(nframes * 8));
+    nframes = mem_end_page / 0x1000;
+    frames = (uint32_t*)kmalloc(INDEX_FROM_BIT(nframes));
+    memset((uint8_t*)frames, 0, INDEX_FROM_BIT(nframes));
     
     // Let's make a page directory.
     uint32_t phys;
