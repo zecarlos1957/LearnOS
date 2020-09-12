@@ -317,3 +317,97 @@ page_directory_t *clone_directory(page_directory_t *src)
     }
     return dir;
 }
+
+/*
+page_directory_t *clone_directory(page_directory_t *src)
+{
+    uint32_t phys;
+    // Make a new page directory and obtain its physical address.
+    page_directory_t *dir = (page_directory_t*)kmalloc_ap(sizeof(page_directory_t), &phys);
+    // Ensure that it is blank.
+    memset((uint8_t*)dir, 0, sizeof(page_directory_t));
+
+    dir->ref_count = 1;
+
+    // Go through each page table. If the page table is in the kernel directory, do not make a new copy.
+    int i;
+    for (i = 0; i < 1024; i++)
+    {
+        if (!src->tables[i] || (uint32_t)src->tables[i] == (uintptr_t)0xFFFFFFFF)
+            continue;
+
+        if (kernel_directory->tables[i] == src->tables[i])
+        {
+            // It's in the kernel, so just use the same pointer.
+            dir->tables[i] = src->tables[i];
+            dir->tablesPhysical[i] = src->tablesPhysical[i];
+        }
+        else
+        {
+            if (i * 0x1000 * 1024 < SHM_START)
+            {
+                // Copy the table.
+                uint32_t phys;
+                dir->tables[i] = clone_table(src->tables[i], &phys);
+                dir->tablesPhysical[i] = phys | 0x07;
+            }
+        }
+    }
+    return dir;
+}
+*/
+/*
+ * Free a directory and its tables
+ */
+void release_directory(page_directory_t * dir)
+{
+    dir->ref_count--;
+
+    if (dir->ref_count < 1)
+    {
+        uint32_t i;
+        for (i = 0; i < 1024; ++i)
+        {
+            if (!dir->tables[i] || (uintptr_t)dir->tables[i] == (uintptr_t)0xFFFFFFFF)
+                continue;
+            if (kernel_directory->tables[i] != dir->tables[i])
+            {
+                if (i * 0x1000 * 1024 < SHM_START)
+                {
+                    for (uint32_t j = 0; j < 1024; ++j)
+                    {
+                        if (dir->tables[i]->pages[j].frame)
+                            free_frame(&(dir->tables[i]->pages[j]));
+                    }
+                }
+                kfree(dir->tables[i]);
+            }
+        }
+        kfree(dir);
+    }
+}
+
+void release_directory_for_exec(page_directory_t * dir)
+{
+    uint32_t i;
+    /* This better be the only owner of this directory... */
+    for (i = 0; i < 1024; ++i)
+    {
+        if (!dir->tables[i] || (uint32_t)dir->tables[i] == (uint32_t)0xFFFFFFFF)
+            continue;
+        if (kernel_directory->tables[i] != dir->tables[i])
+        {
+            if (i * 0x1000 * 1024 < USER_STACK_BOTTOM)
+            {
+                for (uint32_t j = 0; j < 1024; ++j)
+                {
+                    if (dir->tables[i]->pages[j].frame)
+                        free_frame(&(dir->tables[i]->pages[j]));
+                }
+                dir->tablesPhysical[i] = 0;
+                kfree(dir->tables[i]);
+                dir->tables[i] = 0;
+            }
+        }
+    }
+}

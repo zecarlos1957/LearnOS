@@ -41,6 +41,8 @@ typedef struct page_directory
        may be in a different location in virtual memory.
     **/
     uint32_t physicalAddr;
+    
+    int32_t ref_count;
 } page_directory_t;
 
 /**
