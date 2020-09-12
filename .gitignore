@@ -6,10 +6,9 @@
 
 bin
 doc
-build/sys
-cd_boot
-libc_tmp
-OldBuild.bat
+cdboot/sys/krnl32.elf
+ 
+ 
 
 # CodeBlock files
 

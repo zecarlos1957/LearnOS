@@ -4,9 +4,9 @@ echo.
 
  if not exist bin   mkdir bin
 
-cd ./cd_boot
- 
-cd ../kernel 
+
+
+cd ./kernel 
     gcc -ffreestanding -D_BUILD_DLL_ -D_KERNEL_ -I../base/user/include -c -o ../bin/common.o common.c
     gcc -ffreestanding -D_BUILD_DLL_ -D_KERNEL_ -I../base/user/include -c -o ../bin/descriptor_tables.o descriptor_tables.c
     gcc -ffreestanding -D_BUILD_DLL_ -D_KERNEL_ -I../base/user/include -c -o ../bin/fs.o fs.c
@@ -32,7 +32,7 @@ cd ../apps
 cd ../bin
      ld -T../kernel/link.ld  -shared -o krnl32.exe entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o main.o monitor.o ordered_array.o paging.o task.o timer.o syscall.o
       gcc -T../kernel/link.ld -shared -o krnl32.dll entry.o gdt.o interrupt.o process.o isr.o cpu.o common.o descriptor_tables.o fs.o initrd.o kheap.o  monitor.o ordered_array.o main.o paging.o task.o timer.o syscall.o -Wl,--out-implib,libkrnl32.a
-    objcopy -O elf32-i386 krnl32.exe ../build/sys/krnl32.elf
+    objcopy -O elf32-i386 krnl32.exe ../cdboot/sys/krnl32.elf
 
 rem static link
      gcc  -nostdinc -nostdlib  -I../base/user/include  -o  hello.exe ../apps/hello.c   ../bin/krnl32.dll
@@ -41,7 +41,7 @@ rem static link
 
 cd ../
   rem  if exist build\learnos.iso del build\learnos.iso
-    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  build
+    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  cdboot
 rem  mkisofs -R -b boot/grub/loader.bin -no-emul-boot -boot-load-size 4 -boot-info-table   -o mtask.iso  build
 
 
