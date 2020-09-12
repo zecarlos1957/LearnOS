@@ -118,7 +118,7 @@ void initialise_paging(uint32_t mem_end_page)
 {
     // The size of physical memory. For the moment we
     // assume it is 16MB big.
-    mem_end_page = 0x1000000;
+     mem_end_page = 0x1000000;
 
     nframes = mem_end_page / 0x1000;
     frames = (uint32_t*)kmalloc(INDEX_FROM_BIT(nframes));
@@ -279,7 +279,7 @@ static page_table_t *clone_table(page_table_t *src, uint32_t *physAddr)
     }
     return table;
 }
-
+ 
 page_directory_t *clone_directory(page_directory_t *src)
 {
     uint32_t phys;
@@ -329,6 +329,7 @@ page_directory_t *clone_directory(page_directory_t *src)
 
     dir->ref_count = 1;
 
+    dir->physicalAddr = phys;
     // Go through each page table. If the page table is in the kernel directory, do not make a new copy.
     int i;
     for (i = 0; i < 1024; i++)
@@ -344,7 +345,7 @@ page_directory_t *clone_directory(page_directory_t *src)
         }
         else
         {
-            if (i * 0x1000 * 1024 < SHM_START)
+     //       if (i * 0x1000 * 1024 < SHM_START)
             {
                 // Copy the table.
                 uint32_t phys;
@@ -355,7 +356,7 @@ page_directory_t *clone_directory(page_directory_t *src)
     }
     return dir;
 }
-*/
+ */
 /*
  * Free a directory and its tables
  */

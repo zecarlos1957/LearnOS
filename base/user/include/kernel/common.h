@@ -38,6 +38,9 @@ char *strcpy(char *dest, const char *src);
 char *strcat(char *dest, const char *src);
 int strlen(char *src);
 
+#define USER_STACK_BOTTOM 0xAFF00000
+#define USER_STACK_TOP    0xB0000000
+#define SHM_START         0xB0000000
 
 ///*******************************************
 

@@ -37,6 +37,9 @@ int kmain(struct multiboot *mboot_ptr, uint32_t initial_stack)
     // Don't trample our module with placement accesses, please!
     placement_address = initrd_end;
 
+    monitor_write("memory report by GRUB ");
+    monitor_write_dec((mboot_ptr->mem_upper + mboot_ptr->mem_lower));
+    monitor_write("Kb\n");
     // Start paging.
     initialise_paging(mboot_ptr->mem_upper + mboot_ptr->mem_lower);
 

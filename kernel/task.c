@@ -24,7 +24,7 @@ extern uint32_t initial_esp;
 extern uint32_t read_eip();
 
 // The next available process ID.
-uint32_t next_pid = 1;
+uint32_t next_pid = 0;
 
 void initialise_tasking()
 {
