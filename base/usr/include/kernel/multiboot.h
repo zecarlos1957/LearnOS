@@ -20,6 +20,26 @@
 #define MULTIBOOT_FLAG_VBE     0x800
 #define MULTIBOOT_FLAG_FB     0x1000
 
+
+ /* The symbol table for a.out. */
+typedef struct aout_symbol_table
+{
+ unsigned long tabsize;
+ unsigned long strsize;
+ unsigned long addr;
+ unsigned long reserved;
+} aout_symbol_table_t;
+
+/* The section header table for ELF. */
+typedef struct elf_section_header_table
+{
+ unsigned long num;
+ unsigned long size;
+ unsigned long addr;
+ unsigned long shndx;
+} Elf_hdr;
+
+#pragma pack(push, 1)
 struct multiboot
 {
 	uintptr_t flags;
@@ -29,10 +49,12 @@ struct multiboot
 	uintptr_t cmdline;
 	uintptr_t mods_count;
 	uintptr_t mods_addr;
-	uintptr_t num;
-	uintptr_t size;
-	uintptr_t addr;
-	uintptr_t shndx;
+    union
+    {
+        aout_symbol_table_t aout_sym;
+        Elf_hdr elf_hdr;
+    } u;
+
 	uintptr_t mmap_length;
 	uintptr_t mmap_addr;
 	uintptr_t drives_length;

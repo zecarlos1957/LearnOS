@@ -46,6 +46,7 @@ cd ../misc
     gcc -ffreestanding -pedantic -fno-omit-frame-pointer -D_BUILD_DLL_ -D_KERNEL_ -I../../base/usr/include -c -o ../../bin/kernel/multiboot.o multiboot.c
     gcc -ffreestanding -pedantic -fno-omit-frame-pointer -D_BUILD_DLL_ -D_KERNEL_ -I../../base/usr/include -c -o ../../bin/kernel/tokenize.o tokenize.c
     gcc -ffreestanding -pedantic -fno-omit-frame-pointer -D_BUILD_DLL_ -D_KERNEL_ -I../../base/usr/include -c -o ../../bin/kernel/ubsan.o ubsan.c
+    gcc -ffreestanding -pedantic -fno-omit-frame-pointer -D_BUILD_DLL_ -D_KERNEL_ -I../../base/usr/include -c -o ../../bin/kernel/symbol_table.o symbol_table.c 
 cd ../sys
     gcc -ffreestanding -pedantic -fno-omit-frame-pointer -D_BUILD_DLL_ -D_KERNEL_ -I../../base/usr/include -c -o ../../bin/kernel/module.o module.c
     gcc -ffreestanding -pedantic -fno-omit-frame-pointer -D_BUILD_DLL_ -D_KERNEL_ -I../../base/usr/include -c -o ../../bin/kernel/panic.o panic.c
@@ -132,7 +133,7 @@ rem ***********************************************************************
 
 
   cd ../bin/kernel    
-     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o
+     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o
 
  
      ar rcs ../libliba.a tree.o hashmap.o list.o

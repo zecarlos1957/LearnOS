@@ -33,10 +33,10 @@ dump_multiboot(
 	debug_print(INFO, "cmdlin: 0x%x", mboot_ptr->cmdline);
 	debug_print(INFO, "Mods  : 0x%x", mboot_ptr->mods_count);
 	debug_print(INFO, "Addr  : 0x%x", mboot_ptr->mods_addr);
-	debug_print(INFO, "ELF n : 0x%x", mboot_ptr->num);
-	debug_print(INFO, "ELF s : 0x%x", mboot_ptr->size);
-	debug_print(INFO, "ELF a : 0x%x", mboot_ptr->addr);
-	debug_print(INFO, "ELF h : 0x%x", mboot_ptr->shndx);
+	debug_print(INFO, "ELF n : 0x%x", mboot_ptr->u.elf_hdr.num);
+	debug_print(INFO, "ELF s : 0x%x", mboot_ptr->u.elf_hdr.size);
+	debug_print(INFO, "ELF a : 0x%x", mboot_ptr->u.elf_hdr.addr);
+	debug_print(INFO, "ELF h : 0x%x", mboot_ptr->u.elf_hdr.shndx);
 	debug_print(INFO, "MMap  : 0x%x", mboot_ptr->mmap_length);
 	debug_print(INFO, "Addr  : 0x%x", mboot_ptr->mmap_addr);
 	debug_print(INFO, "Drives: 0x%x", mboot_ptr->drives_length);
