@@ -49,6 +49,7 @@
 #include <kernel/args.h>
 #include <kernel/module.h>
 #include <kernel/pci.h>
+#include <kernel/symbol_table.h>
 
 uintptr_t initial_esp = 0;
 
@@ -95,6 +96,17 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	/* Initialize core modules */
 	gdt_install();      /* Global descriptor table */
 	idt_install();      /* IDT */
+
+    if (load_symbol_table(get_elf_section((Elf_hdr*)&mboot->u, ".symtab"), 
+                          get_elf_section((Elf_hdr*)&mboot->u, ".strtab")))
+    {
+        debug_print(INFO, "symbol table done");
+    }
+    else
+    {
+        debug_print(ERROR, "Could not initialize symbol table.");
+        while(1);
+    }
 
 	uintptr_t last_mod = (uintptr_t)&end;
 	if (mboot_ptr->flags & MULTIBOOT_FLAG_MODS) {

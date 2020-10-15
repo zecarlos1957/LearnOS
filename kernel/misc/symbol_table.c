@@ -39,7 +39,7 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
         SymTabDesc.symbols = (Elf32_Sym *) symtab->sh_addr;
         SymTabDesc.strtab_addr = (char*) strtab->sh_addr;
     
-    
+    /*
         for(int i = 0; i < SymTabDesc.num_symbols; i++)
         {
             Elf32_Sym * symbol = SymTabDesc.symbols + i;
@@ -50,6 +50,7 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
                 debug_print(INFO,"0x%x %s", symbol->st_value, name);
             }
         }
+        */
         return true;
     }
 }
