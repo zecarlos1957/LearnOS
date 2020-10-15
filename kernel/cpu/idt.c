@@ -10,6 +10,7 @@
 #include <kernel/system.h>
 #include <kernel/logging.h>
 
+#pragma pack(push, 1) 
 typedef struct {
 	uint16_t base_low;
 	uint16_t sel;
@@ -17,11 +18,14 @@ typedef struct {
 	uint8_t flags;
 	uint16_t base_high;
 } __attribute__((packed)) idt_entry_t;
+#pragma pack(pop)
 
+#pragma pack(push, 2)
 typedef struct {
 	uint16_t limit;
 	uintptr_t base;
 } __attribute__((packed)) idt_pointer_t;
+#pragma pack(pop)
 
 /* In the future we may need to put a lock on the access of this */
 static struct {
