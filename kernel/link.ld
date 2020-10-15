@@ -1,37 +1,44 @@
-/* Link.ld -- Linker script for the kernel - ensure everything goes in the */
-/*            Correct place.  */
-/*            Original file taken from Bran's Kernel Development */
-/*            tutorials: http://www.osdever.net/bkerndev/index.php. */
-
-OUTPUT_FORMAT("pei-i386")
+/* vim: tabstop=4 shiftwidth=4 noexpandtab
+ * Kernel linker script for x86
+ */
+OUTPUT_FORMAT(elf32-i386)
 ENTRY(start)
+
 SECTIONS
 {
+	. = 1M;
+	phys = .;
 
-	.text 0x100000 :
+	.text BLOCK(4K) : ALIGN(4K)
 	{
-		code = .; _code = .; __code = .;
-        *(.mulboot)
+		code = .;
+		*(.multiboot)
 		*(.text)
-		. = ALIGN(4096);
 	}
 
-	.data :
+	.rodata BLOCK(4K) : ALIGN(4K)
 	{
-		data = .; _data = .; __data = .;
+		*(.rodata)
+	}
+
+	.data BLOCK(4K) : ALIGN(4K)
+	{
+		data = .;
 		*(.data)
-		*(.rdata)
-		. = ALIGN(4096);
+		*(.symbols)
+		PROVIDE(kernel_symbols_start = .);
+		PROVIDE(kernel_symbols_end = .);
 	}
 
-	.bss :
+	.bss BLOCK(4K) : ALIGN(4K)
 	{
-		bss = .; _bss = .; __bss = .;
+		bss = .;
+		*(COMMON)
 		*(.bss)
-		. = ALIGN(4096);
+		*(.stack)
 	}
 
-	end = .; _end = .; __end = .;
+	end = .;
 
 	/DISCARD/ :
 	{

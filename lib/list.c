@@ -7,10 +7,10 @@
  */
 
 #ifdef _KERNEL_
-#include <kernel/system.h>
+#	include <kernel/system.h>
 #else
-#include <stddef.h>
-#include <stdlib.h>
+#	include <stddef.h>
+#	include <stdlib.h>
 #endif
 
 #include <toaru/list.h>
@@ -164,6 +164,15 @@ int list_index_of(list_t * list, void * value) {
 		i++;
 	}
 	return -1; /* not find */
+}
+
+void * list_index(list_t * list, int index) {
+	int i = 0;
+	foreach(item, list) {
+		if (i == index) return item->value;
+		i++;
+	}
+	return NULL;
 }
 
 void list_remove(list_t * list, size_t index) {

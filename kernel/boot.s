@@ -1,78 +1,60 @@
-;
-; boot.s -- Kernel start location. Also defines multiboot header.
-;           Based on Bran's kernel development tutorial file start.asm
-;
+.set MB_MAGIC,              0x1BADB002
+.set MB_FLAG_PAGE_ALIGN,    1 << 0
+.set MB_FLAG_MEMORY_INFO,   1 << 1
+.set MB_FLAG_GRAPHICS,      1 << 2
+.set MB_FLAGS,              MB_FLAG_PAGE_ALIGN | MB_FLAG_MEMORY_INFO | MB_FLAG_GRAPHICS
+.set MB_CHECKSUM,           -(MB_MAGIC + MB_FLAGS)
 
-MBOOT_PAGE_ALIGN    equ 1<<0    ; Load kernel and modules on a page boundary
-MBOOT_MEM_INFO      equ 1<<1    ; Provide your kernel with memory info
-MBOOT_HEADER_MAGIC  equ 0x1BADB002 ; Multiboot Magic value
-; NOTE: We do not use MBOOT_AOUT_KLUDGE. It means that GRUB does not
-; pass us a symbol table.
-MBOOT_HEADER_FLAGS  equ MBOOT_PAGE_ALIGN | MBOOT_MEM_INFO
-MBOOT_CHECKSUM      equ -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGS)
+.section .multiboot
+.align 4
 
+/* Multiboot section */
+.long MB_MAGIC
+.long MB_FLAGS
+.long MB_CHECKSUM
+.long 0x00000000 /* header_addr */
+.long 0x00000000 /* load_addr */
+.long 0x00000000 /* load_end_addr */
+.long 0x00000000 /* bss_end_addr */
+.long 0x00000000 /* entry_addr */
 
-[BITS 32]                       ; All instructions should be 32-bit.
+/* Request linear graphics mode */
+.long 0x00000000
+.long 0
+.long 0
+.long 32
 
-section .mulboot
+/* .stack resides in .bss */
+.section .stack, "aw", @nobits
+stack_bottom:
+.skip 32768 /* 32KiB */
+stack_top:
 
-; Publics in this file
-global mboot
-global _CpuEnableFpu
-global _CpuEnableGpe
-global start   
+.section .text
 
-                
-extern _kmain                   ; This is the entry point of our C code
-extern code                   ; Start of the '.text' section.
-extern bss                    ; Start of the .bss section.
-extern end                    ; End of the last loadable section.
+.global start
+.type start, @function
 
-mboot:
-    dd  MBOOT_HEADER_MAGIC      ; GRUB will search for this value on each
-                                ; 4-byte boundary in your kernel file
-    dd  MBOOT_HEADER_FLAGS      ; How GRUB should load your file / settings
-    dd  MBOOT_CHECKSUM          ; To ensure that the above values are correct
-    
-    dd  mboot                   ; Location of this descriptor
-    dd  code                    ; Start of kernel '.text' (code) section.
-    dd  bss                     ; End of kernel '.data' section.
-    dd  end                     ; End of kernel.
-    dd  start                   ; Kernel entry point (initial EIP).
-
-section .text
+.extern kmain
+.type kmain, @function
 
 start:
-    ; Load multiboot information:
-    push esp
-    push ebx
+    /* Setup our stack */
+    mov $stack_top, %esp
 
-    ; Execute the kernel:
-    cli                         ; Disable interrupts.
-    call _kmain                   ; call our main() function.
+    /* Make sure our stack is 16-byte aligned */
+    and $-16, %esp
 
+    pushl %esp
+    pushl %eax /* Multiboot header magic */
+    pushl %ebx /* Multiboot header pointer */
+
+    /* Disable interrupts and call kernel proper */
+    cli
+    call kmain
+
+    /* Clear interrupts and hang if we return from kmain */
+    cli
+hang:
     hlt
-    jmp $-1                       ; Enter an infinite loop, to stop the processor
-                                ; executing whatever rubbish is in the memory
-                                ; after our kernel!
-
-
-
-; Assembly routine to enable fpu support
-_CpuEnableFpu:
-	mov eax, cr0
-	bts eax, 1		; Set Monitor co-processor (Bit 1)
-	btr eax, 2		; Clear Emulation (Bit 2)
-	bts eax, 5		; Set Native Exception (Bit 5)
-	btr eax, 3		; Clear TS
-	mov cr0, eax
-
-	finit           ;  Initialize Floating-Point Unit
-	ret
-
-; Assembly routine to enable global page support
-_CpuEnableGpe:
-	mov eax, cr4
-	bts eax, 7		; Set Operating System Support for Page Global Enable (Bit 7)
-	mov cr4, eax
-	ret
+    jmp hang
