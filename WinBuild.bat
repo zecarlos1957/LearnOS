@@ -1,4 +1,4 @@
-@echo off
+echo off
 echo Build script for Windows
 echo.
 
@@ -6,13 +6,13 @@ echo.
  cd bin
  if not exist kernel mkdir kernel
  if not exist libc mkdir libc
+ if not exist modules mkdir modules
  cd ../
 
 rem ********************************************************************
 
 rem              Build KERNEL
-rem cd ./kernel
-rem goto COMP_DONE
+
 
 cd ./kernel/cpu 
     gcc -ffreestanding -pedantic -fno-omit-frame-pointer -D_BUILD_DLL_ -D_KERNEL_ -I../../base/usr/include -c -o ../../bin/kernel/gdt.o gdt.c
@@ -121,8 +121,6 @@ rem    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules
     objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/sys/debug_sh.ko
 
 
-rem ********************************************************************
-
 
 rem ********************************************************************
   
@@ -132,41 +130,22 @@ rem                   Build APPLICATIONS
 rem ***********************************************************************
 
 
-:COMP_DONE
-
-rem if errorlevel 1 goto done
-
- rem cd ../apps
- rem   gcc -ffreestanding  -I../base/user/include     -c hello.c -o ../bin/hello.o  
-
 
   cd ../bin/kernel    
- REM    ld  -T../../kernel/link.ld   -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o
-     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o
+     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o
 
- rem    gcc -T../../kernel/link1.ld -shared -o ../krnl32.dll compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o -Wl,--out-implib, ../libkrnl32.a
  
      ar rcs ../libliba.a tree.o hashmap.o list.o
  cd ../
-  rem    copy krnl32.exe+mapfile.map krnl32.exe
      objcopy  -O elf32-i386 krnl32.exe ../cdboot/sys/krnl32.elf
 
  
- rem  gcc  -nostdinc -nostdlib  -I../base/usr/include  -o  hello.exe ../apps/hello.c liblibc.a  krnl32.dll 
-     
-    path  c:/tools
-
 
 cd ../
-  rem  if exist build\learnos.iso del build\learnos.iso
-    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o toaruos.iso  cdboot
-rem  mkisofs -R -b boot/grub/loader.bin -no-emul-boot -boot-load-size 4 -boot-info-table   -o mtask.iso  build
+    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  cdboot
 
-rem if errorlevel  1 goto done
 
-   c:/programas/oracle/virtualbox/vboxmanage startvm ToaruOS
-rem    d:/programas/qemu/qemu-system-i386 -cdrom build/learnos.iso
-rem    d:/programas/bochs-2.6.9/bochs
+   D:/programas/oracle/virtualbox/vboxmanage startvm LearnOS
 
 :done
 echo DoneOK.

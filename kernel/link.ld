@@ -1,44 +1,44 @@
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * Kernel linker script for x86
  */
-OUTPUT_FORMAT(elf32-i386)
-ENTRY(start)
+OUTPUT_FORMAT(pei-i386)
+ENTRY(_start)
 
 SECTIONS
 {
-	. = 1M;
+	. = 0x100000;
 	phys = .;
 
-	.text BLOCK(4K) : ALIGN(4K)
+	.text  BLOCK(4096) : ALIGN(4096)
 	{
-		code = .;
-		*(.multiboot)
+		code = .; _code = .;
+		*(.mulboot)
 		*(.text)
 	}
 
-	.rodata BLOCK(4K) : ALIGN(4K)
+	.rdata BLOCK(4096) : ALIGN(4096)
 	{
-		*(.rodata)
+		*(.rdata)
 	}
 
-	.data BLOCK(4K) : ALIGN(4K)
+	.data BLOCK(4096) : ALIGN(4096)
 	{
-		data = .;
+		data = .; _data = .;
 		*(.data)
 		*(.symbols)
-		PROVIDE(kernel_symbols_start = .);
-		PROVIDE(kernel_symbols_end = .);
+		PROVIDE(_kernel_symbols_start = .);
+		PROVIDE(_kernel_symbols_end = .);
 	}
 
-	.bss BLOCK(4K) : ALIGN(4K)
+	.bss BLOCK(4096) : ALIGN(4096)
 	{
-		bss = .;
+		bss = .; _bss = .;
 		*(COMMON)
 		*(.bss)
 		*(.stack)
 	}
 
-	end = .;
+	end = .; _end = .;
 
 	/DISCARD/ :
 	{
