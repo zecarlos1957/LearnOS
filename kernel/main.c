@@ -54,12 +54,13 @@ uintptr_t initial_esp = 0;
 
 fs_node_t * ramdisk_mount(uintptr_t, size_t);
 
-#ifdef EARLY_BOOT_LOG
+#ifndef EARLY_BOOT_LOG
 #define EARLY_LOG_DEVICE 0x3F8
 static uint32_t _early_log_write(fs_node_t *node, uint64_t offset, uint32_t size, uint8_t *buffer) {
-	for (unsigned int i = 0; i < size; ++i) {
+/*	for (unsigned int i = 0; i < size; ++i) {
 		outportb(EARLY_LOG_DEVICE, buffer[i]);
-	}
+	}*/
+	monitor_write(buffer);
 	return size;
 }
 fs_node_t _early_log = { .write = &_early_log_write };
@@ -139,7 +140,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 			if (mmap->type == 2) {
 				for (unsigned long long int i = 0; i < mmap->length; i += 0x1000) {
 					if (mmap->base_addr + i > 0xFFFFFFFF) break; /* xxx */
-					debug_print(INFO, "Marking 0x%x", (uint32_t)(mmap->base_addr + i));
+//					debug_print(INFO, "Marking 0x%x", (uint32_t)(mmap->base_addr + i));
 					paging_mark_system((mmap->base_addr + i) & 0xFFFFF000);
 				}
 			}
@@ -165,22 +166,22 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	if (cmdline) {
 		args_parse(cmdline);
 	}
-
-	isrs_install();     /* Interrupt service requests */
-	irq_install();      /* Hardware interrupt requests */
+ 
+	isrs_install();     // Interrupt service requests  
+	irq_install();      // Hardware interrupt requests  
 
 	vfs_install();
-	tasking_install();  /* Multi-tasking */
-	timer_install();    /* PIC driver */
-	fpu_install();      /* FPU/SSE magic */
-	syscalls_install(); /* Install the system calls */
-	shm_install();      /* Install shared memory */
-	modules_install();  /* Modules! */
+//	tasking_install();  // Multi-tasking  
+//	timer_install();    // PIC driver  
+//	fpu_install();      // FPU/SSE magic  
+	syscalls_install(); // Install the system calls  
+	shm_install();      // Install shared memory  
+	modules_install();  // Modules!  
 	pci_remap();
 
-	DISABLE_EARLY_BOOT_LOG();
+//	DISABLE_EARLY_BOOT_LOG();
 
-	/* Load modules from bootloader */
+	// Load modules from bootloader  
 	if (mboot_ptr->flags & MULTIBOOT_FLAG_MODS) {
 		debug_print(NOTICE, "%d modules to load", mboot_mods_count);
 		for (unsigned int i = 0; i < mboot_ptr->mods_count; ++i ) {
@@ -197,7 +198,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 					debug_print(NOTICE, "Loaded: %s", mod_info->mod_info->name);
 				}
 			} else if (check_result == 2) {
-				/* Mod pack */
+				// Mod pack  
 				debug_print(NOTICE, "Loading modpack. %x", module_start);
 				struct pack_header * pack_header = (struct pack_header *)module_start;
 				while (pack_header->region_size) {
@@ -219,8 +220,8 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 			}
 		}
 	}
-
-	/* Map /dev to a device mapper */
+/*
+	// Map /dev to a device mapper 
 	map_vfs_directory("/dev");
 
 	if (args_present("root")) {
@@ -250,7 +251,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 		boot_app = args_value("init");
 	}
 
-	/* Prepare to run /bin/init */
+	//Prepare to run /bin/init  
 	char * argv[] = {
 		boot_app,
 		boot_arg,
@@ -260,11 +261,11 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	while (argv[argc]) {
 		argc++;
 	}
-	system(argv[0], argc, argv, NULL); /* Run init */
+	system(argv[0], argc, argv, NULL); 
 
 	debug_print(CRITICAL, "init failed");
 	switch_task(0);
-
+*/
 	return 0;
 }
 
