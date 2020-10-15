@@ -35,7 +35,7 @@ void enter_signal_handler(uintptr_t location, int signum, uintptr_t stack) {
 			"pushl $0x1B\n"
 			"pushl %0\n"           /* Push the entry point */
 			"iret\n"
-			: : "m"(location), "m"(signum), "r"(stack), "m"(ebp), "m"(esp) : "%ax", "%esp", "%eax");
+			: : "m"(location), "m"(signum), "r"(stack), "m"(ebp), "m"(esp));
 
 	debug_print(CRITICAL, "Failed to jump to signal handler!");
 }

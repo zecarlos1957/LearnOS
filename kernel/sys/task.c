@@ -475,8 +475,8 @@ void switch_next(void) {
 			"mov %3, %%cr3\n"
 			"mov $0x10000, %%eax\n" /* read_eip() will return 0x10000 */
 			"jmp *%%ebx"
-			: : "r" (eip), "r" (esp), "r" (ebp), "r" (current_directory->physical_address)
-			: "%ebx", "%esp", "%eax");
+			: : "r" (eip), "r" (esp), "r" (ebp), "r" (current_directory->physical_address));
+	//		: "%ebx", "%esp", "%eax");
 }
 
 extern void enter_userspace(uintptr_t location, uintptr_t stack);

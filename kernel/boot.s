@@ -5,7 +5,7 @@
 .set MB_FLAGS,              MB_FLAG_PAGE_ALIGN | MB_FLAG_MEMORY_INFO | MB_FLAG_GRAPHICS
 .set MB_CHECKSUM,           -(MB_MAGIC + MB_FLAGS)
 
-.section .multiboot
+.section .mulboot
 .align 4
 
 /* Multiboot section */
@@ -25,20 +25,18 @@
 .long 32
 
 /* .stack resides in .bss */
-.section .stack, "aw", @nobits
+.section .stack
 stack_bottom:
 .skip 32768 /* 32KiB */
 stack_top:
 
 .section .text
 
-.global start
-.type start, @function
+.global _start
 
-.extern kmain
-.type kmain, @function
+.extern _kmain
 
-start:
+_start:
     /* Setup our stack */
     mov $stack_top, %esp
 
@@ -51,7 +49,7 @@ start:
 
     /* Disable interrupts and call kernel proper */
     cli
-    call kmain
+    call _kmain
 
     /* Clear interrupts and hang if we return from kmain */
     cli

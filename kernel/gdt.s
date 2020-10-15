@@ -1,10 +1,10 @@
 .section .text
 .align 4
 
-.global gdt_flush
-.type gdt_flush, @function
+.global _gdt_flush
 
-gdt_flush:
+
+_gdt_flush:
     /* Load GDT */
     mov 4(%esp), %eax
     lgdt (%eax)

@@ -6,10 +6,10 @@
 /* Enable paging mask */
 .set ep, 0x80000000
 
-.global copy_page_physical
-.type copy_page_physical, @function
+.global _copy_page_physical
 
-copy_page_physical:
+
+_copy_page_physical:
     /* Preserve contents of EBX */
     push %ebx
 
@@ -56,9 +56,9 @@ copy_page_physical:
     ret
 
 /* Read EIP */
-.global read_eip
-.type read_eip, @function
+.global _read_eip
 
-read_eip:
+
+_read_eip:
     mov (%esp), %eax
     ret

@@ -1,9 +1,9 @@
 /* Return to Userspace (from thread creation) */
 
-.global return_to_userspace
-.type return_to_userspace, @function
+.global _return_to_userspace
 
-return_to_userspace:
+
+_return_to_userspace:
     pop %gs
     pop %fs
     pop %es
@@ -13,12 +13,11 @@ return_to_userspace:
     iret
 
 /* Enter userspace (ring3) */
-.global enter_userspace
-.type enter_userspace, @function
+.global _enter_userspace
 
 .set MAGIC, 0xDECADE21
 
-enter_userspace:
+_enter_userspace:
     pushl %ebp
     mov %esp, %ebp
     mov 0xC(%ebp), %edx

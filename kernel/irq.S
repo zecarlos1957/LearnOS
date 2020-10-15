@@ -2,9 +2,9 @@
 .align 4
 
 .macro IRQ ident byte
-    .global _irq\ident
-    .type _irq\ident, @function
-    _irq\ident:
+    .global __irq\ident
+
+    __irq\ident:
         cli
         push $0x00
         push $\byte
@@ -29,8 +29,8 @@ IRQ 13, 45
 IRQ 14, 46
 IRQ 15, 47
 
-.extern irq_handler
-.type irq_handler, @function
+.extern _irq_handler
+
 
 irq_common:
     /* Save all registers */
@@ -50,7 +50,7 @@ irq_common:
 
     /* Call interrupt handler */
     push %esp
-    call irq_handler
+    call _irq_handler
     add $4, %esp
 
     /* Restore segment registers */

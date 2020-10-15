@@ -2,8 +2,8 @@
 .align 4
 
 .macro ISR_NOERR index
-    .global _isr\index
-    _isr\index:
+    .global __isr\index
+    __isr\index:
         cli
         push $0
         push $\index
@@ -11,8 +11,8 @@
 .endm
 
 .macro ISR_ERR index
-    .global _isr\index
-    _isr\index:
+    .global __isr\index
+    __isr\index:
         cli
         push $\index
         jmp isr_common
@@ -53,8 +53,8 @@ ISR_NOERR 30
 ISR_NOERR 31
 ISR_NOERR 127
 
-.extern fault_handler
-.type fault_handler, @function
+.extern _fault_handler
+
 
 isr_common:
     /* Push all registers */
@@ -74,7 +74,7 @@ isr_common:
 
     /* Call fault handler */
     push %esp
-    call fault_handler
+    call _fault_handler
     add $4, %esp
 
     /* Restore segment registers */
