@@ -6,7 +6,7 @@
 
 bin
 doc
-cdboot/sys/krnl32.elf
+cdboot/sys/
  
  
 
