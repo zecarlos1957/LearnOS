@@ -2,9 +2,9 @@
 .align 4
 
 .macro IRQ ident byte
-    .global __irq\ident
+    .global _irq\ident
 
-    __irq\ident:
+    _irq\ident:
         cli
         push $0x00
         push $\byte
