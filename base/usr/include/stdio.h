@@ -94,4 +94,4 @@ typedef long fpos_t;
 extern int fgetpos(FILE *stream, fpos_t *pos);
 extern int fsetpos(FILE *stream, const fpos_t *pos);
 
-_End_C_Header;
+_End_C_Header
