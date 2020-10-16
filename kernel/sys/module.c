@@ -11,6 +11,8 @@
 
 #include <toaru/hashmap.h>
 
+#include <stdio.h>
+
 #define SYMBOLTABLE_HASHMAP_SIZE 10
 #define MODULE_HASHMAP_SIZE 10
 
@@ -25,17 +27,106 @@ typedef struct {
 	char name[];
 } kernel_symbol_t;
 
-/* Cannot use symboltable here because symbol_find is used during initialization
- * of IRQs and ISRs.
- */
+/**
+* TODO: The addresses in the addr array should be read directly from the module krnl32.elf symbol table.
+*/
+
+uintptr_t addr[]=
+{
+0x001001b0,
+0x001001b7,
+0x001001be,
+0x001001c5,
+0x001001cc,
+0x001001d3,
+0x001001da,
+0x001001e1,
+0x001001e8,
+0x001001ef,
+0x001001f6,
+0x001001fd,
+0x00100204,
+0x0010020b,
+0x00100212,
+0x00100219,
+0x00100248,
+0x00100248,
+0x00100252,
+0x0010025c,
+0x00100266,
+0x00100270,
+0x0010027a,
+0x00100284,
+0x0010028e,
+0x00100298,
+0x001002a0,
+0x001002aa,
+0x001002b2,
+0x001002ba,
+0x001002c2,
+0x001002ca,
+0x001002cf,
+0x001002d6,
+0x001002dd,
+0x001002e4,
+0x001002eb,
+0x001002f2,
+0x001002f9,
+0x00100300,
+0x00100307,
+0x0010030e,
+0x00100315,
+0x0010031c,
+0x00100323,
+0x0010032a,
+0x00100331,
+0x00100338,
+0x0010033f,
+0x00100346
+};
+
+uint32_t SymTabSize = 0;
+
+void init_symbol_tab()
+{
+    SymTabSize = 0;
+    
+    kernel_symbol_t *sym = (kernel_symbol_t*)&kernel_symbols_start;
+    char buf[32];
+
+    for(int i = 0; i < 16; i++)
+    {
+        sprintf(buf, "irq%d", i);
+        sym->addr =addr[i];
+        strcpy(sym->name, buf);
+        sym = (kernel_symbol_t*)((uintptr_t)sym + sizeof(*sym) + strlen(sym->name) + 1);
+    }
+
+    for(int i = 0; i < 32; i++)
+    {
+        sprintf(buf, "isr%d", i);
+        sym->addr =addr[16 + i];
+        strcpy(sym->name, buf);
+        sym = (kernel_symbol_t*)((uintptr_t)sym + sizeof(*sym) + strlen(sym->name) + 1);
+    }
+
+    sprintf(buf, "isr%d", 127);
+    sym->addr =addr[16 + 32];
+    strcpy(sym->name, buf);
+    sym = (kernel_symbol_t*)((uintptr_t)sym + sizeof(*sym) + strlen(sym->name) + 1);
+
+    SymTabSize = (uint32_t)sym - (uint32_t)&kernel_symbols_start;
+}
+
 void (* symbol_find(const char * name))(void) {
 	kernel_symbol_t * k = (kernel_symbol_t *)&kernel_symbols_start;
 
-	while ((uintptr_t)k < (uintptr_t)&kernel_symbols_end) {
+	while ((uintptr_t)k < (uintptr_t)&kernel_symbols_end[SymTabSize]) {
 		if (strcmp(k->name, name)) {
 			k = (kernel_symbol_t *)((uintptr_t)k + sizeof *k + strlen(k->name) + 1);
 			continue;
 		}
+//		debug_print(INFO, "0x%x %s %s",k->addr, k->name, name);
 		return (void (*)(void))k->addr;
 	}
 

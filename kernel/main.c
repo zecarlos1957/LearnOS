@@ -97,6 +97,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	gdt_install();      /* Global descriptor table */
 	idt_install();      /* IDT */
 
+    init_symbol_tab();
     if (load_symbol_table(get_elf_section((Elf_hdr*)&mboot->u, ".symtab"), 
                           get_elf_section((Elf_hdr*)&mboot->u, ".strtab")))
     {
@@ -183,16 +184,17 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	irq_install();      // Hardware interrupt requests  
 
 	vfs_install();
-//	tasking_install();  // Multi-tasking  
-//	timer_install();    // PIC driver  
-//	fpu_install();      // FPU/SSE magic  
+	tasking_install();  // Multi-tasking  
+	timer_install();    // PIC driver  
+	fpu_install();      // FPU/SSE magic  
+
 	syscalls_install(); // Install the system calls  
 	shm_install();      // Install shared memory  
 	modules_install();  // Modules!  
 	pci_remap();
 
 //	DISABLE_EARLY_BOOT_LOG();
-
+ 
 	// Load modules from bootloader  
 	if (mboot_ptr->flags & MULTIBOOT_FLAG_MODS) {
 		debug_print(NOTICE, "%d modules to load", mboot_mods_count);
