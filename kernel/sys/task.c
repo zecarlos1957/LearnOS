@@ -467,16 +467,9 @@ void switch_next(void) {
 
 	current_process->running = 1;
 
-	/* Jump, baby, jump */
-	asm volatile (
-			"mov %0, %%ebx\n"
-			"mov %1, %%esp\n"
-			"mov %2, %%ebp\n"
-			"mov %3, %%cr3\n"
-			"mov $0x10000, %%eax\n" /* read_eip() will return 0x10000 */
-			"jmp *%%ebx"
-			: : "r" (eip), "r" (esp), "r" (ebp), "r" (current_directory->physical_address));
-	//		: "%ebx", "%esp", "%eax");
+    /* Jump, baby, jump */
+    perform_task_switch(eip, current_directory->physical_address, ebp, esp);
+
 }
 
 extern void enter_userspace(uintptr_t location, uintptr_t stack);

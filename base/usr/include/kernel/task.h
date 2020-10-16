@@ -27,3 +27,4 @@ typedef struct page_directory {
 	int32_t ref_count;
 } page_directory_t;
 
+ void perform_task_switch(uintptr_t eip, uintptr_t physAddr, uintptr_t ebp, uintptr_t esp);

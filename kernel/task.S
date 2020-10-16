@@ -62,3 +62,18 @@ _copy_page_physical:
 _read_eip:
     mov (%esp), %eax
     ret
+    
+/* void perform_task_switch(uintptr_t eip, uintptr_t physAddr, uintptr_t ebp, uintptr_t esp); */
+.global _perform_task_switch
+_perform_task_switch:
+    cli
+    mov 4(%esp), %ebx    /* EIP */
+    mov 8(%esp), %eax    /* physical address */
+    mov 12(%esp), %ebp    /* EBP */
+    mov 16(%esp), %esp    /* ESP */
+    mov %eax, %cr3        /* set page directory */
+    mov $0x10000, %eax    /* magic number */
+    sti
+    jmp *%ebx
+    ret
+    
