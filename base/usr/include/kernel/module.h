@@ -5,6 +5,11 @@
 #include <toaru/hashmap.h>
 
 typedef struct {
+    uintptr_t addr;
+    char name[];
+} kernel_symbol_t;
+
+typedef struct {
     char * name;
     int (* initialize)(void);
     int (* finalize)(void);

@@ -22,10 +22,6 @@ static hashmap_t * modules = NULL;
 extern char kernel_symbols_start[];
 extern char kernel_symbols_end[];
 
-typedef struct {
-	uintptr_t addr;
-	char name[];
-} kernel_symbol_t;
 
 /**
 * TODO: The addresses in the addr array should be read directly from the module krnl32.elf symbol table.
@@ -356,177 +352,203 @@ void * module_load_direct(void * blob, size_t length) {
 		goto mod_load_error;
 	}
 
-	{
-		for (unsigned int x = 0; x < (unsigned int)target->e_shentsize * target->e_shnum; x += target->e_shentsize) {
-			Elf32_Shdr * shdr = (Elf32_Shdr *)((uintptr_t)target + (target->e_shoff + x));
-			if (shdr->sh_type == SHT_REL) {
-				Elf32_Rel * section_rel = (void *)(shdr->sh_addr);
-				Elf32_Rel * table = section_rel;
-				Elf32_Sym * symtable = (Elf32_Sym *)(sym_shdr->sh_addr);
-				while ((uintptr_t)table - (shdr->sh_addr) < shdr->sh_size) {
-					Elf32_Sym * sym = &symtable[ELF32_R_SYM(table->r_info)];
-					Elf32_Shdr * rs = (Elf32_Shdr *)((uintptr_t)target + (target->e_shoff + shdr->sh_info * target->e_shentsize));
+    {
+        for (unsigned int x = 0; x < (unsigned int)target->e_shentsize * target->e_shnum; x += target->e_shentsize)
+        {
+            Elf32_Shdr * shdr = (Elf32_Shdr *)((uintptr_t)target + (target->e_shoff + x));
+            if (shdr->sh_type == SHT_REL)
+            {
+                Elf32_Rel * section_rel = (void *)(shdr->sh_addr);
+                Elf32_Rel * table = section_rel;
+                Elf32_Sym * symtable = (Elf32_Sym *)(sym_shdr->sh_addr);
+                while ((uintptr_t)table - (shdr->sh_addr) < shdr->sh_size)
+                {
+                    Elf32_Sym * sym = &symtable[ELF32_R_SYM(table->r_info)];
+                    Elf32_Shdr * rs = (Elf32_Shdr *)((uintptr_t)target + (target->e_shoff + shdr->sh_info * target->e_shentsize));
 
-					uintptr_t addend = 0;
-					uintptr_t place  = 0;
-					uintptr_t symbol = 0;
-					uintptr_t *ptr   = NULL;
+                    uintptr_t addend = 0;
+                    uintptr_t place  = 0;
+                    uintptr_t symbol = 0;
+                    uintptr_t *ptr   = NULL;
 
-					if (ELF32_ST_TYPE(sym->st_info) == STT_SECTION) {
-						Elf32_Shdr * s = (Elf32_Shdr *)((uintptr_t)target + (target->e_shoff + sym->st_shndx * target->e_shentsize));
-						ptr = (uintptr_t *)(table->r_offset + rs->sh_addr);
-						addend = *ptr;
-						place  = (uintptr_t)ptr;
-						symbol = s->sh_addr;
-					} else {
-						char * name = (char *)((uintptr_t)symstrtab + sym->st_name);
-						ptr = (uintptr_t *)(table->r_offset + rs->sh_addr);
-						addend = *ptr;
-						place  = (uintptr_t)ptr;
-						if (!hashmap_get(symboltable, name)) {
-							if (!hashmap_get(local_symbols, name)) {
-								debug_print(ERROR, "Wat? Missing symbol %s", name);
-								debug_print(ERROR, "Here's all the symbols:");
-							} else {
-								symbol = (uintptr_t)hashmap_get(local_symbols, name);
-							}
-						} else {
-							symbol = (uintptr_t)hashmap_get(symboltable, name);
-						}
-					}
-					switch (ELF32_R_TYPE(table->r_info)) {
-						case 1:
-							*ptr = addend + symbol;
-							break;
-						case 2:
-							*ptr = addend + symbol - place;
-							break;
-						default:
-							debug_print(ERROR, "Unsupported relocation type: %d", ELF32_R_TYPE(table->r_info));
-							goto mod_load_error;
-					}
+                    if (ELF32_ST_TYPE(sym->st_info) == STT_SECTION)
+                    {
+                        Elf32_Shdr * s = (Elf32_Shdr *)((uintptr_t)target + (target->e_shoff + sym->st_shndx * target->e_shentsize));
+                        ptr = (uintptr_t *)(table->r_offset + rs->sh_addr);
+                        addend = *ptr;
+                        place  = (uintptr_t)ptr;
+                        symbol = s->sh_addr;
+                    }
+                    else
+                    {
+                        char * name = (char *)((uintptr_t)symstrtab + sym->st_name);
+                        ptr = (uintptr_t *)(table->r_offset + rs->sh_addr);
+                        addend = *ptr;
+                        place  = (uintptr_t)ptr;
+                        if (!hashmap_get(symboltable, name))
+                        {
+                            if (!hashmap_get(local_symbols, name))
+                            {
+                                debug_print(ERROR, "Wat? Missing symbol %s", name);
+                                debug_print(ERROR, "Here's all the symbols:");
+                            }
+                            else
+                            {
+                                symbol = (uintptr_t)hashmap_get(local_symbols, name);
+                            }
+                        }
+                        else
+                        {
+                            symbol = (uintptr_t)hashmap_get(symboltable, name);
+                        }
+                    }
+                    switch (ELF32_R_TYPE(table->r_info))
+                    {
+                        case 1:
+                            *ptr = addend + symbol;
+                            break;
+                        case 2:
+                            *ptr = addend + symbol - place;
+                            break;
+                        default:
+                            debug_print(ERROR, "Unsupported relocation type: %d", ELF32_R_TYPE(table->r_info));
+                            goto mod_load_error;
+                    }
 
-					table++;
-				}
-			}
-		}
-	}
+                    table++;
+                }
+            }
+        }
+    }
 
-	debug_print(INFO, "Locating module information...");
-	module_defs * mod_info = NULL;
-	list_t * hash_keys = hashmap_keys(local_symbols);
-	foreach(_key, hash_keys) {
-		char * key = (char *)_key->value;
-		if (startswith(key, "module_info_")) {
-			mod_info = hashmap_get(local_symbols, key);
-		}
-	}
-	list_free(hash_keys);
-	free(hash_keys);
-	if (!mod_info) {
-		debug_print(ERROR, "Failed to locate module information structure!");
-		goto mod_load_error;
-	}
+    debug_print(INFO, "Locating module information...");
+    module_defs * mod_info = NULL;
+    list_t * hash_keys = hashmap_keys(local_symbols);
+    foreach(_key, hash_keys)
+    {
+        char * key = (char *)_key->value;
+        debug_print(INFO, "%s",key);
+        if (startswith(key, "module_info_"))
+        {
+            mod_info = hashmap_get(local_symbols, key);
+        }
+    }
+    list_free(hash_keys);
+    free(hash_keys);
+    if (!mod_info)
+    {
+        debug_print(ERROR, "Failed to locate module information structure!");
+        goto mod_load_error;
+    }
 
-	mod_info->initialize();
+    mod_info->initialize();
 
-	debug_print(NOTICE, "Finished loading module %s", mod_info->name);
+    debug_print(NOTICE, "Finished loading module %s", mod_info->name);
 
-	/* We don't do this anymore
-	 * TODO: Do this in the module unload function
-	hashmap_free(local_symbols);
-	free(local_symbols);
-	*/
+    /* We don't do this anymore
+     * TODO: Do this in the module unload function
+    hashmap_free(local_symbols);
+    free(local_symbols);
+    */
 
-	module_data_t * mod_data = malloc(sizeof(module_data_t));
-	mod_data->mod_info = mod_info;
-	mod_data->bin_data = target;
-	mod_data->symbols  = local_symbols;
-	mod_data->end      = (uintptr_t)target + length;
-	mod_data->deps     = deps;
-	mod_data->deps_length = deps_length;
-	mod_data->text_addr = text_addr;
+    module_data_t * mod_data = malloc(sizeof(module_data_t));
+    mod_data->mod_info = mod_info;
+    mod_data->bin_data = target;
+    mod_data->symbols  = local_symbols;
+    mod_data->end      = (uintptr_t)target + length;
+    mod_data->deps     = deps;
+    mod_data->deps_length = deps_length;
+    mod_data->text_addr = text_addr;
 
-	hashmap_set(modules, mod_info->name, (void *)mod_data);
+    hashmap_set(modules, mod_info->name, (void *)mod_data);
 
-	return mod_data;
+    return mod_data;
 
 mod_load_error_unload:
-	return (void *)-1;
+    return (void *)-1;
 
 mod_load_error:
-	return NULL;
+    return NULL;
 }
 
-uintptr_t module_get_text_addr(char * name) {
-	module_data_t * mod_data = hashmap_get(modules, name);
-	if (!mod_data) return -1;
-	return mod_data->text_addr;
+uintptr_t module_get_text_addr(char * name)
+{
+    module_data_t * mod_data = hashmap_get(modules, name);
+    if (!mod_data) return -1;
+    return mod_data->text_addr;
 }
 
 /**
  * Install a module from a file and return
  * a pointer to its module_info structure.
  */
-void * module_load(char * filename) {
-	fs_node_t * file = kopen(filename, 0);
-	if (!file) {
-		debug_print(ERROR, "Failed to load module: %s", filename);
-		return NULL;
-	}
+void * module_load(char * filename)
+{
+    fs_node_t * file = kopen(filename, 0);
+    if (!file)
+    {
+        debug_print(ERROR, "Failed to load module: %s", filename);
+        return NULL;
+    }
 
-	debug_print(NOTICE, "Attempting to load kernel module: %s", filename);
+    debug_print(NOTICE, "Attempting to load kernel module: %s", filename);
 
-	void * blob = (void *)kvmalloc(file->length);
-	read_fs(file, 0, file->length, (uint8_t *)blob);
+    void * blob = (void *)kvmalloc(file->length);
+    read_fs(file, 0, file->length, (uint8_t *)blob);
 
-	void * result = module_load_direct(blob, file->length);
+    void * result = module_load_direct(blob, file->length);
 
-	if (result == (void *)-1) {
-		debug_print(ERROR, "Error loading module.");
-		free(blob);
-		result = NULL;
-	}
+    if (result == (void *)-1)
+    {
+        debug_print(ERROR, "Error loading module.");
+        free(blob);
+        result = NULL;
+    }
 
-	close_fs(file);
-	return result;
+    close_fs(file);
+    return result;
 }
 
 /**
  * Remove a loaded module.
  */
-void module_unload(char * name) {
-	/* XXX: Lookup the module by name and verify it has no dependencies loaded. */
-	/* XXX: Call module_info->finish() */
-	/* XXX: Unmap symbols defined the module that weren't otherwise defined. */
-	/* XXX: Deallocate the regions the module was mapped into */
+void module_unload(char * name)
+{
+    /* XXX: Lookup the module by name and verify it has no dependencies loaded. */
+    /* XXX: Call module_info->finish() */
+    /* XXX: Unmap symbols defined the module that weren't otherwise defined. */
+    /* XXX: Deallocate the regions the module was mapped into */
 }
 
-void modules_install(void) {
-	/* Initialize the symboltable, we use a hashmap of symbols to addresses  */
-	symboltable = hashmap_create(SYMBOLTABLE_HASHMAP_SIZE);
+void modules_install(void)
+{
+    /* Initialize the symboltable, we use a hashmap of symbols to addresses  */
+    symboltable = hashmap_create(SYMBOLTABLE_HASHMAP_SIZE);
 
-	/* Load all of the kernel symbols into the symboltable */
-	kernel_symbol_t * k = (kernel_symbol_t *)&kernel_symbols_start;
+    /* Load all of the kernel symbols into the symboltable */
+    kernel_symbol_t * k = (kernel_symbol_t *)&kernel_symbols_start;
 
-	while ((uintptr_t)k < (uintptr_t)&kernel_symbols_end) {
-		hashmap_set(symboltable, k->name, (void *)k->addr);
-		k = (kernel_symbol_t *)((uintptr_t)k + sizeof(kernel_symbol_t) + strlen(k->name) + 1);
-	}
+    while ((uintptr_t)k < (uintptr_t)&kernel_symbols_end[SymTabSize])
+    {
+        hashmap_set(symboltable, k->name, (void *)k->addr);
+        k = (kernel_symbol_t *)((uintptr_t)k + sizeof(kernel_symbol_t) + strlen(k->name) + 1);
+    }
 
-	/* Also add the kernel_symbol_start and kernel_symbol_end (these were excluded from the generator) */
-	hashmap_set(symboltable, "kernel_symbols_start", &kernel_symbols_start);
-	hashmap_set(symboltable, "kernel_symbols_end",   &kernel_symbols_end);
+    /* Also add the kernel_symbol_start and kernel_symbol_end (these were excluded from the generator) */
+    hashmap_set(symboltable, "kernel_symbols_start", &kernel_symbols_start);
+    hashmap_set(symboltable, "kernel_symbols_end",   &kernel_symbols_end);
 
-	/* Initialize the module name -> object hashmap */
-	modules = hashmap_create(MODULE_HASHMAP_SIZE);
+    /* Initialize the module name -> object hashmap */
+    modules = hashmap_create(MODULE_HASHMAP_SIZE);
 }
 
 /* Accessors. */
-hashmap_t * modules_get_list(void) {
-	return modules;
+hashmap_t * modules_get_list(void)
+{
+    return modules;
 }
 
-hashmap_t * modules_get_symbols(void) {
-	return symboltable;
+hashmap_t * modules_get_symbols(void)
+{
+    return symboltable;
 }

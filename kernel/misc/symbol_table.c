@@ -2,6 +2,11 @@
 #include <kernel/symbol_table.h>
 #include <kernel/elf.h>
 #include <kernel/logging.h>
+#include <kernel/module.h>
+
+extern int SymTabSize;
+extern char kernel_symbols_start[];
+extern char kernel_symbols_end[];
 
 typedef struct
 {
@@ -38,8 +43,9 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
         SymTabDesc.num_symbols = symtab->sh_size / symtab->sh_entsize;
         SymTabDesc.symbols = (Elf32_Sym *) symtab->sh_addr;
         SymTabDesc.strtab_addr = (char*) strtab->sh_addr;
-    
-    /*
+
+        kernel_symbol_t *k = (kernel_symbol_t*)&kernel_symbols_start[SymTabSize];
+
         for(int i = 0; i < SymTabDesc.num_symbols; i++)
         {
             Elf32_Sym * symbol = SymTabDesc.symbols + i;
@@ -47,10 +53,14 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
             if (ELF32_ST_TYPE(symbol->st_info) == STT_FUNC)
             {
                 char * name = (char*)(SymTabDesc.strtab_addr + symbol->st_name);
-                debug_print(INFO,"0x%x %s", symbol->st_value, name);
+                k->addr = symbol->st_value;
+                strcpy(k->name, name);
+                k = (kernel_symbol_t *)((uintptr_t)k + sizeof *k + strlen(k->name) + 1);
+     //           debug_print(INFO,"0x%x %s", symbol->st_value, name);
             }
         }
-        */
+        SymTabSize = (uint32_t)k - (uint32_t)&kernel_symbols_start - 1;
+
         return true;
     }
 }
