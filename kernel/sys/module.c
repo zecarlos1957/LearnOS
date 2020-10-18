@@ -427,8 +427,7 @@ void * module_load_direct(void * blob, size_t length) {
     foreach(_key, hash_keys)
     {
         char * key = (char *)_key->value;
-        debug_print(INFO, "%s",key);
-        if (startswith(key, "_module_info_"))
+        if (startswith(key, "module_info_"))
         {
             mod_info = hashmap_get(local_symbols, key);
         }
@@ -442,9 +441,7 @@ void * module_load_direct(void * blob, size_t length) {
     }
 
     mod_info->initialize();
-
-    debug_print(NOTICE, "Finished loading module %s", mod_info->name);
-
+   
     /* We don't do this anymore
      * TODO: Do this in the module unload function
     hashmap_free(local_symbols);

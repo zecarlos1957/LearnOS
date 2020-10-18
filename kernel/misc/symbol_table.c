@@ -49,18 +49,29 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
         for(int i = 0; i < SymTabDesc.num_symbols; i++)
         {
             Elf32_Sym * symbol = SymTabDesc.symbols + i;
-            
+            char * name = (char*)(SymTabDesc.strtab_addr + symbol->st_name);
+
             if (ELF32_ST_TYPE(symbol->st_info) == STT_FUNC)
+               
             {
-                char * name = (char*)(SymTabDesc.strtab_addr + symbol->st_name);
                 k->addr = symbol->st_value;
-                strcpy(k->name, name);
+                if(*name == '_') name++;
+                strcpy(k->name, name);       /// (+1) com modulos originais para retirar sublinhado
                 k = (kernel_symbol_t *)((uintptr_t)k + sizeof *k + strlen(k->name) + 1);
      //           debug_print(INFO,"0x%x %s", symbol->st_value, name);
             }
+            else if (ELF32_ST_TYPE(symbol->st_info) == STT_NOTYPE &&
+                     ELF32_ST_VISIBILITY(symbol->st_other) == STB_LOCAL)
+            {
+                    k->addr = symbol->st_value;
+                    if(*name == '_') name++;
+                    strcpy(k->name, name);       /// (+1) com modulos originais para retirar sublinhado
+                    k = (kernel_symbol_t *)((uintptr_t)k + sizeof *k + strlen(k->name) + 1);
+        //            debug_print(INFO,"%s",name);
+            }
         }
         SymTabSize = (uint32_t)k - (uint32_t)&kernel_symbols_start - 1;
-
+ 
         return true;
     }
 }
