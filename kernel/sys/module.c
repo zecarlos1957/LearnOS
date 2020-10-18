@@ -428,7 +428,7 @@ void * module_load_direct(void * blob, size_t length) {
     {
         char * key = (char *)_key->value;
         debug_print(INFO, "%s",key);
-        if (startswith(key, "module_info_"))
+        if (startswith(key, "_module_info_"))
         {
             mod_info = hashmap_get(local_symbols, key);
         }
