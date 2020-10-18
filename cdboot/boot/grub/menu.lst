@@ -1,12 +1,16 @@
 default 0
 timeout 30
 
-title Boot from hard disk
+title ToaruOS 
 chainloader (hd0)+1
 
 # Edit it to the filename of your kernel.
 title LearnOS
-kernel /sys/krnl32.elf  
+kernel /sys/krnl32.elf   
 
 module /sys/zero.ko
+module /sys/vgadbg.ko
+module /sys/ps2kbd.ko
+module /sys/ata.ko
  
+#module /sys/ramdisk.img
