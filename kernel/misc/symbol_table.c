@@ -61,7 +61,7 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
      //           debug_print(INFO,"0x%x %s", symbol->st_value, name);
             }
             else if (ELF32_ST_TYPE(symbol->st_info) == STT_NOTYPE &&
-                     ELF32_ST_VISIBILITY(symbol->st_other) == STB_LOCAL)
+                     ELF32_ST_BIND(symbol->st_info) == STB_GLOBAL)
             {
                     k->addr = symbol->st_value;
                     if(*name == '_') name++;
