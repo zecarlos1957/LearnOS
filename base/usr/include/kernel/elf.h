@@ -43,6 +43,8 @@ typedef uint16_t Elf32_Half;
 /*
  * ELF Header
  */
+ 
+#pragma pack(push, 2)
 typedef struct {
 	unsigned char e_ident[EI_NIDENT];
 	Elf32_Half    e_type;
@@ -59,6 +61,7 @@ typedef struct {
 	Elf32_Half    e_shnum;
 	Elf32_Half    e_shstrndx;
 } Elf32_Header;
+#pragma pack(pop)
 
 /*
  * e_type
@@ -124,6 +127,7 @@ typedef struct {
 	uintptr_t ptr;
 } Elf32_auxv;
 
+#pragma pack(push, 1)
 typedef struct {
 	Elf32_Word st_name;
 	Elf32_Addr st_value;
@@ -132,6 +136,7 @@ typedef struct {
 	unsigned char st_other;
 	Elf32_Half st_shndx;
 } Elf32_Sym;
+#pragma pack(pop)
 
 typedef struct {
 	Elf32_Addr r_offset;
