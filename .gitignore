@@ -4,8 +4,8 @@
 
 *.iso
 
-bin
-doc
+bin/
+doc/
 cdboot/sys/
  
  

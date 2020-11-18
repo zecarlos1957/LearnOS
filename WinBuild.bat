@@ -86,7 +86,7 @@ rem            Build MODULES
     
     
 cd ../modules
-    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/zero.o zero.c
+    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/zero.o zero.c 
  rem   gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/ac97.o ac97.c
     gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/snd.o snd.c
     gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/random.o random.c
@@ -111,8 +111,8 @@ rem    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules
     gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/tarfs.o tarfs.c
     gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/xtest.o xtest.c
 
- rem    objcopy -O elf32-i386 ../bin/modules/zero.exe ../cdboot/sys/zero.ko
- rem    objcopy -O elf32-i386 ../bin/modules/vgalog.o ../cdboot/sys/vgalog.ko
+    objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/sys/zero.ko
+    objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
  rem    objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/sys/ps2kbd.ko
  rem    objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../cdboot/sys/ps2mouse.ko
  rem   objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
