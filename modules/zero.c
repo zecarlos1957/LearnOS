@@ -92,5 +92,9 @@ static int zero_finalize(void) {
 	return 0;
 }
 
+bool  DllMainCRTStartup(uint32_t hDllHandle, uint32_t nReason, void* Reserved )
+ {
+  return 0;
+}
 
 MODULE_DEF(zero, zero_initialize, zero_finalize);

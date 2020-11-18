@@ -24,6 +24,8 @@
 
 #include <sys/termios.h>
 
+extern uint32_t SymTabSize;
+
 /*
  * just call read_fs honestly, I don't care anymore
  */
@@ -336,7 +338,7 @@ static int shell_symbols(fs_node_t * tty, int argc, char * argv[]) {
 			char name[];
 		} * k = (void*)&kernel_symbols_start;
 
-		while ((uintptr_t)k < (uintptr_t)&kernel_symbols_end) {
+		while ((uintptr_t)k < (uintptr_t)&kernel_symbols_end[SymTabSize]) {
 			fprintf(tty, "0x%x - %s\n", k->addr, k->name);
 			k = (void *)((uintptr_t)k + sizeof(uintptr_t) + strlen(k->name) + 1);
 		}
