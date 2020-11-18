@@ -61,15 +61,15 @@ char * probable_function_name(uintptr_t ip, uintptr_t * out_addr) {
 
 void assert_failed(const char *file, uint32_t line, const char *desc) {
 	IRQ_OFF;
-	debug_print(INSANE, "Kernel Assertion Failed: %s", desc);
-	debug_print(INSANE, "File: %s", file);
+	debug_print(INSANE, "Kernel Assertion Failed: %s [%s:%d]", desc, file, line);
+/*	debug_print(INSANE, "File: %s", file);
 	debug_print(INSANE, "Line: %d", line);
 	debug_print(INSANE, "System Halted!");
-
-#if 1
+*/
+#if 0
 	unsigned int * ebp = (unsigned int *)(&file - 2);
 
-	debug_print(INSANE, "Stack trace:");
+//	debug_print(INSANE, "Stack trace:");
 
 	for (unsigned int frame = 0; frame < 20; ++frame) {
 		unsigned int eip = ebp[1];
@@ -87,10 +87,10 @@ void assert_failed(const char *file, uint32_t line, const char *desc) {
 
 	if (debug_video_crash) {
 		char msg[4][256];
-		sprintf(msg[0], "Kernel Assertion Failed: %s", desc);
-		sprintf(msg[1], "File: %s", file);
-		sprintf(msg[2], "Line: %d", line);
-		sprintf(msg[3], "System Halted!");
+		sprintf(msg[0], "Kernel Assertion Failed: %s [%s:%d]", desc, file, line);
+//		sprintf(msg[1], "File: %s", file);
+//		sprintf(msg[2], "Line: %d", line);
+//		sprintf(msg[3], "System Halted!");
 		char * msgs[] = {msg[0], msg[1], msg[2], msg[3], NULL};
 		debug_video_crash(msgs);
 	}
