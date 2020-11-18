@@ -4,7 +4,7 @@
 #include <kernel/logging.h>
 #include <kernel/module.h>
 
-extern int SymTabSize;
+extern uint32_t SymTabSize;
 extern char kernel_symbols_start[];
 extern char kernel_symbols_end[];
 
@@ -44,7 +44,7 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
         SymTabDesc.symbols = (Elf32_Sym *) symtab->sh_addr;
         SymTabDesc.strtab_addr = (char*) strtab->sh_addr;
 
-        kernel_symbol_t *k = (kernel_symbol_t*)&kernel_symbols_start[SymTabSize];
+        kernel_symbol_t *k = (kernel_symbol_t*)&kernel_symbols_start;
 
         for(int i = 0; i < SymTabDesc.num_symbols; i++)
         {
@@ -55,22 +55,22 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
                
             {
                 k->addr = symbol->st_value;
-                if(*name == '_') name++;
-                strcpy(k->name, name);       /// (+1) com modulos originais para retirar sublinhado
-                k = (kernel_symbol_t *)((uintptr_t)k + sizeof *k + strlen(k->name) + 1);
+   ///             if(*name == '_') name++;
+                strcpy(k->name, name);
      //           debug_print(INFO,"0x%x %s", symbol->st_value, name);
+                k = (kernel_symbol_t *)((uintptr_t)k + sizeof(uintptr_t) + strlen(k->name) + 1);
             }
             else if (ELF32_ST_TYPE(symbol->st_info) == STT_NOTYPE &&
                      ELF32_ST_BIND(symbol->st_info) == STB_GLOBAL)
             {
                     k->addr = symbol->st_value;
-                    if(*name == '_') name++;
-                    strcpy(k->name, name);       /// (+1) com modulos originais para retirar sublinhado
-                    k = (kernel_symbol_t *)((uintptr_t)k + sizeof *k + strlen(k->name) + 1);
+   ///                 if(*name == '_') name++;
+                    strcpy(k->name, name);
         //            debug_print(INFO,"%s",name);
+                    k = (kernel_symbol_t *)((uintptr_t)k + sizeof(uintptr_t) + strlen(k->name) + 1);
             }
         }
-        SymTabSize = (uint32_t)k - (uint32_t)&kernel_symbols_start - 1;
+        SymTabSize = (uint32_t)k - (uint32_t)&kernel_symbols_start;
  
         return true;
     }

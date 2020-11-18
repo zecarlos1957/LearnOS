@@ -22,97 +22,7 @@ static hashmap_t * modules = NULL;
 extern char kernel_symbols_start[];
 extern char kernel_symbols_end[];
 
-
-/**
-* TODO: The addresses in the addr array should be read directly from the module krnl32.elf symbol table.
-*/
-
-uintptr_t addr[]=
-{
-0x001001b0,
-0x001001b7,
-0x001001be,
-0x001001c5,
-0x001001cc,
-0x001001d3,
-0x001001da,
-0x001001e1,
-0x001001e8,
-0x001001ef,
-0x001001f6,
-0x001001fd,
-0x00100204,
-0x0010020b,
-0x00100212,
-0x00100219,
-0x00100248,
-0x00100248,
-0x00100252,
-0x0010025c,
-0x00100266,
-0x00100270,
-0x0010027a,
-0x00100284,
-0x0010028e,
-0x00100298,
-0x001002a0,
-0x001002aa,
-0x001002b2,
-0x001002ba,
-0x001002c2,
-0x001002ca,
-0x001002cf,
-0x001002d6,
-0x001002dd,
-0x001002e4,
-0x001002eb,
-0x001002f2,
-0x001002f9,
-0x00100300,
-0x00100307,
-0x0010030e,
-0x00100315,
-0x0010031c,
-0x00100323,
-0x0010032a,
-0x00100331,
-0x00100338,
-0x0010033f,
-0x00100346
-};
-
 uint32_t SymTabSize = 0;
-
-void init_symbol_tab()
-{
-    SymTabSize = 0;
-    
-    kernel_symbol_t *sym = (kernel_symbol_t*)&kernel_symbols_start;
-    char buf[32];
-
-    for(int i = 0; i < 16; i++)
-    {
-        sprintf(buf, "irq%d", i);
-        sym->addr =addr[i];
-        strcpy(sym->name, buf);
-        sym = (kernel_symbol_t*)((uintptr_t)sym + sizeof(*sym) + strlen(sym->name) + 1);
-    }
-
-    for(int i = 0; i < 32; i++)
-    {
-        sprintf(buf, "isr%d", i);
-        sym->addr =addr[16 + i];
-        strcpy(sym->name, buf);
-        sym = (kernel_symbol_t*)((uintptr_t)sym + sizeof(*sym) + strlen(sym->name) + 1);
-    }
-
-    sprintf(buf, "isr%d", 127);
-    sym->addr =addr[16 + 32];
-    strcpy(sym->name, buf);
-    sym = (kernel_symbol_t*)((uintptr_t)sym + sizeof(*sym) + strlen(sym->name) + 1);
-
-    SymTabSize = (uint32_t)sym - (uint32_t)&kernel_symbols_start;
-}
 
 void (* symbol_find(const char * name))(void) {
 	kernel_symbol_t * k = (kernel_symbol_t *)&kernel_symbols_start;
@@ -152,7 +62,6 @@ _maybe_pack:
 	if (head[0] == 'P' && head[1] == 'A' && head[2] == 'C' && head[3] == 'K') {
 		return 2;
 	}
-
 	return 0;
 }
 
@@ -261,7 +170,7 @@ void * module_load_direct(void * blob, size_t length) {
 	}
 
 	int undefined = 0;
-
+ ///char name2[128];
 	hashmap_t * local_symbols = hashmap_create(10);
 	{
 		Elf32_Sym * table = (Elf32_Sym *)((uintptr_t)target + sym_shdr->sh_offset);
@@ -311,7 +220,7 @@ void * module_load_direct(void * blob, size_t length) {
 							hashmap_set(symboltable, name, (void *)final);
 							hashmap_set(local_symbols, name, (void *)final);
 						} else {
-							debug_print(ERROR, "Not resolving %s", name);
+							debug_print(ERROR, "Unresolved symbol %s", name);
 						}
 					}
 				} else if (ELF32_ST_BIND(table->st_info) == STB_LOCAL) {
@@ -427,7 +336,7 @@ void * module_load_direct(void * blob, size_t length) {
     foreach(_key, hash_keys)
     {
         char * key = (char *)_key->value;
-        if (startswith(key, "module_info_"))
+        if (startswith(key, "_module_info_"))
         {
             mod_info = hashmap_get(local_symbols, key);
         }
@@ -528,12 +437,12 @@ void modules_install(void)
     while ((uintptr_t)k < (uintptr_t)&kernel_symbols_end[SymTabSize])
     {
         hashmap_set(symboltable, k->name, (void *)k->addr);
-        k = (kernel_symbol_t *)((uintptr_t)k + sizeof(kernel_symbol_t) + strlen(k->name) + 1);
+        k = (kernel_symbol_t *)((uintptr_t)k + sizeof(uintptr_t) + strlen(k->name) + 1);
     }
 
     /* Also add the kernel_symbol_start and kernel_symbol_end (these were excluded from the generator) */
     hashmap_set(symboltable, "kernel_symbols_start", &kernel_symbols_start);
-    hashmap_set(symboltable, "kernel_symbols_end",   &kernel_symbols_end);
+    hashmap_set(symboltable, "kernel_symbols_end",   &kernel_symbols_end[SymTabSize]);
 
     /* Initialize the module name -> object hashmap */
     modules = hashmap_create(MODULE_HASHMAP_SIZE);
