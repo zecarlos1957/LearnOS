@@ -142,7 +142,7 @@ static void irq_setup_gates(void) {
 void irq_install(void) {
 	char buffer[16];
 	for (int i = 0; i < IRQ_CHAIN_SIZE; i++) {
-		sprintf(buffer, "irq%d", i);
+		sprintf(buffer, "_irq%d", i);
 		irqs[i] = symbol_find(buffer);
 	}
 	irq_remap();

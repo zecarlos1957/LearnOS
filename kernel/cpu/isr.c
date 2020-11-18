@@ -35,12 +35,12 @@ void isrs_uninstall_handler(size_t isrs) {
 void isrs_install(void) {
 	char buffer[16];
 	for (int i = 0; i < ISR_COUNT; i++) {
-		sprintf(buffer, "isr%d", i);
+		sprintf(buffer, "_isr%d", i);
 		isrs[i].index = i;
 		isrs[i].stub = symbol_find(buffer);
 	}
 	isrs[ISR_COUNT].index = SYSCALL_VECTOR;
-	isrs[ISR_COUNT].stub = symbol_find("isr127");
+	isrs[ISR_COUNT].stub = symbol_find("_isr127");
 
 	for (int i = 0; i < ISR_COUNT + 1; i++) {
 		idt_set_gate(isrs[i].index, isrs[i].stub, 0x08, 0x8E);
