@@ -12,12 +12,13 @@
 
 void halt_and_catch_fire(char * error_message, const char * file, int line, struct regs * regs) {
 	IRQ_OFF;
-	debug_print(ERROR, "HACF: %s", error_message);
-	debug_print(ERROR, "Proc: %d", getpid());
-	debug_print(ERROR, "File: %s", file);
-	debug_print(ERROR, "Line: %d", line);
+//	debug_print(ERROR, "HACF: %s", error_message);
+//	debug_print(ERROR, "Proc: %d", getpid());
+//	debug_print(ERROR, "File: %s", file);
+//	debug_print(ERROR, "Line: %d", line);
 	if (regs) {
-		debug_print(ERROR, "Registers at interrupt:");
+	debug_print(ERROR, "eip=0x%x [%s:%d]", regs->eip, file, line);
+/*		debug_print(ERROR, "Registers at interrupt:");
 		debug_print(ERROR, "eax=0x%x ebx=0x%x", regs->eax, regs->ebx);
 		debug_print(ERROR, "ecx=0x%x edx=0x%x", regs->ecx, regs->edx);
 		debug_print(ERROR, "esp=0x%x ebp=0x%x", regs->esp, regs->ebp);
@@ -25,7 +26,7 @@ void halt_and_catch_fire(char * error_message, const char * file, int line, stru
 		debug_print(ERROR, "EFLAGS:     0x%x",  regs->eflags);
 		debug_print(ERROR, "User ESP:   0x%x",  regs->useresp);
 		debug_print(ERROR, "eip=0x%x",          regs->eip);
-	}
+*/}
 	send_signal(current_process->id, SIGILL, 1);
 }
 
