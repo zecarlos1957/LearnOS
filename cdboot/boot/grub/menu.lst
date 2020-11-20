@@ -9,7 +9,7 @@ title My kernel
 kernel /sys/krnl32.elf   root=/dev/ram0 
 
 module /sys/zero.ko
-#module /sys/vgadbg.ko
+module /sys/vgadbg.ko
+module /sys/ext2.ko
 #module /sys/ps2kbd.ko
 # module /sys/serial.ko
-# module /sys/debug_sh.ko
