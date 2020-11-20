@@ -1,0 +1,19 @@
+STT_FILE
+zero.c
+
+STT_OBJECT
+_module_info_zero STB_GLOBAL
+
+STT_FUNC
+_open_null
+_read_null
+_write_null
+_close_null
+_open_zero
+_read_zero
+_write_zero
+_close_zero
+_zero_initialize
+_zero_finalize
+_null_device_create
+_zero_device_create
