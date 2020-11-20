@@ -16,6 +16,8 @@
 #define SYMBOLTABLE_HASHMAP_SIZE 10
 #define MODULE_HASHMAP_SIZE 10
 
+#define ORIGINAL_KO
+
 static hashmap_t * symboltable = NULL;
 static hashmap_t * modules = NULL;
 
@@ -170,7 +172,7 @@ void * module_load_direct(void * blob, size_t length) {
 	}
 
 	int undefined = 0;
- ///char name2[128];
+char name2[128];
 	hashmap_t * local_symbols = hashmap_create(10);
 	{
 		Elf32_Sym * table = (Elf32_Sym *)((uintptr_t)target + sym_shdr->sh_offset);
@@ -178,6 +180,13 @@ void * module_load_direct(void * blob, size_t length) {
 			if (table->st_name) {
 				if (ELF32_ST_BIND(table->st_info) == STB_GLOBAL) {
 					char * name = (char *)((uintptr_t)symstrtab + table->st_name);
+#ifdef ORIGINAL_KO
+                    if(name[0] !='_')
+                    {
+                        name2[0] = '_'; strcpy(name2+1, name);
+                        name =name2;
+                    }
+#endif
 					if (table->st_shndx == 0) {
 						if (!hashmap_get(symboltable, name)) {
 							debug_print(ERROR, "Unresolved symbol in module: %s", name);
@@ -225,6 +234,13 @@ void * module_load_direct(void * blob, size_t length) {
 					}
 				} else if (ELF32_ST_BIND(table->st_info) == STB_LOCAL) {
 					char * name = (char *)((uintptr_t)symstrtab + table->st_name);
+#ifdef ORIGINAL_KO
+                    if(name[0] !='_')
+                    {
+                        name2[0] = '_'; strcpy(name2+1, name);
+                        name =name2;
+                    }
+#endif
 					Elf32_Shdr * s = NULL;
 					{
 						int i = 0;
@@ -291,9 +307,17 @@ void * module_load_direct(void * blob, size_t length) {
                     else
                     {
                         char * name = (char *)((uintptr_t)symstrtab + sym->st_name);
+#ifdef ORIGINAL_KO
+                    if(name[0] !='_')
+                    {
+                        name2[0] = '_'; strcpy(name2+1, name);
+                        name =name2;
+                    }
+#endif
                         ptr = (uintptr_t *)(table->r_offset + rs->sh_addr);
                         addend = *ptr;
                         place  = (uintptr_t)ptr;
+
                         if (!hashmap_get(symboltable, name))
                         {
                             if (!hashmap_get(local_symbols, name))
@@ -323,7 +347,7 @@ void * module_load_direct(void * blob, size_t length) {
                             debug_print(ERROR, "Unsupported relocation type: %d", ELF32_R_TYPE(table->r_info));
                             goto mod_load_error;
                     }
-
+            
                     table++;
                 }
             }
