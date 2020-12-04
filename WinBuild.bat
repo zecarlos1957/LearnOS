@@ -11,7 +11,7 @@ echo.
 
 rem ********************************************************************
 
-rem              Build KERNEL
+echo              Build KERNEL
 
 
 cd ./kernel/cpu 
@@ -85,8 +85,11 @@ cd ../util
 
 
 rem ********************************************************************
-    
-rem            Build MODULES
+rem            Build LIBC
+cd ../libc
+rem   call BuildLibC
+
+echo            Build MODULES
     
     
 cd ../../modules
@@ -129,7 +132,7 @@ rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bi
 
 rem ********************************************************************
   
-rem                   Build APPLICATIONS
+echo                   Build APPLICATIONS
 
 
 rem ***********************************************************************

@@ -8,7 +8,7 @@
 
 #include <stdint.h>
 
-typedef int wchar_t;
+typedef unsigned short wchar_t;
 typedef unsigned long size_t;
 #define CHAR_BIT 8
 

@@ -48,7 +48,7 @@ extern void abort(void);
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
 
-#define NULL 0
+///#define NULL 0
 
 extern void *bsearch(const void *key, const void *base, size_t nmemb, size_t size,
 	int (*compar)(const void *, const void *));
@@ -65,8 +65,7 @@ typedef struct { long int quot; long int rem; } ldiv_t;
 extern div_t div(int numerator, int denominator);
 extern ldiv_t ldiv(long numerator, long denominator);
 
-/* These are supposed to be in limits, but gcc screwed us */
-#define PATH_MAX 4096
+
 #define NAME_MAX 255
 extern char *realpath(const char *path, char *resolved_path);
 
