@@ -61,7 +61,7 @@ static uint32_t _early_log_write(fs_node_t *node, uint64_t offset, uint32_t size
 /*	for (unsigned int i = 0; i < size; ++i) {
 		outportb(EARLY_LOG_DEVICE, buffer[i]);
 	}*/
-	monitor_write(buffer);
+	monitor_write((char*)buffer);
 	return size;
 }
 fs_node_t _early_log = { .write = &_early_log_write };
@@ -146,7 +146,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	}
 
 	if (mboot_ptr->flags & MULTIBOOT_FLAG_MMAP) {
-		debug_print(NOTICE, "Parsing memory map.");
+//		debug_print(NOTICE, "Parsing memory map.");
 		mboot_memmap_t * mmap = (void *)mboot_ptr->mmap_addr;
 		while ((uintptr_t)mmap < mboot_ptr->mmap_addr + mboot_ptr->mmap_length) {
 			if (mmap->type == 2) {
@@ -185,7 +185,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	vfs_install();
 	tasking_install();  // Multi-tasking  
 	timer_install();    // PIC driver  
-//	fpu_install();      // FPU/SSE magic  
+	fpu_install();      // FPU/SSE magic  
 
 	syscalls_install(); // Install the system calls  
 	shm_install();      // Install shared memory  
@@ -233,7 +233,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 			}
 		}
 	}
-
+/*
 	// Map /dev to a device mapper 
 	map_vfs_directory("/dev");
 
@@ -279,7 +279,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 
 	debug_print(CRITICAL, "init failed");
 	switch_task(0);
- 
+ */
 while(1);
 	return 0;
 }

@@ -233,8 +233,8 @@ uint32_t fork(void) {
 }
 
 int create_kernel_tasklet(tasklet_t tasklet, char * name, void * argp) {
-	IRQ_OFF;
-
+//	IRQ_OFF;
+/*
 	uintptr_t esp, ebp;
 
 	if (current_process->syscall_registers) {
@@ -242,13 +242,13 @@ int create_kernel_tasklet(tasklet_t tasklet, char * name, void * argp) {
 	}
 
 	page_directory_t * directory = kernel_directory;
-	/* Spawn a new process from this one */
+	// Spawn a new process from this one 
 	process_t * new_proc = spawn_process(current_process, 0);
 	assert(new_proc && "Could not allocate a new process!");
-	/* Set the new process' page directory to the original process' */
+	// Set the new process' page directory to the original process'  
 	set_process_environment(new_proc, directory);
 	directory->ref_count++;
-	/* Read the instruction pointer */
+	// Read the instruction pointer  
 
 
 	if (current_process->syscall_registers) {
@@ -275,13 +275,16 @@ int create_kernel_tasklet(tasklet_t tasklet, char * name, void * argp) {
 
 	new_proc->thread.eip = (uintptr_t)tasklet;
 
-	/* Add the new process to the ready queue */
+	// Add the new process to the ready queue
 	make_process_ready(new_proc);
+*/
+//	IRQ_RES;
+//debug_print(INFO, "TASKLET %s",name);
+monitor_write("MESSAGE FROM create_kernel_tasklet\n");
 
-	IRQ_RES;
+	// Return the child PID  
+	return 0;//new_proc->id;
 
-	/* Return the child PID */
-	return new_proc->id;
 }
 
 

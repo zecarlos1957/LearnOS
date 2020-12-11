@@ -112,7 +112,7 @@ rem    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules
     gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/xtest.o xtest.c
 
  rem   objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/sys/zero.ko
- rem   objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
+    objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
  rem    objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/sys/ps2kbd.ko
  rem    objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../cdboot/sys/ps2mouse.ko
  rem   objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
@@ -121,7 +121,6 @@ rem    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules
  rem    objcopy -O elf32-i386 ../bin/modules/snd.o ../cdboot/sys/snd.ko
   rem  objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/sys/debug_sh.ko
 
- rem D:/users/Jose/Searches/Projects/Elf_Explorer/bin/debug/PlayingBinaries ../zerocfg.txt ../cdboot/sys/zero.ko
 
 rem ********************************************************************
   

@@ -60,7 +60,7 @@ bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
             }
         }
         SymTabSize = (uint32_t)k - (uint32_t)&kernel_symbols_start;
- 
+ debug_print(INFO, "KrnlSymEnd %x",(uint32_t)&kernel_symbols_end[SymTabSize]);
         return true;
     }
 }

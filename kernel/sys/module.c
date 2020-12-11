@@ -16,8 +16,6 @@
 #define SYMBOLTABLE_HASHMAP_SIZE 10
 #define MODULE_HASHMAP_SIZE 10
 
-#define ORIGINAL_KO
-
 static hashmap_t * symboltable = NULL;
 static hashmap_t * modules = NULL;
 
@@ -180,13 +178,6 @@ char name2[128];
 			if (table->st_name) {
 				if (ELF32_ST_BIND(table->st_info) == STB_GLOBAL) {
 					char * name = (char *)((uintptr_t)symstrtab + table->st_name);
-#ifdef ORIGINAL_KO
-                    if(name[0] !='_')
-                    {
-                        name2[0] = '_'; strcpy(name2+1, name);
-                        name =name2;
-                    }
-#endif
 					if (table->st_shndx == 0) {
 						if (!hashmap_get(symboltable, name)) {
 							debug_print(ERROR, "Unresolved symbol in module: %s", name);
@@ -234,13 +225,6 @@ char name2[128];
 					}
 				} else if (ELF32_ST_BIND(table->st_info) == STB_LOCAL) {
 					char * name = (char *)((uintptr_t)symstrtab + table->st_name);
-#ifdef ORIGINAL_KO
-                    if(name[0] !='_')
-                    {
-                        name2[0] = '_'; strcpy(name2+1, name);
-                        name =name2;
-                    }
-#endif
 					Elf32_Shdr * s = NULL;
 					{
 						int i = 0;
@@ -276,7 +260,7 @@ char name2[128];
 		debug_print(ERROR, "dependencies properly with MODULE_DEPENDS.");
 		goto mod_load_error;
 	}
-
+char *nm;
     {
         for (unsigned int x = 0; x < (unsigned int)target->e_shentsize * target->e_shnum; x += target->e_shentsize)
         {
@@ -307,17 +291,10 @@ char name2[128];
                     else
                     {
                         char * name = (char *)((uintptr_t)symstrtab + sym->st_name);
-#ifdef ORIGINAL_KO
-                    if(name[0] !='_')
-                    {
-                        name2[0] = '_'; strcpy(name2+1, name);
-                        name =name2;
-                    }
-#endif
                         ptr = (uintptr_t *)(table->r_offset + rs->sh_addr);
                         addend = *ptr;
                         place  = (uintptr_t)ptr;
-
+nm=name;
                         if (!hashmap_get(symboltable, name))
                         {
                             if (!hashmap_get(local_symbols, name))
@@ -347,7 +324,8 @@ char name2[128];
                             debug_print(ERROR, "Unsupported relocation type: %d", ELF32_R_TYPE(table->r_info));
                             goto mod_load_error;
                     }
-            
+ if(strcmp(nm,"_create_kernel_tasklet")==0)
+          debug_print(INFO, "%s %x", nm, *ptr);
                     table++;
                 }
             }
@@ -461,6 +439,8 @@ void modules_install(void)
     while ((uintptr_t)k < (uintptr_t)&kernel_symbols_end[SymTabSize])
     {
         hashmap_set(symboltable, k->name, (void *)k->addr);
+ //if(strcmp(k->name,"_create_kernel_tasklet")==0)
+ //         debug_print(INFO, "Addr %s %x", k->name, k->addr);
         k = (kernel_symbol_t *)((uintptr_t)k + sizeof(uintptr_t) + strlen(k->name) + 1);
     }
 

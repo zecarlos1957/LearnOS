@@ -324,7 +324,7 @@ void paging_finalize(void) {
 	for (uintptr_t i = 0x100000; i < placement_pointer + 0x3000; i += 0x1000) {
 		dma_frame(get_page(i, 1, kernel_directory), 1, 0, i);
 	}
-	debug_print(INFO, "Mapping VGA text-mode directly.");
+//	debug_print(INFO, "Mapping VGA text-mode directly.");
 	for (uintptr_t j = 0xb8000; j < 0xc0000; j += 0x1000) {
 		dma_frame(get_page(j, 0, kernel_directory), 0, 1, j);
 	}
@@ -451,7 +451,7 @@ get_page(
 		return 0;
 	}
 }
-
+int static v=0;
 void
 page_fault(
 		struct regs *r)  {
@@ -475,7 +475,8 @@ page_fault(
 
 	debug_print(ERROR, "\033[1;37;41mSegmentation fault. (p:%d,rw:%d,user:%d,res:%d,id:%d) at 0x%x eip: 0x%x pid=%d,%d [%s]\033[0m",
 			present, rw, user, reserved, id, faulting_address, r->eip, current_process->id, current_process->group, current_process->name);
-
+if(v++ == 0)
+	while(1);
 	if (r->eip < heap_end) {
 		/* find closest symbol */
 		char * closest  = NULL;
@@ -502,7 +503,7 @@ page_fault(
 			}
 			free(hash_keys);
 
-			debug_print(ERROR, "\033[1;31mClosest symbol to faulting address:\033[0m %s [0x%x]", closest, addr);
+	///		debug_print(ERROR, "\033[1;31mClosest symbol to faulting address:\033[0m %s [0x%x]", closest, addr);
 
 			hash_keys = hashmap_keys(modules_get_list());
 			foreach(_key, hash_keys) {

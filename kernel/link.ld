@@ -21,7 +21,7 @@ SECTIONS
 		*(.rdata)
 	}
 
-	.data BLOCK(4096) : ALIGN(4096)
+	.data BLOCK(8192) : ALIGN(4096)
 	{
 		data = .; _data = .;
 		*(.data)

@@ -16,8 +16,8 @@ static char vga_to_ansi[] = {
 	8,12,10,14, 9,13,11,15
 };
 
-static int fg = 0x07;
-static int bg = 0x10;
+static int fg = 0x00;
+static int bg = 0x06;
 static int cur_x = 0;
 static int cur_y = 0;
 
@@ -186,17 +186,26 @@ static void tasklet(void * data, char * name) {
 
 }
 
-static int vgadbg_init(void) {
+typedef int (*func)(tasklet_t tasklet, char * name, void * argp);
+typedef int(*sprt)(char*, const char*, ...);
 
-	memset(textmemptr, 0x00, sizeof(unsigned short) * 80 * 25);
+static int vgadbg_init(void)
+{
+	char buf[128];
+     sprt sprint = (sprt)0x10cd92;
+//	memset(textmemptr, 0x00, sizeof(unsigned short) * 80 * 25);
 
 	write_string("VGA Text-Mode Debugger\n");
 	write_string(" If you're seeing this, module loading completed successfully.\n");
 	write_string(" We'll now do some checks to see what may be wrong with the system.\n");
-	write_string("\n");
-
-	create_kernel_tasklet(tasklet, "[[vgadbg]]", NULL);
-
+ 
+    sprint(buf,"Addr %x\n",(uint32_t)&create_kernel_tasklet);
+    write_string(buf);
+ 
+    func f1 = create_kernel_tasklet;//(tasklet, "[[vgadbg]]", NULL);
+    f1(tasklet, "[[vgadbg]]", NULL);
+   
+ ///   create_kernel_tasklet(tasklet, "[[vgadbg]]", NULL); -> SEGMENTATION FAULT
 	return 0;
 }
 
