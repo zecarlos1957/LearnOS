@@ -9,33 +9,38 @@ SECTIONS
 	. = 0x100000;
 	phys = .;
 
-	.text  BLOCK(4096) : ALIGN(4096)
+	.text phys : AT(phys)
 	{
 		code = .; _code = .;
 		*(.mulboot)
 		*(.text)
+		. = ALIGN(4096);
 	}
 
-	.rdata BLOCK(4096) : ALIGN(4096)
-	{
-		*(.rdata)
-	}
-
-	.data BLOCK(8192) : ALIGN(4096)
+	.data : AT(phys + (data - code))
 	{
 		data = .; _data = .;
 		*(.data)
-		*(.symbols)
 		PROVIDE(_kernel_symbols_start = .);
+		*(.symbols)
 		PROVIDE(_kernel_symbols_end = .);
+		. = ALIGN(4096);
 	}
 
-	.bss BLOCK(4096) : ALIGN(4096)
+	.rdata  : AT(phys + (rdata - code))
+	{
+		rdata = .;
+		*(.rdata)
+		. = ALIGN(4096);
+	}
+
+	.bss  : AT(phys + (bss - code))
 	{
 		bss = .; _bss = .;
 		*(COMMON)
 		*(.bss)
 		*(.stack)
+		. = ALIGN(4096);
 	}
 
 	end = .; _end = .;

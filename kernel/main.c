@@ -97,12 +97,8 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	gdt_install();      /* Global descriptor table */
 	idt_install();      /* IDT */
 
-    if (load_symbol_table(get_elf_section((Elf_hdr*)&mboot->u, ".symtab"), 
-                          get_elf_section((Elf_hdr*)&mboot->u, ".strtab")))
-    {
-        debug_print(INFO, "symbol table done");
-    }
-    else
+    if (!build_symbol_table(get_elf_section((Elf_hdr*)&mboot->u, ".symtab"), 
+                            get_elf_section((Elf_hdr*)&mboot->u, ".strtab")))
     {
         debug_print(ERROR, "Could not initialize symbol table.");
         while(1);

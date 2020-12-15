@@ -76,7 +76,9 @@ struct multiboot
 	uint8_t   framebuffer_type;
 	/* Palette stuff goes here but we don't use it */
 } __attribute__ ((packed));
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct {
 	uint16_t attributes;
 	uint8_t  winA, winB;
@@ -101,6 +103,7 @@ typedef struct {
 	uint32_t reserved1;
 	uint16_t reserved2;
 } __attribute__ ((packed)) vbe_info_t;
+#pragma pack(pop)
 
 typedef struct {
 	uintptr_t mod_start;

@@ -24,8 +24,13 @@
 .long 0
 .long 32
 
-/* .stack resides in .bss */
+/* .stack resides in .bss The stack on x86 must be 16-byte aligned according to the
+; System V ABI standard and de-facto extensions. The compiler will assume the
+; stack is properly aligned and failure to align the stack will result in
+; undefined behavior. 
+*/
 .section .stack
+.align 16
 stack_bottom:
 .skip 32768 /* 32KiB */
 stack_top:
@@ -37,6 +42,7 @@ stack_top:
 .extern _kmain
 
 _start:
+    cli
     /* Setup our stack */
     mov $stack_top, %esp
 
@@ -48,7 +54,7 @@ _start:
     pushl %ebx /* Multiboot header pointer */
 
     /* Disable interrupts and call kernel proper */
-    cli
+
     call _kmain
 
     /* Clear interrupts and hang if we return from kmain */

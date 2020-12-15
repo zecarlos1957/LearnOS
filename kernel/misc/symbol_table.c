@@ -30,6 +30,43 @@ void printSection(Elf32_Shdr* target,char* label)
 }
 
 
+bool build_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
+{
+    if(symtab->sh_type != SHT_SYMTAB ||
+       strtab->sh_type != SHT_STRTAB)
+    {
+        debug_print(INFO, "Invalid section header");
+        return false;
+    }
+    
+    int num = symtab->sh_size / symtab->sh_entsize;
+    Elf32_Sym *symbol = (Elf32_Sym *) symtab->sh_addr;
+    char* strtab_addr = (char*) strtab->sh_addr;
+    int n = 0;
+
+    kernel_symbol_t *k = (kernel_symbol_t*)&kernel_symbols_start;
+
+    for(int i = 0; i < num; i++)
+    {
+        char * name = (char*)(strtab_addr + symbol->st_name);
+
+        if (ELF32_ST_BIND(symbol->st_info) == STB_GLOBAL)
+        {
+            k->addr = symbol->st_value;
+            strcpy(k->name, name);
+  //   if(strcmp(name,"_memset")==0)
+   //         debug_print(INFO,"%d %x %s", i, symbol->st_value, name);
+
+            k = (kernel_symbol_t *)((uintptr_t)k + sizeof(uintptr_t) + strlen(k->name) + 1);
+        }
+        symbol++;
+    }
+    SymTabSize = (uint32_t)k - (uint32_t)&kernel_symbols_start;
+
+    return true;
+
+}
+
 bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
 {
     if (symtab == 0)
