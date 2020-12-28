@@ -248,6 +248,7 @@ char name2[128];
 					}
 					if (s) {
 						uintptr_t final = s->sh_addr + table->st_value;
+  //                  debug_print(INFO, "LOCAL %s %x" ,name, final);
 						hashmap_set(local_symbols, name, (void *)final);
 					}
 				}
@@ -312,6 +313,10 @@ nm=name;
                             symbol = (uintptr_t)hashmap_get(symboltable, name);
                         }
                     }
+                     if(ELF32_R_TYPE(table->r_info)==2)
+                     {
+                            addend = -4;
+                     }
                     switch (ELF32_R_TYPE(table->r_info))
                     {
                         case 1:
@@ -324,8 +329,8 @@ nm=name;
                             debug_print(ERROR, "Unsupported relocation type: %d", ELF32_R_TYPE(table->r_info));
                             goto mod_load_error;
                     }
- if(strcmp(nm,"_create_kernel_tasklet")==0)
-          debug_print(INFO, "%s %x", nm, *ptr);
+// if(strcmp(nm,"_malloc")==0)
+//          debug_print(INFO, "%s %x %x %x", nm, symbol, place, *ptr);
                     table++;
                 }
             }
@@ -358,7 +363,6 @@ nm=name;
     hashmap_free(local_symbols);
     free(local_symbols);
     */
-
     module_data_t * mod_data = malloc(sizeof(module_data_t));
     mod_data->mod_info = mod_info;
     mod_data->bin_data = target;

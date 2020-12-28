@@ -105,7 +105,7 @@ cd ../../modules
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/ps2mouse.o ps2mouse.c
 rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/lfbvideo.o lfbvideo.c
 rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vbox.o vbox.c
-    gcc -ffreestanding  -shared -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgadbg.dll vgadbg.c ../bin/krnl32.exe
+    gcc -ffreestanding -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgadbg.o vgadbg.c 
 rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgalog.o vgalog.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vidset.o vidset.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/packetfs.o packetfs.c
@@ -115,11 +115,11 @@ rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bi
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/tarfs.o tarfs.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/xtest.o xtest.c
 
- rem   objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/sys/zero.ko
-    objcopy -O elf32-i386 ../bin/modules/vgadbg.dll ../cdboot/sys/vgadbg.ko
- rem    objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/sys/ps2kbd.ko
+    objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/sys/zero.ko
+    objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
+    objcopy -O elf32-i386 ../bin/modules/ext2.o ../cdboot/sys/ext2.ko
  rem    objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../cdboot/sys/ps2mouse.ko
- rem   objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
+    objcopy -O elf32-i386 ../bin/modules/iso9660.o ../cdboot/sys/iso9660.ko
   rem   objcopy -O elf32-i386 ../bin/modules/ac97.o ../cdboot/sys/ac97.ko
  rem    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/sys/serial.ko
  rem    objcopy -O elf32-i386 ../bin/modules/snd.o ../cdboot/sys/snd.ko

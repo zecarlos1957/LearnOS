@@ -54,8 +54,8 @@ static int write_string(char * s) {
 }
 
 static void reset(void) {
-	fg = 0x07;
-	bg = 0x10;
+	fg = 0x0f;
+	bg = 0x0e;
 }
 
 static void list_files(char * directory) {

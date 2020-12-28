@@ -233,8 +233,8 @@ uint32_t fork(void) {
 }
 
 int create_kernel_tasklet(tasklet_t tasklet, char * name, void * argp) {
-//	IRQ_OFF;
-/*
+	IRQ_OFF;
+
 	uintptr_t esp, ebp;
 
 	if (current_process->syscall_registers) {
@@ -249,7 +249,7 @@ int create_kernel_tasklet(tasklet_t tasklet, char * name, void * argp) {
 	set_process_environment(new_proc, directory);
 	directory->ref_count++;
 	// Read the instruction pointer  
-
+	
 
 	if (current_process->syscall_registers) {
 		struct regs r;
@@ -274,16 +274,16 @@ int create_kernel_tasklet(tasklet_t tasklet, char * name, void * argp) {
 	new_proc->thread.ebp = ebp;
 
 	new_proc->thread.eip = (uintptr_t)tasklet;
-
+	
 	// Add the new process to the ready queue
 	make_process_ready(new_proc);
-*/
-//	IRQ_RES;
+
+	IRQ_RES;
 //debug_print(INFO, "TASKLET %s",name);
-monitor_write("MESSAGE FROM create_kernel_tasklet\n");
+monitor_write("create_kernel_tasklet\n");
 
 	// Return the child PID  
-	return 0;//new_proc->id;
+	return new_proc->id;
 
 }
 

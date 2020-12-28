@@ -73,6 +73,7 @@ void int_resume(void) {
 	} else {
 		sync_depth--;
 	}
+	return;
 }
 
 void int_enable(void) {
@@ -181,7 +182,7 @@ void irq_handler(struct regs *r) {
 				goto done;
 			}
 		}
-		debug_print(ERROR, "acking irq %d - no other device handled it\n", r->int_no - 32);
+		debug_print(ERROR, "acking irq %d - no other device handled it", r->int_no - 32);
 		irq_ack(r->int_no - 32);
 	}
 done:

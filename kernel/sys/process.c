@@ -379,10 +379,10 @@ process_t * spawn_process(volatile process_t * parent, int reuse_fds) {
 	assert(process_tree->root && "Attempted to spawn a process without init.");
 
 	/* Allocate a new process */
-	debug_print(INFO,"   process_t {");
+//	debug_print(INFO,"   process_t {");
 	process_t * proc = malloc(sizeof(process_t));
 	memset(proc, 0, sizeof(process_t));
-	debug_print(INFO,"   }");
+//	debug_print(INFO,"   }");
 	proc->id = get_next_pid(); /* Set its PID */
 	proc->group = proc->id;    /* Set the GID */
 	proc->name = strdup(parent->name); /* Use the default name */
@@ -410,9 +410,9 @@ process_t * spawn_process(volatile process_t * parent, int reuse_fds) {
 	proc->image.heap        = parent->image.heap;
 	proc->image.heap_actual = parent->image.heap_actual;
 	proc->image.size        = parent->image.size;
-	debug_print(INFO,"    stack {");
+//	debug_print(INFO,"    stack {");
 	proc->image.stack       = (uintptr_t)kvmalloc(KERNEL_STACK_SIZE) + KERNEL_STACK_SIZE;
-	debug_print(INFO,"    }");
+//	debug_print(INFO,"    }");
 	proc->image.user_stack  = parent->image.user_stack;
 	proc->image.shm_heap    = SHM_START; /* Yeah, a bit of a hack. */
 
@@ -429,18 +429,18 @@ process_t * spawn_process(volatile process_t * parent, int reuse_fds) {
 		proc->fds->refs     = 1;
 		proc->fds->length   = parent->fds->length;
 		proc->fds->capacity = parent->fds->capacity;
-		debug_print(INFO,"    fds / files {");
+//		debug_print(INFO,"    fds / files {");
 		proc->fds->entries  = malloc(sizeof(fs_node_t *) * proc->fds->capacity);
 		proc->fds->modes    = malloc(sizeof(int) * proc->fds->capacity);
 		proc->fds->offsets  = malloc(sizeof(uint64_t) * proc->fds->capacity);
 		assert(proc->fds->entries && "Failed to allocate file descriptor table for new process.");
-		debug_print(INFO,"    ---");
+//		debug_print(INFO,"    ---");
 		for (uint32_t i = 0; i < parent->fds->length; ++i) {
 			proc->fds->entries[i] = clone_fs(parent->fds->entries[i]);
 			proc->fds->modes[i]   = parent->fds->modes[i];
 			proc->fds->offsets[i] = parent->fds->offsets[i];
 		}
-		debug_print(INFO,"    }");
+//		debug_print(INFO,"    }");
 	}
 
 	/* As well as the working directory */

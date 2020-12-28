@@ -1080,7 +1080,7 @@ fs_node_t *kopen_recur(char *filename, uint32_t flags, uint32_t symlink_depth, c
  * @returns A file system node element that the caller can free.
  */
 fs_node_t *kopen(char *filename, uint32_t flags) {
-	debug_print(NOTICE, "kopen(%s)", filename);
+	debug_print(NOTICE, "kopen(%s) %s", filename,(char *)current_process->wd_name);
 
 	return kopen_recur(filename, flags, 0, (char *)(current_process->wd_name));
 }

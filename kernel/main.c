@@ -188,7 +188,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	modules_install();  // Modules!  
 	pci_remap();
 
-//	DISABLE_EARLY_BOOT_LOG();
+	DISABLE_EARLY_BOOT_LOG();
  
 	// Load modules from bootloader  
 	if (mboot_ptr->flags & MULTIBOOT_FLAG_MODS) {
@@ -229,7 +229,6 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 			}
 		}
 	}
-/*
 	// Map /dev to a device mapper 
 	map_vfs_directory("/dev");
 
@@ -259,7 +258,7 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 	if (args_present("init")) {
 		boot_app = args_value("init");
 	}
- 
+
 	//Prepare to run /bin/init  
 	char * argv[] = {
 		boot_app,
@@ -275,8 +274,8 @@ int kmain(struct multiboot *mboot, uint32_t mboot_mag, uintptr_t esp) {
 
 	debug_print(CRITICAL, "init failed");
 	switch_task(0);
- */
-while(1);
+
+
 	return 0;
 }
 

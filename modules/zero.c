@@ -28,7 +28,7 @@ static void close_null(fs_node_t * node) {
 }
 
 static uint32_t read_zero(fs_node_t *node, uint64_t offset, uint32_t size, uint8_t *buffer) {
-	memset(buffer, 0x00, size);
+//	memset(buffer, 0x00, size);
 	return 1;
 }
 
@@ -46,7 +46,7 @@ static void close_zero(fs_node_t * node) {
 
 static fs_node_t * null_device_create(void) {
 	fs_node_t * fnode = malloc(sizeof(fs_node_t));
-	memset(fnode, 0x00, sizeof(fs_node_t));
+//	memset(fnode, 0x00, sizeof(fs_node_t));
 	fnode->inode = 0;
 	strcpy(fnode->name, "null");
 	fnode->uid = 0;
@@ -65,7 +65,7 @@ static fs_node_t * null_device_create(void) {
 
 static fs_node_t * zero_device_create(void) {
 	fs_node_t * fnode = malloc(sizeof(fs_node_t));
-	memset(fnode, 0x00, sizeof(fs_node_t));
+//	memset(fnode, 0x00, sizeof(fs_node_t));
 	fnode->inode = 0;
 	strcpy(fnode->name, "zero");
 	fnode->uid = 0;

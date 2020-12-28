@@ -5,11 +5,11 @@ title Boot from hard disk
 chainloader (hd0)+1
 
 # Edit it to the filename of your kernel.
-title My kernel
+title LearnOS
 kernel /sys/krnl32.elf   root=/dev/ram0 
 
-#module /sys/zero.ko
+module /sys/zero.ko
 module /sys/vgadbg.ko
 #module /sys/ext2.ko
-#module /sys/ps2kbd.ko
+#module /sys/iso9660.ko
 # module /sys/serial.ko
