@@ -16,6 +16,7 @@ extern void (*debug_hook)(void *, char *);
 extern void (*debug_video_crash)(char **);
 
 void monitor_write(char *c);
+void monitor_put(char c);
 
 #ifndef MODULE_NAME
 #define MODULE_NAME __FILE__
