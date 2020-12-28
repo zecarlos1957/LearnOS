@@ -12,22 +12,22 @@
 .endm
 
 /* Interrupt Requests */
-IRQ 0, 32
-IRQ 1, 33
-IRQ 2, 34
-IRQ 3, 35
-IRQ 4, 36
-IRQ 5, 37
-IRQ 6, 38
-IRQ 7, 39
-IRQ 8, 40
-IRQ 9, 41
+IRQ 0, 32     /* TIMER    */
+IRQ 1, 33     /* KEYBOARD */
+IRQ 2, 34     /* BRIDGE PIC2 */
+IRQ 3, 35     /* COM2 */
+IRQ 4, 36     /* COM1  */
+IRQ 5, 37     /* LPT2   */
+IRQ 6, 38     /* FLOPPY */
+IRQ 7, 39     /* LPT1   */
+IRQ 8, 40     /* CMOS RTC */
+IRQ 9, 41     
 IRQ 10, 42
 IRQ 11, 43
-IRQ 12, 44
-IRQ 13, 45
-IRQ 14, 46
-IRQ 15, 47
+IRQ 12, 44    /* PS/2 MOUSE  */
+IRQ 13, 45    /* num Coprocessor */
+IRQ 14, 46    /* hd IDE0  */
+IRQ 15, 47     /* hd IDE1  */
 
 .extern _irq_handler
 

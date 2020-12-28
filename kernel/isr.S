@@ -19,25 +19,25 @@
 .endm
 
 /* Standard X86 interrupt service routines */
-ISR_NOERR 0
-ISR_NOERR 1
-ISR_NOERR 2
-ISR_NOERR 3
-ISR_NOERR 4
-ISR_NOERR 5
-ISR_NOERR 6
-ISR_NOERR 7
-ISR_ERR   8
-ISR_NOERR 9
-ISR_ERR   10
-ISR_ERR   11
-ISR_ERR   12
-ISR_ERR   13
-ISR_ERR   14
-ISR_NOERR 15
-ISR_NOERR 16
-ISR_NOERR 17
-ISR_NOERR 18
+ISR_NOERR 0   /* Divide error */
+ISR_NOERR 1   /* Debug exception */
+ISR_NOERR 2   /* Non maskable intr */
+ISR_NOERR 3   /* BreakPoint instruction */
+ISR_NOERR 4   /* Overflow (INTO instr) */
+ISR_NOERR 5   /* Bounds check (BOUND instr) */
+ISR_NOERR 6   /* Invalid opcode */
+ISR_NOERR 7   /* Coprocessor not available */
+ISR_ERR   8   /* Double fault */
+ISR_NOERR 9   /* Coproc segment overrun
+ISR_ERR   10  /* Invalid TSS */
+ISR_ERR   11  /* Seg not present */
+ISR_ERR   12   /* Stack exception */
+ISR_ERR   13  /* General protection  exception */
+ISR_ERR   14  /* Page fault */
+ISR_NOERR 15  /* Intel rsvd */ 
+ISR_NOERR 16  /* Coprocessor error */
+ISR_NOERR 17  /*  Intel rsvd */   
+ISR_NOERR 18  
 ISR_NOERR 19
 ISR_NOERR 20
 ISR_NOERR 21
