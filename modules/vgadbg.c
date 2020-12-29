@@ -166,7 +166,7 @@ static void tasklet(void * data, char * name) {
 	write_string("\bDone.\nReady to go.\n");
 
 	write_string("Here's /dev:\n");
-	fg = 6;
+	fg = 9;
 	list_files("/dev");
 	reset();
 
@@ -175,12 +175,12 @@ static void tasklet(void * data, char * name) {
 
 	reset();
 	write_string("Here's /\n");
-	fg = 6;
+	fg = 9;
 	list_files("/");
 	reset();
 
 	write_string("Here's /home");
-	fg = 6;
+	fg = 9;
 	list_files("/home");
 	reset();
 
