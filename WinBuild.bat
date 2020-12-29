@@ -119,9 +119,9 @@ rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bi
     objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
     objcopy -O elf32-i386 ../bin/modules/ext2.o ../cdboot/sys/ext2.ko
     objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/sys/ps2kbd.ko
- rem    objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../cdboot/sys/ps2mouse.ko
+    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/sys/serial.ko
     objcopy -O elf32-i386 ../bin/modules/iso9660.o ../cdboot/sys/iso9660.ko
-  rem   objcopy -O elf32-i386 ../bin/modules/ac97.o ../cdboot/sys/ac97.ko
+    objcopy -O elf32-i386 ../bin/modules/ata.o ../cdboot/sys/ata.ko
  rem    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/sys/serial.ko
  rem    objcopy -O elf32-i386 ../bin/modules/snd.o ../cdboot/sys/snd.ko
   rem  objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/sys/debug_sh.ko
