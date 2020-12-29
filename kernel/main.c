@@ -58,10 +58,10 @@ fs_node_t * ramdisk_mount(uintptr_t, size_t);
 #ifndef EARLY_BOOT_LOG
 #define EARLY_LOG_DEVICE 0x3F8
 static uint32_t _early_log_write(fs_node_t *node, uint64_t offset, uint32_t size, uint8_t *buffer) {
-	for (unsigned int i = 0; i < size; ++i) {
+/*	for (unsigned int i = 0; i < size; ++i) {
 		outportb(EARLY_LOG_DEVICE, buffer[i]);
-	}
-//	monitor_write((char*)buffer);
+	}*/
+	monitor_write((char*)buffer);
 	return size;
 }
 fs_node_t _early_log = { .write = &_early_log_write };
