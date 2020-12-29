@@ -79,22 +79,20 @@ cd ../util
  rem   gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/ungz.o ungz.c
     as compiler-rt.s -o ../bin/kernel/compiler.o
    
-    
-  cd ../bin/kernel    
-     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o
 
 
 rem ********************************************************************
 rem            Build LIBC
-cd ../libc
-rem   call BuildLibC
+ cd ../libc
+ rem  call BuildLibC
+
 
 echo            Build MODULES
     
     
-cd ../../modules
-    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/zero.o zero.c 
- rem   gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/ac97.o ac97.c
+cd ../modules
+    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/zero.o zero.c 
+    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/hda.o hda.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/snd.o snd.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/random.o random.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/serial.o serial.c
@@ -108,7 +106,7 @@ cd ../../modules
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/ps2mouse.o ps2mouse.c
 rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/lfbvideo.o lfbvideo.c
 rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vbox.o vbox.c
-    gcc -ffreestanding -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgadbg.o vgadbg.c 
+    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgadbg.o vgadbg.c 
 rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgalog.o vgalog.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vidset.o vidset.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/packetfs.o packetfs.c
@@ -125,15 +123,23 @@ rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bi
     objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/sys/serial.ko
     objcopy -O elf32-i386 ../bin/modules/iso9660.o ../cdboot/sys/iso9660.ko
     objcopy -O elf32-i386 ../bin/modules/ata.o ../cdboot/sys/ata.ko
- rem    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/sys/serial.ko
+ rem   objcopy -O elf32-i386 ../bin/modules/hda.o ../cdboot/sys/hda.ko
+    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/sys/serial.ko
  rem    objcopy -O elf32-i386 ../bin/modules/snd.o ../cdboot/sys/snd.ko
-  rem  objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/sys/debug_sh.ko
+    objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/sys/debug_sh.ko
 
+
+
+    
+  cd ../bin/kernel    
+     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o  -L../ -llibc
 
 rem ********************************************************************
   
 echo                   Build APPLICATIONS
 
+cd ../../apps
+    gcc -ffreestanding -nostdlib -nostdinc  -I../base/usr/include  -o ../bin/apps/init.exe init.c  ../bin/krnl32.exe -L../bin/ -llibc
 
 rem ***********************************************************************
 
@@ -142,7 +148,8 @@ cd ../bin/kernel
  
      ar rcs ../libliba.a tree.o hashmap.o list.o
  cd ../
-     objcopy  -O elf32-i386 krnl32.exe ../cdboot/sys/krnl32.elf
+    objcopy  -O elf32-i386 krnl32.exe ../cdboot/sys/krnl32.elf
+    objcopy  -O elf32-i386 apps/init.exe ../cdboot/bin/init.elf
 
  
 

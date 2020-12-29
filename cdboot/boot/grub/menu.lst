@@ -6,12 +6,12 @@ chainloader (hd0)+1
 
 # Edit it to the filename of your kernel.
 title LearnOS
-kernel /sys/krnl32.elf   root=/dev/ram0 
+kernel /sys/krnl32.elf   root=/dev/hdb 
 
 module /sys/zero.ko
-module /sys/ata.ko
 module /sys/serial.ko
+module /sys/ata.ko
 module /sys/ext2.ko
 module /sys/iso9660.ko
-module /sys/ps2kbd.ko
-module /sys/vgadbg.ko
+#module /sys/ps2kbd.ko
+#module /sys/vgadbg.ko
