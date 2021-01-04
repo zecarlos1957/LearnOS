@@ -6,7 +6,12 @@
 
 bin/
 doc/
-cdboot/sys/
+cdboot/bin/
+cdboot/boot/
+cdboot/mod/
+cdboot/loader/
+loader/*.o
+loader/*.exe
  
  
 

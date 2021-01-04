@@ -11,6 +11,21 @@ echo.
 
 rem ********************************************************************
 
+echo              Build Boot Loader
+
+del .cdboot/loader/setupldr.sys
+del learnos.iso
+
+cd ./loader
+    call BuildBoot.bat
+cd ../
+
+rem goto RUN
+
+del ./bin/krnl32.exe
+del ./cdboot/krnl32.elf
+
+
 echo              Build KERNEL
 
 
@@ -104,7 +119,7 @@ cd ../modules
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/iso9660.o iso9660.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/ps2kbd.o ps2kbd.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/ps2mouse.o ps2mouse.c
-rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/lfbvideo.o lfbvideo.c
+    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/lfbvideo.o lfbvideo.c
 rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vbox.o vbox.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgadbg.o vgadbg.c 
 rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgalog.o vgalog.c
@@ -116,17 +131,24 @@ rem    gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bi
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/tarfs.o tarfs.c
     gcc -ffreestanding -nostdlib -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/xtest.o xtest.c
 
-    objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/sys/zero.ko
-    objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/sys/vgadbg.ko
-    objcopy -O elf32-i386 ../bin/modules/ext2.o ../cdboot/sys/ext2.ko
-    objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/sys/ps2kbd.ko
-    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/sys/serial.ko
-    objcopy -O elf32-i386 ../bin/modules/iso9660.o ../cdboot/sys/iso9660.ko
-    objcopy -O elf32-i386 ../bin/modules/ata.o ../cdboot/sys/ata.ko
- rem   objcopy -O elf32-i386 ../bin/modules/hda.o ../cdboot/sys/hda.ko
-    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/sys/serial.ko
- rem    objcopy -O elf32-i386 ../bin/modules/snd.o ../cdboot/sys/snd.ko
-    objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/sys/debug_sh.ko
+    objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/mod/zero.ko
+    objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/mod/vgadbg.ko
+    objcopy -O elf32-i386 ../bin/modules/ext2.o ../cdboot/mod/ext2.ko
+    objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/mod/ps2kbd.ko
+    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/mod/serial.ko
+    objcopy -O elf32-i386 ../bin/modules/iso9660.o ../cdboot/mod/iso9660.ko
+    objcopy -O elf32-i386 ../bin/modules/ata.o ../cdboot/mod/ata.ko
+    objcopy -O elf32-i386 ../bin/modules/random.o ../cdboot/mod/random.ko
+    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/mod/serial.ko
+    objcopy -O elf32-i386 ../bin/modules/procfs.o ../cdboot/mod/procfs.ko
+    objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/mod/debug_sh.ko
+    objcopy -O elf32-i386 ../bin/modules/tmpfs.o ../cdboot/mod/tmpfs.ko
+    objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/mod/ps2kbd.ko
+    objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../cdboot/mod/ps2mouse.ko
+    objcopy -O elf32-i386 ../bin/modules/packetfs.o ../cdboot/mod/packetfs.ko
+    objcopy -O elf32-i386 ../bin/modules/pcspkr.o ../cdboot/mod/pcspkr.ko
+    objcopy -O elf32-i386 ../bin/modules/portio.o ../cdboot/mod/portio.ko
+    objcopy -O elf32-i386 ../bin/modules/tarfs.o ../cdboot/mod/tarfs.ko
 
 
 
@@ -148,13 +170,13 @@ cd ../bin/kernel
  
      ar rcs ../libliba.a tree.o hashmap.o list.o
  cd ../
-    objcopy  -O elf32-i386 krnl32.exe ../cdboot/sys/krnl32.elf
+    objcopy  -O elf32-i386 krnl32.exe ../cdboot/krnl32.elf
     objcopy  -O elf32-i386 apps/init.exe ../cdboot/bin/init.elf
 
  
 
 cd ../
-    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  cdboot
+    mkisofs -R -b boot/isoboot.bin -no-emul-boot  -o learnos.iso  cdboot
 
 
    D:/programas/oracle/virtualbox/vboxmanage startvm LearnOS

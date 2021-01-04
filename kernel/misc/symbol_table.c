@@ -8,17 +8,6 @@ extern uint32_t SymTabSize;
 extern char kernel_symbols_start[];
 extern char kernel_symbols_end[];
 
-typedef struct
-{
-    bool present;
-    uint32_t num_symbols;
-    Elf32_Sym * symbols;
-    char * strtab_addr;
-}symbol_table_descriptor_t;
-
-symbol_table_descriptor_t SymTabDesc;
-
-char * address_to_symbol_name(uint32_t address);
 
 void printSection(Elf32_Shdr* target,char* label)
 {
@@ -35,7 +24,6 @@ bool build_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
     if(symtab->sh_type != SHT_SYMTAB ||
        strtab->sh_type != SHT_STRTAB)
     {
-        debug_print(INFO, "Invalid section header");
         return false;
     }
     
@@ -54,9 +42,6 @@ bool build_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
         {
             k->addr = symbol->st_value;
             strcpy(k->name, name);
-  //   if(strcmp(name,"_memset")==0)
-   //         debug_print(INFO,"%d %x %s", i, symbol->st_value, name);
-
             k = (kernel_symbol_t *)((uintptr_t)k + sizeof(uintptr_t) + strlen(k->name) + 1);
         }
         symbol++;
@@ -65,41 +50,6 @@ bool build_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
 
     return true;
 
-}
-
-bool load_symbol_table(Elf32_Shdr* symtab, Elf32_Shdr* strtab)
-{
-    if (symtab == 0)
-    {
-        SymTabDesc.present = false;
-        return false;
-    } 
-    else 
-    {
-        SymTabDesc.present = true;
-        SymTabDesc.num_symbols = symtab->sh_size / symtab->sh_entsize;
-        SymTabDesc.symbols = (Elf32_Sym *) symtab->sh_addr;
-        SymTabDesc.strtab_addr = (char*) strtab->sh_addr;
-
-        kernel_symbol_t *k = (kernel_symbol_t*)&kernel_symbols_start;
-
-        for(int i = 0; i < SymTabDesc.num_symbols; i++)
-        {
-            Elf32_Sym * symbol = SymTabDesc.symbols + i;
-            char * name = (char*)(SymTabDesc.strtab_addr + symbol->st_name);
-
-            if (ELF32_ST_BIND(symbol->st_info) == STB_GLOBAL)
-            {
-                    k->addr = symbol->st_value;
-                    strcpy(k->name, name);
-        //            debug_print(INFO,"%s",name);
-                    k = (kernel_symbol_t *)((uintptr_t)k + sizeof(uintptr_t) + strlen(k->name) + 1);
-            }
-        }
-        SymTabSize = (uint32_t)k - (uint32_t)&kernel_symbols_start;
- debug_print(INFO, "KrnlSymEnd %x",(uint32_t)&kernel_symbols_end[SymTabSize]);
-        return true;
-    }
 }
 
 
@@ -122,13 +72,5 @@ Elf32_Shdr * get_elf_section(Elf_hdr* info, char* section_name)
     }
 
     return 0;
-}
-
-bool init_edata(Elf_hdr* info)
-{
-    Elf32_Shdr* Shdr = get_elf_section(info, ".edata");
-    printSection(Shdr,"edata");
-   // debug_print(INFO, "0x%x %d %d",Shdr->sh_type, Shdr->sh_size,Shdr->sh_entsize);
-    while(1);
 }
 
