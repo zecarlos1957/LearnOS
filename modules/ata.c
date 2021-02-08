@@ -771,7 +771,7 @@ static void ata_device_read_sector_atapi(struct ata_device * dev, uint64_t lba, 
 	}
 
 	/* Wait */
-	sleep_on(atapi_waiter);
+///	sleep_on(atapi_waiter);
 
 	atapi_in_progress = 0;
 
