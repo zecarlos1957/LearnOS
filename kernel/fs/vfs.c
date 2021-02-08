@@ -283,14 +283,19 @@ struct dirent *readdir_fs(fs_node_t *node, uint32_t index) {
 fs_node_t *finddir_fs(fs_node_t *node, char *name) {
 	if (!node) return NULL;
 
-	if ((node->flags & FS_DIRECTORY) && node->finddir) {
-		fs_node_t *ret = node->finddir(node, name);
-		return ret;
-	} else {
-		debug_print(WARNING, "Node passed to finddir_fs isn't a directory!");
-		debug_print(WARNING, "node = 0x%x, name = %s", node, name);
-		return (fs_node_t *)NULL;
+	if(node->finddir)
+	{
+		if ((node->flags & FS_DIRECTORY) && node->finddir) {
+			fs_node_t *ret = node->finddir(node, name);
+			return ret;
+		} else {
+			debug_print(WARNING, "Node passed to finddir_fs isn't a directory!");
+			debug_print(WARNING, "node = 0x%x, name = %s", node, name);
+			return (fs_node_t *)NULL;
+		}
 	}
+	else 		debug_print(ERROR, "node->finddir == NULL !!!!");
+	return (fs_node_t *)NULL;
 }
 
 /**
