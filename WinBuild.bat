@@ -171,7 +171,7 @@ cd ../bin/kernel
      ar rcs ../libliba.a tree.o hashmap.o list.o
  cd ../
     objcopy  -O elf32-i386 krnl32.exe ../cdboot/krnl32.elf
-    objcopy  -O elf32-i386 apps/init.exe ../cdboot/bin/init.elf
+    objcopy  -O elf32-i386 apps/init.exe ../cdboot/bin/init
 
  
 
