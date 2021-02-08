@@ -15,12 +15,12 @@ static void placech(unsigned char c, int x, int y, int attr) {
 }
 
 static char vga_to_ansi[] = {
-	0, 4, 2, 6, 1, 5, 3, 7,
+	0, 4, 2, 6, 1, 5, 3, 0,
 	8,12,10,14, 9,13,11,15
 };
 
 static int current_fg = 0x07;
-static int current_bg = 0x10;
+static int current_bg = 0x06;
 static int cur_x = 0;
 static int cur_y = 0;
 
