@@ -61,8 +61,8 @@ int exec_elf(char * path, fs_node_t * file, int argc, char ** argv, char ** env,
 	}
 
 	uintptr_t entry = (uintptr_t)header.e_entry;
-	uintptr_t base_addr = 0xFFFFFFFF;
-	uintptr_t end_addr  = 0x0;
+	uintptr_t base_addr = 0xffffffff;
+	uintptr_t end_addr  = 0;
 
 	for (uintptr_t x = 0; x < (uint32_t)header.e_phentsize * header.e_phnum; x += header.e_phentsize) {
 		Elf32_Phdr phdr;
@@ -80,19 +80,22 @@ int exec_elf(char * path, fs_node_t * file, int argc, char ** argv, char ** env,
 	current_process->image.entry = base_addr;
 	current_process->image.size  = end_addr - base_addr;
 
+
 	release_directory_for_exec(current_directory);
 	invalidate_page_tables();
 
 
-	for (uintptr_t x = 0; x < (uint32_t)header.e_phentsize * header.e_phnum; x += header.e_phentsize) {
+
+	for (uintptr_t x = 0; x <(uint32_t)header.e_phentsize * header.e_phnum; x += header.e_phentsize) {
 		Elf32_Phdr phdr;
 		read_fs(file, header.e_phoff + x, sizeof(Elf32_Phdr), (uint8_t *)&phdr);
 		if (phdr.p_type == PT_LOAD) {
-			/* TODO: These virtual address bounds should be in a header somewhere */
+			// TODO: These virtual address bounds should be in a header somewhere  
+			debug_print(WARNING, "LOAD %x %x", phdr.p_vaddr, phdr.p_memsz);
 			if (phdr.p_vaddr < 0x20000000) return -EINVAL;
-			/* TODO Upper bounds */
+			// TODO Upper bounds  
 			for (uintptr_t i = phdr.p_vaddr; i < phdr.p_vaddr + phdr.p_memsz; i += 0x1000) {
-				/* This doesn't care if we already allocated this page */
+				// This doesn't care if we already allocated this page  
 				alloc_frame(get_page(i, 1, current_directory), 0, 1);
 				invalidate_tables_at(i);
 			}
@@ -174,16 +177,19 @@ int exec_elf(char * path, fs_node_t * file, int argc, char ** argv, char ** env,
 	current_process->image.start = entry;
 
 	/* Close all fds >= 3 */
+  
 	for (unsigned int i = 3; i < current_process->fds->length; ++i) {
 		if (current_process->fds->entries[i]) {
 			close_fs(current_process->fds->entries[i]);
 			current_process->fds->entries[i] = NULL;
 		}
 	}
-
+	  debug_print(WARNING, "User land entry %x ", entry );
+  debug_print(WARNING, "base_addr %x heap %x stack %x", base_addr, current_process->image.heap_actual, current_process->image.user_stack);
 	/* Go go go */
 	enter_user_jmp(entry, argc, argv_, USER_STACK_TOP);
-
+	
+  debug_print(WARNING, "Faild user land");
 	/* We should never reach this code */
 	return -1;
 }
@@ -278,7 +284,7 @@ int exec(
 	/* Open the file */
 	fs_node_t * file = kopen(path,0);
 	if (!file) {
-		/* Command not found */
+		debug_print(ERROR, "File not found %s", path);
 		return -ENOENT;
 	}
 
@@ -297,7 +303,7 @@ int exec(
 
 	for (unsigned int i = 0; i < sizeof(fmts) / sizeof(exec_def_t); ++i) {
 		if (matches(fmts[i].bytes, head, fmts[i].match)) {
-			debug_print(NOTICE, "Matched executor: %s", fmts[i].name);
+			debug_print(NOTICE, "Matched executor: %s %s", file, fmts[i].name);
 			return fmts[i].func(path, file, argc, argv, env, interp_depth);
 		}
 	}
@@ -328,7 +334,7 @@ system(
 	current_process->cmdline = argv_;
 
 	exec(path,argc,argv_,envin ? envin : env, 0);
-	debug_print(ERROR, "Failed to execute process!");
+	debug_print(ERROR, "Failed to execute process! %s %s %s", path, *argv_, *envin);
 	kexit(-1);
 	return -1;
 }
