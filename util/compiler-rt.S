@@ -319,8 +319,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 .text
-.balign 4
-.globl ___udivdi3
+.align 4
+.global ___udivdi3
 ___udivdi3:
 
 	pushl		%ebx
@@ -413,8 +413,8 @@ ___udivdi3:
 	retl								/* and return qhi:qlo*/
 
 .text
-.balign 4
-.globl ___umoddi3
+.align 4
+.global ___umoddi3
 ___umoddi3:
 
 	pushl		%ebx
@@ -517,7 +517,7 @@ ___umoddi3:
 
 
 .text
-.balign 4
-.globl ___chkstk_ms
+.align 4
+.global ___chkstk_ms
 ___chkstk_ms:
     retl
