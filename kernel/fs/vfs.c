@@ -847,7 +847,7 @@ void debug_print_vfs_tree_node(tree_node_t * node, size_t height) {
 		c += sprintf(c, "%s → (empty)", fnode->name);
 	}
 	/* Linefeed */
-	debug_print(NOTICE, "%s", tmp);
+//	debug_print(NOTICE, "%s", tmp);
 	free(tmp);
 	foreach(child, node->children) {
 		/* Recursively print the children */
