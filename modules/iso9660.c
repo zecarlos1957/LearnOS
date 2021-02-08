@@ -33,6 +33,7 @@ typedef struct {
 	list_t * lru;
 } iso_9660_fs_t;
 
+#pragma pack(push, 1)
 typedef struct {
 	char year[4];
 	char month[2];
@@ -43,7 +44,9 @@ typedef struct {
 	char hundredths[2];
 	int8_t timezone;
 } __attribute__((packed)) iso_9660_datetime_t;
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct {
 	uint8_t year;
 	uint8_t month;
@@ -53,7 +56,9 @@ typedef struct {
 	uint8_t second;
 	int8_t timezone;
 } __attribute__((packed)) iso_9660_rec_date_t;
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct {
 	uint8_t length;
 	uint8_t ext_length;
@@ -76,7 +81,9 @@ typedef struct {
 	uint8_t name_len;
 	char name[];
 } __attribute__((packed)) iso_9660_directory_entry_t;
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct {
 	uint8_t type; /* 0x01 */
 	char id[5]; /* CD001 */
@@ -134,6 +141,7 @@ typedef struct {
 
 	char application_use[];
 } __attribute__((packed)) iso_9660_volume_descriptor_t;
+#pragma pack(pop)
 
 static void file_from_dir_entry(iso_9660_fs_t * this, size_t sector, iso_9660_directory_entry_t * dir, size_t offset, fs_node_t * fs);
 
