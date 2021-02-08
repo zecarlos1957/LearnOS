@@ -6,7 +6,7 @@
 
 bin/
 doc/
-
+cdboot/krnl32
 cdboot/bin/
 cdboot/boot/
 cdboot/mod/
