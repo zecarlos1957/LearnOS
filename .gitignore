@@ -14,7 +14,34 @@ cdboot/loader/
 loader/*.o
 loader/*.exe
  
+libc/assert/*.o 
+libc/ctype/*.o 
+libc/dirent/*.o 
+libc/dlfcn/*.o 
+libc/errno/*.o 
+libc/iconv/*.o 
+libc/ioctl/*.o 
+libc/libgen/*.o 
+libc/libintl/*.o 
+libc/locale/*.o 
+libc/math/*.o 
+libc/poll/*.o 
+libc/pthread/*.o 
+libc/pty/*.o 
+libc/pwd/*.o 
+libc/sched/*.o 
+libc/signal/*.o 
+libc/stdio/*.o 
+libc/stdlib/*.o 
+libc/string/*.o 
+libc/strings/*.o 
+libc/sys/*.o 
+libc/time/*.o 
+libc/unistd/*.o 
+libc/wchar/*.o 
+libc/*.o
  
+lib/*.o
 
 # CodeBlock files
 
