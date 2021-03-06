@@ -127,8 +127,8 @@ rem cd ../lib
 rem    call BuildLib
 
 rem            Build LIBC
-rem cd ../libc
- rem  call BuildLibC
+ cd ../libc
+  call BuildLibC
 
 
 echo              Build MODULES
