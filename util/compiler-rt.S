@@ -514,10 +514,3 @@ ___umoddi3:
 	popl		%ebx					
 	xorl		%edx,			%edx	
 	retl								 
-
-
-.text
-.align 4
-.global ___chkstk_ms
-___chkstk_ms:
-    retl

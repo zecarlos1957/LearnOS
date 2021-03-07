@@ -1,3 +1,5 @@
+.section .text
+
 .global _setjmp
 
 _setjmp:
@@ -62,3 +64,9 @@ _longjmp:
        /*__STI */
 
 	ret
+
+
+.align 4
+.global ___chkstk_ms
+___chkstk_ms:
+    retl
