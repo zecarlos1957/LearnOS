@@ -42,32 +42,6 @@
 
 #define INITD_PATH "/etc/startup.d"
 
-/*
-int errno = 0;  // errorno.c
-
-/// main.c
-char ** environ = NULL;
-int _environ_size = 0;
-char * _argv_0 = NULL;
-int __libc_debug = 0;
-///
-
-int syscall_open(const char* a, int b, int c)
-{return 0;}
-
-int syscall_fork()
-{return 0;}
-
-int syscall_execve(char* args, char** arg, char** env)
-{return 0;}
-int syscall_exit(int a)
-{return 0;}
-int syscall_readdir(int a, int b, void* c)
-{return 0;}
-int syscall_reboot()
-{return 0;}
-*/
-
 int __enable_execute_stack;
 
 /* Initialize fd 0, 1, 2 */
@@ -116,40 +90,41 @@ int start_options(char * args[]) {
 	return cpid;
 }
 
+int comparator(const void * c1, const void * c2) {
+	const struct dirent * d1 = c1;
+	const struct dirent * d2 = c2;
+	return strcmp(d1->d_name, d2->d_name);
+}
+
 int _main(int argc, char * argv[]) {
 	/* Initialize stdin/out/err */
 	set_console();
 
-	/* Get directory listing for /etc/startup.d */
+	// Get directory listing for /etc/startup.d  
 	int initd_dir = syscall_open(INITD_PATH, 0, 0);
 	if (initd_dir < 0) {
-		/* No init scripts; try to start getty as a fallback */
+		// No init scripts; try to start getty as a fallback  
 		start_options((char *[]){"/bin/getty",NULL});
 	} else {
 		int count = 0, i = 0, ret = 0;
 
-		/* Figure out how many entries we have with a dry run */
+		// Figure out how many entries we have with a dry run  
 		do {
 			struct dirent ent;
 			ret = syscall_readdir(initd_dir, ++count, &ent);
 		} while (ret > 0);
 
-		/* Read each directory entry */
+		// Read each directory entry  
 		struct dirent entries[count];
 		do {
 			syscall_readdir(initd_dir, i, &entries[i]);
 			i++;
 		} while (i < count);
 
-		/* Sort the directory entries */
-		int comparator(const void * c1, const void * c2) {
-			const struct dirent * d1 = c1;
-			const struct dirent * d2 = c2;
-			return strcmp(d1->d_name, d2->d_name);
-		}
+		// Sort the directory entries  
 		qsort(entries, count, sizeof(struct dirent), comparator);
 
-		/* Run scripts */
+		// Run scripts  
 		for (int i = 0; i < count; ++i) {
 			if (entries[i].d_name[0] != '.') {
 				char path[256];

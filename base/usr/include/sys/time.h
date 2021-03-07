@@ -2,6 +2,7 @@
 
 #include <_cheader.h>
 #include <sys/types.h>
+#include <kernel/types.h>
 
 _Begin_C_Header
 /*

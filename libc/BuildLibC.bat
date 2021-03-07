@@ -105,12 +105,12 @@ cd ../sys
 rem    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/network.o network.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/wait.o wait.c
 cd ../time
- rem   gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/clock.o clock.c
-rem    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/ctime.o ctime.c
-rem    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/gettimeofday.o gettimeofday.c
-rem    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/localtime.o localtime.c
-rem    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/strftime.o strftime.c
-rem    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/time.o time.c
+    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/clock.o clock.c
+    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/ctime.o ctime.c
+    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/gettimeofday.o gettimeofday.c
+    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/localtime.o localtime.c
+    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/strftime.o strftime.c
+    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/time.o time.c
 cd ../unistd
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/access.o access.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/alarm.o alarm.c
@@ -136,7 +136,7 @@ cd ../unistd
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/getuid.o getuid.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/getwd.o getwd.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/hostname.o hostname.c
- rem   gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/isatty.o isatty.c
+    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/isatty.o isatty.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/link.o link.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/lseek.o lseek.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/open.o open.c
@@ -151,7 +151,7 @@ cd ../unistd
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/sleep.o sleep.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/stat.o stat.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/symlink.o symlink.c
- rem   gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/ttyname.o ttyname.c
+    gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/ttyname.o ttyname.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/umask.o umask.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/unlink.o unlink.c
     gcc -ffreestanding   -I../../base/usr/include -c -o ../../bin/libc/usleep.o usleep.c

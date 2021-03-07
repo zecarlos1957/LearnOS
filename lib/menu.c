@@ -148,7 +148,7 @@ void _menu_activate_MenuEntry_Normal(struct MenuEntry * self, int flags) {
 	free(menu_keys);
 
 	if (_self->callback) {
-		_self->callback(_self);
+		_self->callback((struct MenuEntry *)_self);
 	}
 }
 

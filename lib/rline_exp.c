@@ -30,6 +30,7 @@
 #define DELETE_KEY    0x7F
 #define MINIMUM_SIZE  10
 
+
 /**
  * Same structures as in bim.
  * A single character has:
@@ -85,6 +86,7 @@ static int prompt_width = 2;
 static char * prompt = "> ";
 static int prompt_right_width = 0;
 static char * prompt_right = "";
+
 
 int rline_exp_set_prompts(char * left, char * right, int left_width, int right_width) {
 	prompt = left;

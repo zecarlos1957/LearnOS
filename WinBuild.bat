@@ -124,13 +124,13 @@ rem ********************************************************************
 
 
  cd ../lib
-    mingw32-make Makefile clean
+rem    mingw32-make Makefile clean
     mingw32-make Makefile ../bin/libm.a
+ rem   mingw32-make Makefile libtoaru
 
 rem            Build LIBC
 rem cd ../libc
 rem  call BuildLibC
-
 
 echo              Build MODULES
     
@@ -187,7 +187,7 @@ if errorlevel 1 goto err_done
   cd ../bin
     del krnl32.exe
   cd ./kernel    
-     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o  ringbuffer.o  pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o  ../libm.dll -L../   -lc
+     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o  ringbuffer.o  pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o -L../ -lm  -lc
 
 rem ********************************************************************
  
@@ -205,13 +205,12 @@ cd ../../apps
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -c  -I../base/usr/include  -o ../bin/apps/getty.o getty.c  
     ld   -Tlink.ld   -nostdlib -nostdinc -o ../bin/apps/getty.exe  ../bin/apps/getty.o  -L../bin/ -lc
 
-
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/login.o login.c
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/auth.o ../lib/auth.c
     ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/login.exe  ../bin/apps/login.o ../bin/apps/auth.o  -L../bin/ -lc
 
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin   -I../base/usr/include -c  -o ../bin/apps/sh.o sh.c
-    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/sh.exe  ../bin/apps/sh.o ../libm.dll -L../bin/  -lc
+    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/sh.exe  ../bin/apps/sh.o  -L../bin  -lm -lc
 
  rem   mingw32-make Makefile all
 
@@ -224,10 +223,11 @@ cd ../bin
  
     objcopy  -O elf32-i386 krnl32.exe ../cdboot/krnl32
     objcopy  -O elf32-i386 apps/init.exe ../cdboot/bin/init
- rem   objcopy  -O binary ../cdboot/bin/init ../cdboot/bin/init.bin
- rem   objcopy  -O elf32-i386 apps/hello.exe ../cdboot/bin/hello
- rem   objcopy  -O elf32-i386 apps/getty.exe ../cdboot/bin/getty
- rem   objcopy  -O elf32-i386 apps/login.exe ../cdboot/bin/login
+    objcopy  -O elf32-i386 apps/hello.exe ../cdboot/bin/hello
+    objcopy  -O elf32-i386 apps/getty.exe ../cdboot/bin/getty
+    objcopy  -O elf32-i386 apps/login.exe ../cdboot/bin/login
+    objcopy  -O elf32-i386 apps/sh.exe ../cdboot/bin/sh
+
 
 if errorlevel 1 goto err_done
  

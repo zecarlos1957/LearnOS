@@ -1,24 +1,32 @@
+# auth.o \
+#	button.o \
+#	confreader.o \
+#	decor-fancy.o \
+#	decorations.o \
+#	graphics.o \
+#	icon_cache.o \
+#	jpeg.o \
+#	json.o \
+#	kbd.o \
+#	markup.o \
+#	menu.o \
+#	pex.o \
+#	rline.o \
+#	rline_exp.o \
+#	sdf.o \
+#	termemu.o \
+#	textregion.o \
+#	yutani.o \
+#	hashmap.o \
+#	list.o \
+#	tree.o
+
 
 
 COBJS = auth.o \
-	button.o \
-	confreader.o \
-	decor-fancy.o \
-	decorations.o \
-	graphics.o \
-	icon_cache.o \
-	jpeg.o \
-	json.o \
 	kbd.o \
-	markup.o \
-	menu.o \
-	pex.o \
 	rline.o \
 	rline_exp.o \
-	sdf.o \
-	termemu.o \
-	textregion.o \
-	yutani.o \
 	hashmap.o \
 	list.o \
 	tree.o
@@ -34,14 +42,14 @@ libtoaru: ../bin/libtoaru.dll
 
 
 ../bin/libtoaru.dll:  $(COBJS)
-	$(CC) -nodefaultlibs -o $@ $(CFLAGS) -shared  $^ ../bin/krnl32.exe   
+	$(CC) -nodefaultlibs -o $@ $(CFLAGS) -shared  $^    -L../bin -lc
 
 
 %.o: %.c
 	@$(CC) -c $(CFLAGS) $< -o $@
 
 ../bin/libm.a: $(COBJS)
-	@$(AR) rcs $@ $+
+	@$(AR) rcs $@ $+ 
 
 clean:
 	@rm *.o
