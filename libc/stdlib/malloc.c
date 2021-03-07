@@ -170,7 +170,7 @@ static void spin_unlock(int volatile * lock) {
 	__sync_lock_release(lock);
 }
 
- /*
+ 
 void * __attribute__ ((malloc)) malloc(uintptr_t size) {
 	spin_lock(&mem_lock, __FUNCTION__);
 	void * ret = klmalloc(size);
@@ -204,7 +204,7 @@ void free(void * ptr) {
 	klfree(ptr);
 	spin_unlock(&mem_lock);
 }
- */
+
 
 /* Bin management {{{ */
 

@@ -18,23 +18,23 @@ COBJS = auth.o \
 	sdf.o \
 	termemu.o \
 	textregion.o \
-	yutani.o 
-#	hashmap.o \
-#	list.o \
-#	tree.o
+	yutani.o \
+	hashmap.o \
+	list.o \
+	tree.o
 
 CC = ccache gcc
 LD = ccache ld
 AR = ccache ar
 
 WARNINGS = -Wall 
-CFLAGS = $(WARNINGS) -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -DNO_SSE -std=c99 -m32  -I../base/usr/include   -Ofast
+CFLAGS = $(WARNINGS) -nostdlib -nostdinc -fno-builtin  -DNO_SSE -std=c99 -m32  -I../base/usr/include   -Ofast
 
 libtoaru: ../bin/libtoaru.dll
 
 
 ../bin/libtoaru.dll:  $(COBJS)
-	$(CC) -nodefaultlibs -o $@ $(CFLAGS) -shared  $^ ../bin/krnl32.exe  ../bin/libc.dll 
+	$(CC) -nodefaultlibs -o $@ $(CFLAGS) -shared  $^ ../bin/krnl32.exe   
 
 
 %.o: %.c

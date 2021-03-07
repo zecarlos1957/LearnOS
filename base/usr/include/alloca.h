@@ -7,7 +7,7 @@ _Begin_C_Header
 #ifdef __GNUC__
 #define alloca(size) __builtin_alloca(size)
 #else
-#error alloca requested but this isn't gcc
+#error alloca requested but this is not gcc
 #endif
 
 _End_C_Header

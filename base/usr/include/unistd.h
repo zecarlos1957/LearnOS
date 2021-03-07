@@ -95,6 +95,6 @@ extern pid_t getpgid(pid_t);
 
 extern unsigned int alarm(unsigned int seconds);
 
-extern void *sbrk(intptr_t increment);
+extern void *sbrk(uintptr_t increment);
 
 _End_C_Header

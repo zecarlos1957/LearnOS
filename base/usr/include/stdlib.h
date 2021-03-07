@@ -8,10 +8,10 @@ _Begin_C_Header
 extern void exit(int status);
 extern char * getenv(const char *name);
 
-extern void *malloc(size_t size);
+extern void *malloc(uintptr_t size);
 extern void free(void *ptr);
-extern void *calloc(size_t nmemb, size_t size);
-extern void *realloc(void *ptr, size_t size);
+extern void *calloc(uintptr_t nmemb, uintptr_t size);
+extern void *realloc(void *ptr, uintptr_t size);
 
 extern void qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void*,const void*));
 

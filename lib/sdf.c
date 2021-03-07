@@ -16,7 +16,7 @@
 #include <toaru/spinlock.h>
 #include <toaru/decodeutf8.h>
 
-#include "apps/ununicode.h"
+#include "../apps/ununicode.h"
 
 #define BASE_WIDTH 50
 #define BASE_HEIGHT 50

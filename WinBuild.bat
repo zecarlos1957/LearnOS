@@ -21,9 +21,9 @@ echo              Build Boot Loader
 
 del learnos.iso
 
-cd ./loader
+rem cd ./loader
  rem   call BuildBoot.bat
-cd ../
+rem cd ../
 
 rem goto RUN
 
@@ -109,9 +109,9 @@ cd ../
     as tss.s -o ../bin/kernel/_tss.o
     as user.s -o ../bin/kernel/_user.o
 cd ../lib
-    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/kernel/hashmap.o hashmap.c
-    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/kernel/tree.o tree.c
-    gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/kernel/list.o list.c
+ rem   gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/kernel/hashmap.o hashmap.c
+ rem   gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/kernel/tree.o tree.c
+ rem   gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/kernel/list.o list.c
 cd ../util
  rem   gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/lm.o lm.c
  rem   gcc -ffreestanding  -D_KERNEL_ -I../base/usr/include -c -o ../bin/netinit.o netinit.c
@@ -123,12 +123,13 @@ if errorlevel 1 goto err_done
 rem ********************************************************************
 
 
-rem cd ../lib
-rem    call BuildLib
+ cd ../lib
+    mingw32-make Makefile clean
+    mingw32-make Makefile ../bin/libm.a
 
 rem            Build LIBC
- cd ../libc
-  call BuildLibC
+rem cd ../libc
+rem  call BuildLibC
 
 
 echo              Build MODULES
@@ -186,7 +187,7 @@ if errorlevel 1 goto err_done
   cd ../bin
     del krnl32.exe
   cd ./kernel    
-     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o hashmap.o list.o ringbuffer.o tree.o pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o  -L../ -lc
+     ld  -T../../kernel/link.ld -M -Map ../mapfile.map  -shared -o ../krnl32.exe compiler.o _gdt.o _idt.o _irq.o _isr.o _task.o _tss.o _user.o gdt.o idt.o irq.o isr.o entry.o cmos.o fpu.o pci.o timer.o bitset.o  ringbuffer.o  pipe.o ramdisk.o tty.o unixpipe.o vfs.o alloc.o mem.o shm.o args.o elf.o kprintf.o lgcc.o logging.o multiboot.o tokenize.o ubsan.o symbol_table.o module.o panic.o process.o signal.o syscall.o system.o task.o version.o libc.o spin.o main.o  ../libm.dll -L../   -lc
 
 rem ********************************************************************
  
@@ -195,19 +196,22 @@ echo              Build APPLICATIONS
 cd ../../apps
 :Bapp
 
-    gcc   -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/init.o init.c  
-    ld   -Tlink.ld   -nostdlib -nostdinc -o ../bin/apps/init.exe  ../bin/apps/init.o ../bin/krnl32.exe -L../bin/ -llibc
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/init.o init.c  
+    ld   -Tlink.ld   -nostdlib -nostdinc -o ../bin/apps/init.exe  ../bin/apps/init.o  -L../bin/ -lc
 
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -c  -I../base/usr/include  -o ../bin/apps/hello.o hello.c  
-    ld   -Tlink.ld  -nostdlib -nostdinc -o ../bin/apps/hello.exe  ../bin/apps/hello.o ../bin/krnl32.exe -L../bin/ -llibc
+    ld   -Tlink.ld  -nostdlib -nostdinc -o ../bin/apps/hello.exe  ../bin/apps/hello.o  -L../bin/ -lc
 
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -c  -I../base/usr/include  -o ../bin/apps/getty.o getty.c  
-    ld   -Tlink.ld   -nostdlib -nostdinc -o ../bin/apps/getty.exe  ../bin/apps/getty.o ../bin/krnl32.exe -L../bin/ -llibc
+    ld   -Tlink.ld   -nostdlib -nostdinc -o ../bin/apps/getty.exe  ../bin/apps/getty.o  -L../bin/ -lc
 
 
-rem    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/init.o init.c
- rem   gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/auth.o ../lib/auth.c
- rem   ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/login.exe   ../bin/krnl32.exe -L../bin/ -llibc
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/login.o login.c
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/auth.o ../lib/auth.c
+    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/login.exe  ../bin/apps/login.o ../bin/apps/auth.o  -L../bin/ -lc
+
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin   -I../base/usr/include -c  -o ../bin/apps/sh.o sh.c
+    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/sh.exe  ../bin/apps/sh.o ../libm.dll -L../bin/  -lc
 
  rem   mingw32-make Makefile all
 

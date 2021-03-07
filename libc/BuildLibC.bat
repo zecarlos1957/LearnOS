@@ -177,6 +177,6 @@ rem ********************************************************************
  echo             Link shared LIBC 
 
  cd ../bin/libc
-    for %%f in (*.o) do ar rcs ../liblibc.a %%f
+    for %%f in (*.o) do ar rcs ../libc.a %%f
   rem      for %%f in (*.o) do gcc -ffreestanding -nostdlib -nostdinc -shared -o  ../liblibc.so %%f
  cd ../
