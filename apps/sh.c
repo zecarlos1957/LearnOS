@@ -1758,7 +1758,7 @@ int _main(int argc, char ** argv) {
 	sort_commands();
 
 	while (1) {
-/**		char buffer[LINE_LEN] = {0};
+		char buffer[LINE_LEN] = {0};
 
 		list_t * keys = hashmap_keys(job_hash);
 		foreach(node, keys) {
@@ -1798,7 +1798,7 @@ int _main(int argc, char ** argv) {
 		} while (b);
 		if (ret >= 0) last_ret = ret;
 		rline_scroll = 0;
-*/	}
+	}
 
 	return 0;
 }

@@ -37,7 +37,7 @@ int exec_elf(char * path, fs_node_t * file, int argc, char ** argv, char ** env,
 		read_fs(file, header.e_phoff + x, sizeof(Elf32_Phdr), (uint8_t *)&phdr);
 		if (phdr.p_type == PT_DYNAMIC) {
 			/* Dynamic */
-			close_fs(file);
+		 	close_fs(file);
 
 			/* Find interpreter? */
 			debug_print(INFO, "Dynamic executable");

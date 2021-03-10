@@ -170,7 +170,7 @@ void * module_load_direct(void * blob, size_t length) {
 	}
 
 	int undefined = 0;
-char name2[128];
+
 	hashmap_t * local_symbols = hashmap_create(10);
 	{
 		Elf32_Sym * table = (Elf32_Sym *)((uintptr_t)target + sym_shdr->sh_offset);
@@ -261,7 +261,6 @@ char name2[128];
 		debug_print(ERROR, "dependencies properly with MODULE_DEPENDS.");
 		goto mod_load_error;
 	}
-char *nm;
     {
         for (unsigned int x = 0; x < (unsigned int)target->e_shentsize * target->e_shnum; x += target->e_shentsize)
         {
@@ -295,7 +294,6 @@ char *nm;
                         ptr = (uintptr_t *)(table->r_offset + rs->sh_addr);
                         addend = *ptr;
                         place  = (uintptr_t)ptr;
-nm=name;
                         if (!hashmap_get(symboltable, name))
                         {
                             if (!hashmap_get(local_symbols, name))
@@ -329,8 +327,6 @@ nm=name;
                             debug_print(ERROR, "Unsupported relocation type: %d", ELF32_R_TYPE(table->r_info));
                             goto mod_load_error;
                     }
-// if(strcmp(nm,"_malloc")==0)
-//          debug_print(INFO, "%s %x %x %x", nm, symbol, place, *ptr);
                     table++;
                 }
             }

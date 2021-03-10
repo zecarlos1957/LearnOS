@@ -177,6 +177,11 @@ typedef struct {
 #define STB_LOPROC 13
 #define STB_HIPROC 15
 
+#define SHF_WRITE       0x1
+#define SHF_ALLOC       0x2
+#define SHF_EXECINSTR   0x4
+#define SHF_MASKPROC    0xf0000000
+
 #define STT_NOTYPE  0
 #define STT_OBJECT  1
 #define STT_FUNC    2

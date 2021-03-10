@@ -49,7 +49,7 @@ int abs(int j) {
 double pow(double x, double y) {
 	MATH;
 	double out;
-	asm volatile (
+	__asm__ __volatile__ (
 		"fyl2x;"
 		"fld %%st;"
 		"frndint;"
@@ -80,7 +80,7 @@ double fmod(double x, double y) {
 	MATH;
 
 	long double out;
-	asm volatile (
+	__asm__ __volatile__ (
 		"1: fprem;" /* Partial remainder */
 		"   fnstsw %%ax;" /* store status word */
 		"   sahf;" /* store AX (^ FPU status) into flags */
@@ -490,7 +490,7 @@ double tan(double x) {
 	float out;
 	float _x = x;
 	float one;
-	asm volatile (
+	__asm__ __volatile__ (
 		"fld %2\n"
 		"fptan\n"
 		"fstp %1\n"
@@ -505,7 +505,7 @@ double atan2(double y, double x) {
 	float out;
 	float _x = x;
 	float _y = y;
-	asm volatile (
+	__asm__ __volatile__ (
 		"fld %1\n"
 		"fld %2\n"
 		"fpatan\n"

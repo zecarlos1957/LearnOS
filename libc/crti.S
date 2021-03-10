@@ -1,6 +1,6 @@
 .global __init
 .section .init
-__init:
+ __init:
 	push %ebp
 
 .global __fini

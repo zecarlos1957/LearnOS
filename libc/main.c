@@ -31,9 +31,9 @@ void _exit(int val){
 }
 
 __attribute__((constructor))
-static void _libc_init(void) {
+static void _libc_init(void)
+{
 	__stdio_init_buffers();
-
 	unsigned int x = 0;
 	unsigned int nulls = 0;
 	for (x = 0; 1; ++x) {
@@ -57,7 +57,7 @@ static void _libc_init(void) {
 		environ[3] = NULL;
 		_environ_size = 4;
 	} else {
-		/* Find actual size */
+		// Find actual size  
 		int size = 0;
 
 		char ** tmp = environ;
@@ -69,7 +69,7 @@ static void _libc_init(void) {
 		if (size < 4) {
 			_environ_size = 4;
 		} else {
-			/* Multiply by two */
+			// Multiply by two  
 			_environ_size = size * 2;
 		}
 
@@ -91,12 +91,18 @@ static void _libc_init(void) {
 	_argv_0 = __get_argv()[0];
 }
 
-void pre_main(int (*main)(int,char**), int argc, char * argv[]) {
+void pre_main(int (*_main)(int,char**), int argc, char * argv[]) {
 	if (!__get_argv()) {
 		/* Statically loaded, must set __argv so __get_argv() works */
 		__argv = argv;
 	}
 	_init();
-	exit(main(argc, argv));
+	exit(_main(argc, argv));
 }
 
+
+int DllMainCRTStartup(long Hinst, unsigned int reason, void* rsvd)
+//int DllMain(long Hinst, unsigned int reason, void* rsvd)
+{
+    return 0;
+}

@@ -20,4 +20,5 @@ int system(const char * command) {
 		waitpid(pid, &status, 0);
 		return WEXITSTATUS(status);
 	}
+	return 0;
 }

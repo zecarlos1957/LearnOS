@@ -6,11 +6,11 @@
 
 static char * error = "dlopen functions not available";
 
-void * __attribute__((weak)) dlopen(const char * filename, int flags) {
+void *  dlopen(const char * filename, int flags) {
 	return NULL;
 }
 
-int __attribute__((weak)) dlclose(void * handle) {
+int  dlclose(void * handle) {
 	return -1;
 }
 

@@ -3,9 +3,9 @@
 #ifndef _LIMITS_H
 #define _LIMITS_H
 
-#ifndef __STRICT_ANSI__
+//#ifndef __STRICT_ANSI__
 # define PATH_MAX	260
-#endif
+//#endif
 
 #define CHAR_BIT	8
 #define MB_LEN_MAX	2
