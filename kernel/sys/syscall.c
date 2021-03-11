@@ -125,7 +125,7 @@ static int sys_waitpid(int pid, int * status, int options) {
 
 static int sys_open(const char * file, int flags, int mode) {
 	PTR_VALIDATE(file);
-	debug_print(NOTICE, "open(%s) flags=0x%x; mode=0x%x", file, flags, mode);
+//	debug_print(NOTICE, "open(%s) flags=0x%x; mode=0x%x", file, flags, mode);
 	fs_node_t * node = kopen((char *)file, flags);
 
 	int access_bits = 0;
@@ -1078,6 +1078,12 @@ static int sys_getpgid(pid_t pid) {
 	return proc->job;
 }
 
+static int sys_dbprint(const char *title, int line, const char *msg)
+{
+	_debug_print(title, line, NOTICE, msg);
+	return 0;
+}
+
 /*
  * System Call Internals
  */
@@ -1138,6 +1144,7 @@ static int (*syscalls[])() = {
 	[SYS_SETSID]       = sys_setsid,
 	[SYS_SETPGID]      = sys_setpgid,
 	[SYS_GETPGID]      = sys_getpgid,
+	[SYS_DBPRINT]      = sys_dbprint
 };
 
 uint32_t num_syscalls = sizeof(syscalls) / sizeof(*syscalls);

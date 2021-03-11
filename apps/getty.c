@@ -20,6 +20,10 @@ int _main(int argc, char * argv[]) {
 	int fd_serial;
 	char * file = "/dev/ttyS0";
 	char * user = NULL;
+<<<<<<< Updated upstream
+=======
+	dbprint(__FILE__, __LINE__, "TESTE+ ");
+>>>>>>> Stashed changes
 
 	if (getuid() != 0) {
 		fprintf(stderr, "%s: only root can do that\n", argv[0]);
