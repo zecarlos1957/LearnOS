@@ -184,8 +184,8 @@ int exec_elf(char * path, fs_node_t * file, int argc, char ** argv, char ** env,
 			current_process->fds->entries[i] = NULL;
 		}
 	}
-	  debug_print(WARNING, "User land entry %x ", entry );
-  debug_print(WARNING, "base_addr %x heap %x stack %x", base_addr, current_process->image.heap_actual, current_process->image.user_stack);
+///	  debug_print(WARNING, "User land entry %x ", entry );
+  debug_print(WARNING, "base %x heap %x stack %x entry %x", base_addr, current_process->image.heap_actual, current_process->image.user_stack, entry);
 	/* Go go go */
 	enter_user_jmp(entry, argc, argv_, USER_STACK_TOP);
 	

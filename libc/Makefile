@@ -150,7 +150,7 @@ AR = ccache ar
 AS = ccache as
 
 WARNINGS = -Wall 
-CFLAGS = $(WARNINGS) -ffreestanding -nostdlib -nostdinc -fno-builtin -D__toaru__ -std=c99 -m32 -I../base/usr/include -Ofast
+CFLAGS = $(WARNINGS) -ffreestanding -nostdlib -nostdinc -fno-builtin -D__toaru__   -I../base/usr/include -Ofast
 
 
 
@@ -175,5 +175,7 @@ libk: $(COBJS)
 	@$(AS)   $< -o $@
 
 clean:
-	rm ./*/*.o
-	rm *.o
+	@rm ./*/*.o
+	@rm *.o
+	@rm ../bin/libc.a
+	@rm ../bin/libc.dll

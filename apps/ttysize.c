@@ -107,6 +107,6 @@ int _main(int argc, char * argv[]) {
 	if (!quiet) {
 		fprintf(stderr, "%dx%d\n", width, height);
 	}
-while(1);
+
 	return 0;
 }

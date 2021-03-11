@@ -67,11 +67,11 @@ static uint32_t write_unixpipe(fs_node_t * node, uint64_t offset, uint32_t size,
 static void close_read_pipe(fs_node_t * node) {
 	struct unix_pipe * self = node->device;
 
-	debug_print(NOTICE, "Closing read end of pipe.");
+///	debug_print(NOTICE, "Closing read end of pipe.");
 
 	self->read_closed = 1;
 	if (self->write_closed) {
-		debug_print(NOTICE, "Both ends now closed, should clean up.");
+//		debug_print(NOTICE, "Both ends now closed, should clean up.");
 	} else {
 		ring_buffer_interrupt(self->buffer);
 	}

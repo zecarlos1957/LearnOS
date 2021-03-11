@@ -124,13 +124,13 @@ rem            Build LIBC
  cd ../libc
  rem    mingw32-make Makefile clean
     mingw32-make Makefile ../bin/libc.a
-    mingw32-make Makefile ../bin/libc.dll
+ rem   mingw32-make Makefile ../bin/libc.dll
  rem  call BuildLibC
    
  cd ../lib
  rem   mingw32-make Makefile clean
     mingw32-make Makefile ../bin/libm.a
-    mingw32-make Makefile toaru
+ rem   mingw32-make Makefile toaru
 
 
 echo              Build MODULES
@@ -209,18 +209,18 @@ cd ../../apps
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/getty.o getty.c  
     ld   -Tlink2.ld   -nostdlib -nostdinc -o ../bin/apps/getty.exe  ../bin/apps/getty.o  -L../bin/ -lc
 
-    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -std=c99 -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/login.o login.c
-    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -std=c99 -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/auth.o ../lib/auth.c
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/login.o login.c
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -Ofast -I../base/usr/include -c -o ../bin/apps/auth.o ../lib/auth.c
     ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/login.exe  ../bin/apps/login.o ../bin/apps/auth.o  -L../bin/ -lc
 
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/sh.o sh.c
     ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/sh.exe  ../bin/apps/sh.o  -L../bin  -lm -lc
 
-    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -c  -I../base/usr/include  -o ../bin/apps/stty.o stty.c
-    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/stty.exe  ../bin/apps/stty.o  -L../bin  -lc
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin  -m32 -Ofast -c  -I../base/usr/include  -o ../bin/apps/stty.o stty.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/stty.exe  ../bin/apps/stty.o  -L../bin  -lc
 
-    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -c  -I../base/usr/include  -o ../bin/apps/ttysize.o ttysize.c
-    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/ttysize.exe  ../bin/apps/ttysize.o  -L../bin  -lc
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin  -m32 -Ofast -c  -I../base/usr/include  -o ../bin/apps/ttysize.o ttysize.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/ttysize.exe  ../bin/apps/ttysize.o  -L../bin  -lc
 
     gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/stat.o stat.c
     ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/stat.exe  ../bin/apps/stat.o  -L../bin   -lc
@@ -231,7 +231,7 @@ cd ../../apps
 
 
 
-    gcc   -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/linker.o ../linker/linker.c
+    gcc  -ffreestanding  -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/linker.o ../linker/linker.c
     ld   -T../linker/link.ld -nostdlib -nostdinc -shared -o ../bin/apps/linker.dll  ../bin/apps/linker.o  -L../bin  -lm -lc
 
 
@@ -266,7 +266,7 @@ cd ../
 :mkiso
 
  rem   mkisofs -R -b boot/isoboot.bin -no-emul-boot  -o learnos.iso  cdboot
-    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 24 -boot-info-table   -o learnos.iso  cdboot
+    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  cdboot
 
 
    D:/programas/oracle/virtualbox/vboxmanage startvm LearnOS
