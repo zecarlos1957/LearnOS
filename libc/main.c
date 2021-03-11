@@ -30,12 +30,19 @@ void _exit(int val){
 	__builtin_unreachable();
 }
 
-__attribute__((constructor))
-static void _libc_init(void)
+
+//__attribute__((constructor))
+extern void _libc_init(void)
 {
 	__stdio_init_buffers();
 	unsigned int x = 0;
 	unsigned int nulls = 0;
+	if (!__get_argv()) {
+		/* Statically loaded, must set __argv so __get_argv() works */
+		__argv = malloc(sizeof(char *) * 2);
+		__argv[0] = NULL;
+		__argv[1] = NULL;
+	}
 	for (x = 0; 1; ++x) {
 		if (!__get_argv()[x]) {
 			++nulls;
@@ -90,6 +97,7 @@ static void _libc_init(void)
 	if (getenv("__LIBC_DEBUG")) __libc_debug = 1;
 	_argv_0 = __get_argv()[0];
 }
+
 
 void pre_main(int (*_main)(int,char**), int argc, char * argv[]) {
 	if (!__get_argv()) {

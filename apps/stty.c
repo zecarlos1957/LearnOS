@@ -362,6 +362,6 @@ int _main(int argc, char * argv[]) {
 	}
 
 	tcsetattr(STDERR_FILENO, TCSAFLUSH, &t);
-while(1);
+
 	return 0;
 }

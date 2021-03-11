@@ -217,16 +217,23 @@ cd ../../apps
     ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/sh.exe  ../bin/apps/sh.o  -L../bin  -lm -lc
 
     gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -c  -I../base/usr/include  -o ../bin/apps/stty.o stty.c
-    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/stty.exe  ../bin/apps/stty.o  -L../bin  -lm -lc
+    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/stty.exe  ../bin/apps/stty.o  -L../bin  -lc
 
-    gcc   -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/stat.o stat.c
-    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/stat.exe  ../bin/apps/stat.o  -L../bin  -lm -lc
+    gcc  -ffreestanding -nostdlib -nostdinc -fno-builtin -std=c99 -m32 -Ofast -c  -I../base/usr/include  -o ../bin/apps/ttysize.o ttysize.c
+    ld   -Tlink.ld -nostdlib -nostdinc -o ../bin/apps/ttysize.exe  ../bin/apps/ttysize.o  -L../bin  -lc
+
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/stat.o stat.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/stat.exe  ../bin/apps/stat.o  -L../bin   -lc
+
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/uname.o uname.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/uname.exe  ../bin/apps/uname.o  -L../bin   -lc
+
+
+
 
     gcc   -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/linker.o ../linker/linker.c
     ld   -T../linker/link.ld -nostdlib -nostdinc -shared -o ../bin/apps/linker.dll  ../bin/apps/linker.o  -L../bin  -lm -lc
 
-    gcc   -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/migrate.o migrate.c
-    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/migrate.exe  ../bin/apps/migrate.o  -L../bin  -lm -lc
 
  rem   mingw32-make Makefile all
 
@@ -245,9 +252,10 @@ cd ../bin
     objcopy  -O elf32-i386 apps/getty.exe ../cdboot/bin/getty
     objcopy  -O elf32-i386 apps/login.exe ../cdboot/bin/login
     objcopy  -O elf32-i386 apps/sh.exe ../cdboot/bin/sh
-    objcopy  -O elf32-i386 apps/stty.exe ../cdboot/usr/bin/stty
+    objcopy  -O elf32-i386 apps/stty.exe ../cdboot/bin/stty
+    objcopy  -O elf32-i386 apps/ttysize.exe ../cdboot/usr/bin/ttysize
     objcopy  -O elf32-i386 apps/stat.exe ../cdboot/usr/bin/stat
-    objcopy  -O elf32-i386 apps/migrate.exe ../cdboot/bin/migrate
+    objcopy  -O elf32-i386 apps/uname.exe ../cdboot/usr/bin/uname
 
 
 if errorlevel 1 goto err_done

@@ -96,8 +96,21 @@ int comparator(const void * c1, const void * c2) {
 	return strcmp(d1->d_name, d2->d_name);
 }
 
+extern char ** environ;
+extern int _environ_size;
+extern char * _argv_0;
+extern int __libc_debug;
+char ** __argv;
+extern void __stdio_init_buffers(void);
+extern char ** __get_argv(void);
+
+//__attribute__((constructor))
+extern void _libc_init(void);
+
+
 int _main(int argc, char * argv[]) {
 	/* Initialize stdin/out/err */
+	_libc_init();
 	set_console();
 
 	// Get directory listing for /etc/startup.d  

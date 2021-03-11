@@ -1702,7 +1702,7 @@ int _main(int argc, char ** argv) {
 	gethost();
 
 	install_commands();
-
+ 
 	if (argc > 1) {
 		int c;
 		while ((c = getopt(argc, argv, "Rc:v?")) != -1)
@@ -1730,7 +1730,7 @@ int _main(int argc, char ** argv) {
 			} 
 		}
 	}
-
+ 
 	if (optind < argc) {
 		shell_interactive = 2;
 		FILE * f = fopen(argv[optind],"r");
