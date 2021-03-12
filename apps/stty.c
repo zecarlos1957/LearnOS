@@ -10,6 +10,7 @@
 #include <ctype.h>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <debug.h>
 
 static int hide_defaults = 1;
 static int printed = 0;

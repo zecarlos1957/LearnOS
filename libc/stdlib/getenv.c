@@ -1,13 +1,15 @@
 #include <string.h>
 #include <stdlib.h>
 
+
 extern char ** environ;
 
 
 char * getenv(const char *name) {
 	char ** e = environ;
-	if(!environ)return NULL; /// ERRROR falha _libc_init
-	
+	if(!environ){
+    	return NULL;
+	}
 	size_t len = strlen(name);
 	while (*e) {
 		char * t = *e;

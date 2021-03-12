@@ -5,6 +5,7 @@
 #include <syscall.h>
 #include <syscall_nums.h>
 
+
 DEFN_SYSCALL1(exit,  SYS_EXT, int);
 DEFN_SYSCALL2(sleepabs,  SYS_SLEEPABS, unsigned long, unsigned long);
 
@@ -32,7 +33,7 @@ void _exit(int val){
 
 
 //__attribute__((constructor))
-extern void _libc_init(void)
+extern char** _libc_init(void)
 {
 	__stdio_init_buffers();
 	unsigned int x = 0;
@@ -40,7 +41,7 @@ extern void _libc_init(void)
 	if (!__get_argv()) {
 		/* Statically loaded, must set __argv so __get_argv() works */
 		__argv = malloc(sizeof(char *) * 2);
-		__argv[0] = NULL;
+		__argv[0] = NULL; 
 		__argv[1] = NULL;
 	}
 	for (x = 0; 1; ++x) {
@@ -94,8 +95,11 @@ extern void _libc_init(void)
 
 		environ = new_environ;
 	}
+//	dprint("ENVIRON 0x%x ARGV 0x%x",environ, __argv);
 	if (getenv("__LIBC_DEBUG")) __libc_debug = 1;
 	_argv_0 = __get_argv()[0];
+	
+	return environ;
 }
 
 

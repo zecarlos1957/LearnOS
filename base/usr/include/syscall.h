@@ -123,6 +123,8 @@ DECL_SYSCALL1(getpgid,int);
 DECL_SYSCALL0(geteuid);
 DECL_SYSCALL2(lstat, char *, void *);
 DECL_SYSCALL4(fswait3, int, int*, int, int*);
+//DECL_SYSCALL3(dbprint, const char*, int, const char*);
+
 
 _End_C_Header
 

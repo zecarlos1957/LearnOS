@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <debug.h>
+
 extern char ** environ;
 extern int _environ_size;
 
@@ -54,6 +56,8 @@ int putenv(char * string) {
 	*c = '\0';
 
 	int s = strlen(name);
+	
+	dprint("SET ENVIRON %s",string);
 
 	int i;
 	for (i = 0; i < (_environ_size - 1) && environ[i]; ++i) {
@@ -78,7 +82,6 @@ int putenv(char * string) {
 		_environ_size = _new_environ_size;
 		environ = new_environ;
 	}
-
 	environ[i] = string;
 	return 0;
 }

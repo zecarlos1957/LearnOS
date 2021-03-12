@@ -15,6 +15,7 @@ COBJS = assert/assert.o \
 	ctype/isxdigit.o \
 	ctype/tolower.o \
 	ctype/toupper.o \
+	debug/debug.o \
 	dirent/dir.o \
 	dirent/mkdir.o \
 	dlfcn/dlfcn.o \

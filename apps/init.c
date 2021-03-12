@@ -39,6 +39,8 @@
 #include <unistd.h>
 #include <wait.h>
 #include <sys/wait.h>
+#include <debug.h>
+
 
 #define INITD_PATH "/etc/startup.d"
 
@@ -101,18 +103,20 @@ extern int _environ_size;
 extern char * _argv_0;
 extern int __libc_debug;
 char ** __argv;
-extern void __stdio_init_buffers(void);
+ 
 extern char ** __get_argv(void);
 
 //__attribute__((constructor))
-extern void _libc_init(void);
-
+extern char** _libc_init(void);
+extern int setenv(const char *name, const char *value, int overwrite);
 
 int _main(int argc, char * argv[]) {
+    dprint("args %s %d", argv[0],argc);
 	/* Initialize stdin/out/err */
 	_libc_init();
 	set_console();
-
+//	setenv("USER","Jose",1);
+//	dprint("ENVIRON  %s", environ[0]);
 	// Get directory listing for /etc/startup.d  
 	int initd_dir = syscall_open(INITD_PATH, 0, 0);
 	if (initd_dir < 0) {

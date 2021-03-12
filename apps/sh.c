@@ -40,6 +40,8 @@
 #include <toaru/rline.h>
 #include <toaru/rline_exp.h>
 
+#include <debug.h>
+
 #ifndef environ
 extern char **environ;
 #endif
@@ -1687,7 +1689,13 @@ void source_eshrc(void) {
 	run_script(f);
 }
 
+extern int _environ_size;
+extern char **environ;
+extern char **__get_argv();
+
+
 int _main(int argc, char ** argv) {
+    dprint("args %s %d", argv[0],argc);
 
 	pid = getpid();
 

@@ -182,8 +182,8 @@ if errorlevel 1 goto err_done
     objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/mod/vgadbg.ko
     objcopy -O elf32-i386 ../bin/modules/vgalog.o ../cdboot/mod/vgalog.ko
 
-    objcopy -O elf32-i386 ../bin/toaru.dll ../cdboot/bin/toaru.so
-    objcopy -O elf32-i386 ../bin/libc.dll ../cdboot/bin/libc.so
+ rem   objcopy -O elf32-i386 ../bin/toaru.dll ../cdboot/bin/toaru.so
+rem    objcopy -O elf32-i386 ../bin/libc.dll ../cdboot/bin/libc.so
 
 
 if errorlevel 1 goto err_done
