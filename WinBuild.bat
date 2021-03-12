@@ -135,6 +135,7 @@ rem            Build LIBC
 
 echo              Build MODULES
     
+  
     
 cd ../modules
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/zero.o zero.c 
@@ -151,7 +152,7 @@ cd ../modules
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/ps2kbd.o ps2kbd.c
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/ps2mouse.o ps2mouse.c
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/lfbvideo.o lfbvideo.c
-rem    gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vbox.o vbox.c
+    gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vbox.o vbox.c
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgadbg.o vgadbg.c 
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vgalog.o vgalog.c
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/vidset.o vidset.c
@@ -160,27 +161,38 @@ rem    gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/portio.o portio.c
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/tarfs.o tarfs.c
     gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/xtest.o xtest.c
+    gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/dospart.o dospart.c
+    gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/e1000.o e1000.c
+    gcc -ffreestanding -nostdlib -nostdinc -fno-builtin -D_KERNEL_ -I../base/usr/include -c -o ../bin/modules/rtl.o rtl.c
 
 if errorlevel 1 goto err_done
 
-    objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/mod/zero.ko
-    objcopy -O elf32-i386 ../bin/modules/random.o ../cdboot/mod/random.ko
-    objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/mod/serial.ko
-    objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/mod/debug_sh.ko
-    objcopy -O elf32-i386 ../bin/modules/procfs.o ../cdboot/mod/procfs.ko
-    objcopy -O elf32-i386 ../bin/modules/tmpfs.o ../cdboot/mod/tmpfs.ko
-    objcopy -O elf32-i386 ../bin/modules/ata.o ../cdboot/mod/ata.ko
-    objcopy -O elf32-i386 ../bin/modules/ext2.o ../cdboot/mod/ext2.ko
-    objcopy -O elf32-i386 ../bin/modules/iso9660.o ../cdboot/mod/iso9660.ko
-    objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/mod/ps2kbd.ko
-    objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../cdboot/mod/ps2mouse.ko
-    objcopy -O elf32-i386 ../bin/modules/lfbvideo.o ../cdboot/mod/lfbvideo.ko
-    objcopy -O elf32-i386 ../bin/modules/packetfs.o ../cdboot/mod/packetfs.ko
-    objcopy -O elf32-i386 ../bin/modules/pcspkr.o ../cdboot/mod/pcspkr.ko
-    objcopy -O elf32-i386 ../bin/modules/portio.o ../cdboot/mod/portio.ko
-    objcopy -O elf32-i386 ../bin/modules/tarfs.o ../cdboot/mod/tarfs.ko
-    objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/mod/vgadbg.ko
-    objcopy -O elf32-i386 ../bin/modules/vgalog.o ../cdboot/mod/vgalog.ko
+     objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/mod/zero.ko
+     objcopy -O elf32-i386 ../bin/modules/random.o ../cdboot/mod/random.ko
+     objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/mod/serial.ko
+     objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/mod/debug_sh.ko
+     objcopy -O elf32-i386 ../bin/modules/procfs.o ../cdboot/mod/procfs.ko
+     objcopy -O elf32-i386 ../bin/modules/tmpfs.o ../cdboot/mod/tmpfs.ko
+     objcopy -O elf32-i386 ../bin/modules/ata.o ../cdboot/mod/ata.ko
+     objcopy -O elf32-i386 ../bin/modules/ext2.o ../cdboot/mod/ext2.ko
+     objcopy -O elf32-i386 ../bin/modules/iso9660.o ../cdboot/mod/iso9660.ko
+     objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/mod/ps2kbd.ko
+     objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../cdboot/mod/ps2mouse.ko
+     objcopy -O elf32-i386 ../bin/modules/lfbvideo.o ../cdboot/mod/lfbvideo.ko
+     objcopy -O elf32-i386 ../bin/modules/packetfs.o ../cdboot/mod/packetfs.ko
+     objcopy -O elf32-i386 ../bin/modules/pcspkr.o ../cdboot/mod/pcspkr.ko
+     objcopy -O elf32-i386 ../bin/modules/portio.o ../cdboot/mod/portio.ko
+     objcopy -O elf32-i386 ../bin/modules/tarfs.o ../cdboot/mod/tarfs.ko
+     objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/mod/vgadbg.ko
+     objcopy -O elf32-i386 ../bin/modules/vgalog.o ../cdboot/mod/vgalog.ko
+     objcopy -O elf32-i386 ../bin/modules/hda.o ../cdboot/mod/hda.ko
+     objcopy -O elf32-i386 ../bin/modules/snd.o ../cdboot/mod/snd.ko
+     objcopy -O elf32-i386 ../bin/modules/dospart.o ../cdboot/mod/dospart.ko
+     objcopy -O elf32-i386 ../bin/modules/e1000.o ../cdboot/mod/e1000.ko
+     objcopy -O elf32-i386 ../bin/modules/rtl.o ../cdboot/mod/rtl.ko
+     objcopy -O elf32-i386 ../bin/modules/vbox.o ../cdboot/mod/vbox.ko
+     objcopy -O elf32-i386 ../bin/modules/vidset.o ../cdboot/mod/vidset.ko
+     objcopy -O elf32-i386 ../bin/modules/xtest.o ../cdboot/mod/xtest.ko
 
  rem   objcopy -O elf32-i386 ../bin/toaru.dll ../cdboot/bin/toaru.so
 rem    objcopy -O elf32-i386 ../bin/libc.dll ../cdboot/bin/libc.so
