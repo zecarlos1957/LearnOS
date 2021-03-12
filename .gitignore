@@ -8,8 +8,9 @@ bin/
 doc/
 cdboot/krnl32
 cdboot/bin/
-cdboot/boot/
+cdboot/boot/grub/stage2_eltorito
 cdboot/mod/
+cdboot/usr/
 cdboot/loader/
 loader/*.o
 loader/*.exe
