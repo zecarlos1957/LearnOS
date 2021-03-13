@@ -21,6 +21,8 @@
 #include <sys/ioctl.h>
 #include <sys/fswait.h>
 
+#include <debug.h>
+
 static struct termios old;
 
 static void set_unbuffered() {
@@ -78,6 +80,8 @@ _done:
 }
 
 int _main(int argc, char * argv[]) {
+    dprint("ttysize %s",argv[1]);
+    
 	int width, height;
 	int opt;
 	int quiet = 0;

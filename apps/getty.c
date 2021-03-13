@@ -18,6 +18,7 @@
 #include <debug.h>
 
 int _main(int argc, char * argv[]) {
+    dprint("getty %s",argv[1]);
 	int fd_serial;
 	char * file = "/dev/ttyS0";
 	char * user = NULL;

@@ -167,35 +167,35 @@ cd ../modules
 
 if errorlevel 1 goto err_done
 
-     objcopy -O elf32-i386 ../bin/modules/zero.o ../cdboot/mod/zero.ko
-     objcopy -O elf32-i386 ../bin/modules/random.o ../cdboot/mod/random.ko
-     objcopy -O elf32-i386 ../bin/modules/serial.o ../cdboot/mod/serial.ko
-     objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../cdboot/mod/debug_sh.ko
-     objcopy -O elf32-i386 ../bin/modules/procfs.o ../cdboot/mod/procfs.ko
-     objcopy -O elf32-i386 ../bin/modules/tmpfs.o ../cdboot/mod/tmpfs.ko
-     objcopy -O elf32-i386 ../bin/modules/ata.o ../cdboot/mod/ata.ko
-     objcopy -O elf32-i386 ../bin/modules/ext2.o ../cdboot/mod/ext2.ko
-     objcopy -O elf32-i386 ../bin/modules/iso9660.o ../cdboot/mod/iso9660.ko
-     objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../cdboot/mod/ps2kbd.ko
-     objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../cdboot/mod/ps2mouse.ko
-     objcopy -O elf32-i386 ../bin/modules/lfbvideo.o ../cdboot/mod/lfbvideo.ko
-     objcopy -O elf32-i386 ../bin/modules/packetfs.o ../cdboot/mod/packetfs.ko
-     objcopy -O elf32-i386 ../bin/modules/pcspkr.o ../cdboot/mod/pcspkr.ko
-     objcopy -O elf32-i386 ../bin/modules/portio.o ../cdboot/mod/portio.ko
-     objcopy -O elf32-i386 ../bin/modules/tarfs.o ../cdboot/mod/tarfs.ko
-     objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../cdboot/mod/vgadbg.ko
-     objcopy -O elf32-i386 ../bin/modules/vgalog.o ../cdboot/mod/vgalog.ko
-     objcopy -O elf32-i386 ../bin/modules/hda.o ../cdboot/mod/hda.ko
-     objcopy -O elf32-i386 ../bin/modules/snd.o ../cdboot/mod/snd.ko
-     objcopy -O elf32-i386 ../bin/modules/dospart.o ../cdboot/mod/dospart.ko
-     objcopy -O elf32-i386 ../bin/modules/e1000.o ../cdboot/mod/e1000.ko
-     objcopy -O elf32-i386 ../bin/modules/rtl.o ../cdboot/mod/rtl.ko
-     objcopy -O elf32-i386 ../bin/modules/vbox.o ../cdboot/mod/vbox.ko
-     objcopy -O elf32-i386 ../bin/modules/vidset.o ../cdboot/mod/vidset.ko
-     objcopy -O elf32-i386 ../bin/modules/xtest.o ../cdboot/mod/xtest.ko
+     objcopy -O elf32-i386 ../bin/modules/zero.o ../base/mod/zero.ko
+     objcopy -O elf32-i386 ../bin/modules/random.o ../base/mod/random.ko
+     objcopy -O elf32-i386 ../bin/modules/serial.o ../base/mod/serial.ko
+     objcopy -O elf32-i386 ../bin/modules/debug_sh.o ../base/mod/debug_sh.ko
+     objcopy -O elf32-i386 ../bin/modules/procfs.o ../base/mod/procfs.ko
+     objcopy -O elf32-i386 ../bin/modules/tmpfs.o ../base/mod/tmpfs.ko
+     objcopy -O elf32-i386 ../bin/modules/ata.o ../base/mod/ata.ko
+     objcopy -O elf32-i386 ../bin/modules/ext2.o ../base/mod/ext2.ko
+     objcopy -O elf32-i386 ../bin/modules/iso9660.o ../base/mod/iso9660.ko
+     objcopy -O elf32-i386 ../bin/modules/ps2kbd.o ../base/mod/ps2kbd.ko
+     objcopy -O elf32-i386 ../bin/modules/ps2mouse.o ../base/mod/ps2mouse.ko
+     objcopy -O elf32-i386 ../bin/modules/lfbvideo.o ../base/mod/lfbvideo.ko
+     objcopy -O elf32-i386 ../bin/modules/packetfs.o ../base/mod/packetfs.ko
+     objcopy -O elf32-i386 ../bin/modules/pcspkr.o ../base/mod/pcspkr.ko
+     objcopy -O elf32-i386 ../bin/modules/portio.o ../base/mod/portio.ko
+     objcopy -O elf32-i386 ../bin/modules/tarfs.o ../base/mod/tarfs.ko
+     objcopy -O elf32-i386 ../bin/modules/vgadbg.o ../base/mod/vgadbg.ko
+     objcopy -O elf32-i386 ../bin/modules/vgalog.o ../base/mod/vgalog.ko
+     objcopy -O elf32-i386 ../bin/modules/hda.o ../base/mod/hda.ko
+     objcopy -O elf32-i386 ../bin/modules/snd.o ../base/mod/snd.ko
+     objcopy -O elf32-i386 ../bin/modules/dospart.o ../base/mod/dospart.ko
+     objcopy -O elf32-i386 ../bin/modules/e1000.o ../base/mod/e1000.ko
+     objcopy -O elf32-i386 ../bin/modules/rtl.o ../base/mod/rtl.ko
+     objcopy -O elf32-i386 ../bin/modules/vbox.o ../base/mod/vbox.ko
+     objcopy -O elf32-i386 ../bin/modules/vidset.o ../base/mod/vidset.ko
+     objcopy -O elf32-i386 ../bin/modules/xtest.o ../base/mod/xtest.ko
 
- rem   objcopy -O elf32-i386 ../bin/toaru.dll ../cdboot/bin/toaru.so
-rem    objcopy -O elf32-i386 ../bin/libc.dll ../cdboot/bin/libc.so
+ rem   objcopy -O elf32-i386 ../bin/toaru.dll ../base/bin/toaru.so
+rem    objcopy -O elf32-i386 ../bin/libc.dll ../base/bin/libc.so
 
 
 if errorlevel 1 goto err_done
@@ -240,6 +240,21 @@ cd ../../apps
     gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/uname.o uname.c
     ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/uname.exe  ../bin/apps/uname.o  -L../bin   -lc
 
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/migrate.o migrate.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/migrate.exe  ../bin/apps/migrate.o  -L../bin  -lm -lc
+
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/mkdir.o mkdir.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/mkdir.exe  ../bin/apps/mkdir.o  -L../bin   -lc
+
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/mount.o mount.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/mount.exe  ../bin/apps/mount.o  -L../bin   -lc
+
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/crc32.o crc32.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/crc32.exe  ../bin/apps/crc32.o  -L../bin   -lc
+
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/cat.o cat.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/cat.exe  ../bin/apps/cat.o  -L../bin   -lc
+
 
 
 
@@ -256,18 +271,24 @@ rem ***********************************************************************
 
 cd ../bin
  
-    objcopy  -O elf32-i386 apps/linker.dll ../cdboot/usr/lib/ld.so
+    objcopy  -O elf32-i386 apps/linker.dll ../base/usr/lib/ld.so
 
-    objcopy  -O elf32-i386 krnl32.exe ../cdboot/krnl32
-    objcopy  -O elf32-i386 apps/init.exe ../cdboot/bin/init
-    objcopy  -O elf32-i386 apps/hello.exe ../cdboot/bin/hello
-    objcopy  -O elf32-i386 apps/getty.exe ../cdboot/bin/getty
-    objcopy  -O elf32-i386 apps/login.exe ../cdboot/bin/login
-    objcopy  -O elf32-i386 apps/sh.exe ../cdboot/bin/sh
-    objcopy  -O elf32-i386 apps/stty.exe ../cdboot/bin/stty
-    objcopy  -O elf32-i386 apps/ttysize.exe ../cdboot/usr/bin/ttysize
-    objcopy  -O elf32-i386 apps/stat.exe ../cdboot/usr/bin/stat
-    objcopy  -O elf32-i386 apps/uname.exe ../cdboot/usr/bin/uname
+    objcopy  -O elf32-i386 krnl32.exe ../base/krnl32
+    objcopy  -O elf32-i386 apps/init.exe ../base/bin/init
+    objcopy  -O elf32-i386 apps/hello.exe ../base/bin/hello
+    objcopy  -O elf32-i386 apps/getty.exe ../base/bin/getty
+    objcopy  -O elf32-i386 apps/login.exe ../base/bin/login
+    objcopy  -O elf32-i386 apps/sh.exe ../base/bin/sh
+    objcopy  -O elf32-i386 apps/stty.exe ../base/bin/stty
+    objcopy  -O elf32-i386 apps/ttysize.exe ../base/usr/bin/ttysize
+    objcopy  -O elf32-i386 apps/stat.exe ../base/usr/bin/stat
+    objcopy  -O elf32-i386 apps/uname.exe ../base/usr/bin/uname
+    objcopy  -O elf32-i386 apps/migrate.exe ../base/usr/bin/migrate
+    objcopy  -O elf32-i386 apps/mkdir.exe ../base/usr/bin/mkdir
+    objcopy  -O elf32-i386 apps/mount.exe ../base/usr/bin/mount
+    objcopy  -O elf32-i386 apps/uname.exe ../base/usr/bin/uname
+    objcopy  -O elf32-i386 apps/crc32.exe ../base/usr/bin/crc32
+    objcopy  -O elf32-i386 apps/cat.exe ../base/usr/bin/cat
 
 
 if errorlevel 1 goto err_done
@@ -277,8 +298,8 @@ cd ../
 
 :mkiso
 
- rem   mkisofs -R -b boot/isoboot.bin -no-emul-boot  -o learnos.iso  cdboot
-    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  cdboot
+ rem   mkisofs -R -b boot/isoboot.bin -no-emul-boot  -o learnos.iso  base
+    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  base
 
 
    D:/programas/oracle/virtualbox/vboxmanage startvm LearnOS

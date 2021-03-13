@@ -58,7 +58,7 @@ int start_options(char * args[]) {
 
 	/* Fork child to run script */
 	int cpid = syscall_fork();
-
+	
 	/* Child process... */
 	if (!cpid) {
 		/* Pass environment from init to child */
@@ -75,7 +75,7 @@ int start_options(char * args[]) {
 		 * (which also end up as children to init)
 		 */
 		pid = waitpid(-1, NULL, WNOKERN);
-
+dprint("WAIT pid %d", pid);
 		if (pid == -1 && errno == ECHILD) {
 			/* There are no more children */
 			break;
@@ -111,16 +111,17 @@ extern char** _libc_init(void);
 extern int setenv(const char *name, const char *value, int overwrite);
 
 int _main(int argc, char * argv[]) {
-    dprint("args %s %d", argv[0],argc);
+    dprint("init %s",argv[1]);
 	/* Initialize stdin/out/err */
 	_libc_init();
 	set_console();
-//	setenv("USER","Jose",1);
-//	dprint("ENVIRON  %s", environ[0]);
+	
 	// Get directory listing for /etc/startup.d  
 	int initd_dir = syscall_open(INITD_PATH, 0, 0);
+
 	if (initd_dir < 0) {
 		// No init scripts; try to start getty as a fallback  
+		dprint("No init scripts; try to start getty as a fallback");
 		start_options((char *[]){"/bin/getty",NULL});
 	} else {
 		int count = 0, i = 0, ret = 0;
@@ -130,7 +131,6 @@ int _main(int argc, char * argv[]) {
 			struct dirent ent;
 			ret = syscall_readdir(initd_dir, ++count, &ent);
 		} while (ret > 0);
-
 		// Read each directory entry  
 		struct dirent entries[count];
 		do {
@@ -150,7 +150,7 @@ int _main(int argc, char * argv[]) {
 			}
 		}
 	}
-
+while(1);
 	/* Self-explanatory */
 	syscall_reboot();
 	return 0;

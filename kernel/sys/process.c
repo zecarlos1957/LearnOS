@@ -809,18 +809,26 @@ static int wait_candidate(process_t * parent, int pid, int options, process_t * 
 		if (proc->is_tasklet) return 0;
 	}
 
-	if (pid < -1) {
-		if (proc->job == -pid || proc->id == -pid) return 1;
-	} else if (pid == 0) {
-		/* Matches our group ID */
-		if (proc->job == parent->id) return 1;
-	} else if (pid > 0) {
-		/* Specific pid */
-		if (proc->id == pid) return 1;
-	} else {
-		return 1;
-	}
-	return 0;
+    if (pid < -1) 
+    {
+        if (proc->job == -pid || proc->id == -pid) return 1;
+    }
+    else if (pid == 0)
+    {
+        /* Matches our group ID */
+        if (proc->job == parent->id) return 1;
+    } 
+    else if (pid > 0)
+    {
+        /* Specific pid */
+        if (proc->id == pid) return 1;
+    } 
+    else  
+    {   // pid == -1
+        return 1;
+    }
+    
+    return 0;
 }
 
 int waitpid(int pid, int * status, int options) {
@@ -829,7 +837,7 @@ int waitpid(int pid, int * status, int options) {
 		proc = process_from_pid(proc->group);
 	}
 
-	debug_print(INFO, "waitpid(%s%d, ..., %d) (from pid=%d.%d)", (pid >= 0) ? "" : "-", (pid >= 0) ? pid : -pid, options, current_process->id, current_process->group);
+	debug_print(WARNING, "waitpid(%s%d, ..., %d) (from pid=%d.%d)", (pid >= 0) ? "" : "-", (pid >= 0) ? pid : -pid, options, current_process->id, current_process->group);
 
 	do {
 		process_t * candidate = NULL;
@@ -841,7 +849,6 @@ int waitpid(int pid, int * status, int options) {
 				continue;
 			}
 			process_t * child = ((tree_node_t *)node->value)->value;
-
 			if (wait_candidate(proc, pid, options, child)) {
 				has_children = 1;
 				if (child->finished) {
@@ -857,12 +864,12 @@ int waitpid(int pid, int * status, int options) {
 
 		if (!has_children) {
 			/* No valid children matching this description */
-			debug_print(INFO, "No children matching description.");
+			debug_print(WARNING, "No children matching description.");
 			return -ECHILD;
 		}
 
 		if (candidate) {
-			debug_print(INFO, "Candidate found (%x:%d), bailing early.", candidate, candidate->id);
+			debug_print(WARNING, "Candidate found (%s:%d), bailing early.", candidate->name, candidate->id);
 			if (status) {
 				*status = candidate->status;
 			}
@@ -875,10 +882,10 @@ int waitpid(int pid, int * status, int options) {
 			if (options & WNOHANG) {
 				return 0;
 			}
-			debug_print(INFO, "Sleeping until queue is done.");
+			debug_print(WARNING, "Sleeping until queue is done.");
 			/* Wait */
 			if (sleep_on(proc->wait_queue) != 0) {
-				debug_print(INFO, "wait() was interrupted");
+				debug_print(WARNING, "wait() was interrupted");
 				return -EINTR;
 			}
 		}

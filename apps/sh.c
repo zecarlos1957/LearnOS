@@ -1695,7 +1695,7 @@ extern char **__get_argv();
 
 
 int _main(int argc, char ** argv) {
-    dprint("args %s %d", argv[0],argc);
+    dprint("SH %s", argv[1]);
 
 	pid = getpid();
 
@@ -1728,6 +1728,7 @@ int _main(int argc, char ** argv) {
 							optarg = out;
 						} while (optarg);
 					}
+					dprint("Exit SH ret %x",last_ret);
 					return (last_ret == -1) ? 0 : last_ret;
 				case 'v':
 					show_version();

@@ -12,6 +12,7 @@
 #include <kernel/elf.h>
 #include <kernel/process.h>
 #include <kernel/logging.h>
+#include <kernel/libc.h>
 
 int exec_elf(char * path, fs_node_t * file, int argc, char ** argv, char ** env, int interp) {
 	Elf32_Header header;
@@ -282,9 +283,14 @@ int exec(
 		int interp_depth
 	) {
 	/* Open the file */
+	if(path[strlen(path)-1] < 0x20)
+	{
+		path[strlen(path)-1] = '\0';
+	}
+
 	fs_node_t * file = kopen(path,0);
 	if (!file) {
-		debug_print(ERROR, "File not found %s", path);
+		debug_print(ERROR, "File not found %s '%s' %s", path, argv[0], argv[1]);
 		return -ENOENT;
 	}
 
@@ -296,7 +302,7 @@ int exec(
 	unsigned char head[4];
 	read_fs(file, 0, 4, head);
 
-	debug_print(INFO, "First four bytes: %c%c%c%c", head[0], head[1], head[2], head[3]);
+//	debug_print(INFO, "First four bytes: %c%c%c%c", head[0], head[1], head[2], head[3]);
 
 	current_process->name = strdup(path);
 	gettimeofday((struct timeval *)&current_process->start, NULL);

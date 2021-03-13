@@ -232,7 +232,7 @@ static void show_size(void) {
 }
 
 int _main(int argc, char * argv[]) {
-
+    dprint("stty %s",argv[1]);
 	int i = 1;
  
 	if (i < argc && !strcmp(argv[i], "-a")) {
