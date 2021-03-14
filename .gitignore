@@ -47,4 +47,5 @@ lib/*.o
 # CodeBlock files
 
 *.layout
+*.depend
 *.cbp

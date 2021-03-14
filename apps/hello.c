@@ -5,9 +5,11 @@
  *
  * hello - Prints "Hello, world."
  */
+#include <debug.h>
 #include <stdio.h>
 
 int _main(int argc, char * argv[]) {
-	puts("Hello, world.");
+//	puts("Hello, world.");
+    dprint("Hello world");
 	return 0;
 }
