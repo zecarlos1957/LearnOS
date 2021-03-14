@@ -1,5 +1,6 @@
 /* Return to Userspace (from thread creation) */
 
+.section .text
 .global _return_to_userspace
 
 
