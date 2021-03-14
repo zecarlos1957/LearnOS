@@ -255,6 +255,14 @@ cd ../../apps
     gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/cat.o cat.c
     ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/cat.exe  ../bin/apps/cat.o  -L../bin   -lc
 
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/terminal.o terminal.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/terminal.exe  ../bin/apps/terminal.o  -L../bin  -lm -lc
+
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/terminal-vga.o terminal-vga.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/terminal-vga.exe  ../bin/apps/terminal-vga.o  -L../bin -lm  -lc
+
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/compositor.o compositor.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/compositor.exe  ../bin/apps/compositor.o  -L../bin -lm  -lc
 
 
 
@@ -273,13 +281,6 @@ cd ../bin
  
     objcopy  -O elf32-i386 apps/linker.dll ../base/usr/lib/ld.so
 
-    objcopy  -O elf32-i386 krnl32.exe ../base/krnl32
-    objcopy  -O elf32-i386 apps/init.exe ../base/bin/init
-    objcopy  -O elf32-i386 apps/hello.exe ../base/bin/hello
-    objcopy  -O elf32-i386 apps/getty.exe ../base/bin/getty
-    objcopy  -O elf32-i386 apps/login.exe ../base/bin/login
-    objcopy  -O elf32-i386 apps/sh.exe ../base/bin/sh
-    objcopy  -O elf32-i386 apps/stty.exe ../base/bin/stty
     objcopy  -O elf32-i386 apps/ttysize.exe ../base/usr/bin/ttysize
     objcopy  -O elf32-i386 apps/stat.exe ../base/usr/bin/stat
     objcopy  -O elf32-i386 apps/uname.exe ../base/usr/bin/uname
@@ -290,6 +291,16 @@ cd ../bin
     objcopy  -O elf32-i386 apps/crc32.exe ../base/usr/bin/crc32
     objcopy  -O elf32-i386 apps/cat.exe ../base/usr/bin/cat
 
+    objcopy  -O elf32-i386 krnl32.exe ../base/krnl32
+    objcopy  -O elf32-i386 apps/init.exe ../base/bin/init
+    objcopy  -O elf32-i386 apps/hello.exe ../base/bin/hello
+    objcopy  -O elf32-i386 apps/getty.exe ../base/bin/getty
+    objcopy  -O elf32-i386 apps/login.exe ../base/bin/login
+    objcopy  -O elf32-i386 apps/sh.exe ../base/bin/sh
+    objcopy  -O elf32-i386 apps/stty.exe ../base/bin/stty
+    objcopy  -O elf32-i386 apps/terminal.exe ../base/bin/terminal
+    objcopy  -O elf32-i386 apps/terminal-vga.exe ../base/bin/terminal-vga
+    objcopy  -O elf32-i386 apps/compositor.exe ../base/bin/compositor
 
 if errorlevel 1 goto err_done
  
