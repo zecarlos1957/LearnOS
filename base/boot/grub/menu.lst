@@ -6,9 +6,9 @@ chainloader (hd0)+1
 
 # Edit it to the filename of your kernel.
 title My kernel
-#kernel /krnl32   root=/dev/cdrom0  root_type=iso start=hello  vid=--vga
+#kernel /krnl32   root=/dev/cdrom0  root_type=iso start=terminal\037-F   vid=--vga
 #kernel /krnl32   root=/dev/ram0  root_type=tmpfs start=live-welcome  vid=auto,1440,900
-kernel /krnl32   root=/dev/cdrom0  root_type=iso start=--headless  vid=--vga
+kernel /krnl32   root=/dev/cdrom0  root_type=iso  init=/bin/hello  vid=--vga
 
 module /mod/zero.ko
 module /mod/random.ko
