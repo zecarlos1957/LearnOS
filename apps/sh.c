@@ -163,6 +163,7 @@ void getuser() {
 	} else {
 		sprintf(username, "%d", getuid());
 	}
+	dprint("USER %s",username);
 }
 
 /* function to update the cached hostname */
@@ -919,7 +920,8 @@ int shell_exec(char * buffer, size_t size, FILE * file, char ** out_buffer) {
 
 	*out_buffer = NULL;
 
-	/* Read previous history entries */
+
+	// Read previous history entries 
 	if (buffer[0] == '!') {
 		int x = atoi((char *)((uintptr_t)buffer + 1));
 		if (x > 0 && x <= rline_history_count) {
@@ -976,12 +978,12 @@ int shell_exec(char * buffer, size_t size, FILE * file, char ** out_buffer) {
 								var[coll] = '\0';
 								if (coll == 1 && (isdigit(*p) || *p == '?' || *p == '$' || *p == '#')) {
 									p++;
-									break; /* Don't let these keep going */
+									break; // Don't let these keep going 
 								}
 								p++;
 							}
 						}
-						/* Special cases */
+						// Special cases 
 						char *c = NULL;
 						char tmp[128];
 						if (!strcmp(var, "?")) {
@@ -999,7 +1001,7 @@ int shell_exec(char * buffer, size_t size, FILE * file, char ** out_buffer) {
 								c = shell_argv[a];
 							}
 						} else if (!strcmp(var, "RANDOM")) {
-							sprintf(tmp,"%d",rand()%32768); /* sure, modulo is bad for range restriction, shut up */
+							sprintf(tmp,"%d",rand()%32768); // sure, modulo is bad for range restriction, shut up 
 							c = tmp;
 						} else {
 							c = getenv(var);
@@ -1009,7 +1011,7 @@ int shell_exec(char * buffer, size_t size, FILE * file, char ** out_buffer) {
 							backtick = 0;
 							for (int i = 0; i < (int)strlen(c); ++i) {
 								if (c[i] == ' ' && !quoted) {
-									/* If we are not quoted and we reach a space, it signals a new argument */
+									// If we are not quoted and we reach a space, it signals a new argument 
 									if (collected || force_collected) {
 										buffer_[collected] = '\0';
 										add_argument(args, buffer_);
@@ -1087,7 +1089,7 @@ int shell_exec(char * buffer, size_t size, FILE * file, char ** out_buffer) {
 						goto _just_add;
 					}
 					if (have_star) {
-						goto _just_add; /* TODO multiple globs */
+						goto _just_add; // TODO multiple globs 
 					}
 					have_star = 1;
 					collected += sprintf(&buffer_[collected], STAR_TOKEN);
@@ -1109,6 +1111,7 @@ int shell_exec(char * buffer, size_t size, FILE * file, char ** out_buffer) {
 						goto _new_arg;
 					}
 					goto _just_add;
+				case 0x0d:
 				case '\n':
 					if (!quoted) {
 						goto _done;
@@ -1128,7 +1131,7 @@ int shell_exec(char * buffer, size_t size, FILE * file, char ** out_buffer) {
 					if (!quoted && !backtick) {
 						if (collected || force_collected) {
 							if (!strcmp(buffer_,"2")) {
-								/* Special case */
+								// Special case 
 								force_collected = 0;
 								collected = sprintf(buffer_,"%s", WRITE_ERR_TOKEN);
 								goto _new_arg;
@@ -1147,7 +1150,7 @@ int shell_exec(char * buffer, size_t size, FILE * file, char ** out_buffer) {
 					}
 				case '#':
 					if (!quoted && !backtick) {
-						goto _done; /* Support comments; must not be part of an existing arg */
+						goto _done; // Support comments; must not be part of an existing arg 
 					}
 					goto _just_add;
 				default:
@@ -1273,7 +1276,7 @@ _done:
 
 		char * glob = strstr(c, STAR_TOKEN);
 		if (glob) {
-			/* Globbing */
+			//Globbing 
 			glob[0] = '\0';
 			glob[1] = '\0';
 
@@ -1285,7 +1288,7 @@ _done:
 			int has_after = !!strlen(after);
 
 			if (1) {
-				/* read current directory, add all */
+				// read current directory, add all 
 				DIR * dirp;
 				char * prepend = "";
 				if (has_before) {
@@ -1352,7 +1355,7 @@ _nope:
 				}
 
 				if (before_i == i) {
-					/* no matches */
+					// no matches 
 					glob[0] = '*';
 					if (dir) {
 						*dir = '/';
@@ -1371,7 +1374,7 @@ _nope:
 	}
 	argv[i] = NULL;
 
-	/* Ensure globs get freed */
+	// Ensure globs get freed 
 	foreach(node, glob_args) {
 		list_insert(args, node->value);
 	}
@@ -1424,7 +1427,6 @@ _nope:
 			run_cmd(arg_starts[0]);
 		}
 		wait_semaphore(s);
-
 		pgid = child_pid;
 
 		for (int j = 1; j < cmdi; ++j) {
@@ -1476,8 +1478,9 @@ _nope:
 		close(last_output[0]);
 		close(last_output[1]);
 
-		/* Now execute the last piece and wait on all of them */
+		// Now execute the last piece and wait on all of them 
 	} else {
+
 		shell_command_t func = shell_find(*arg_starts[0]);
 		if (func) {
 			int old_out = -1;
@@ -1487,6 +1490,7 @@ _nope:
 				int fd = open(output_files[cmdi], file_args[cmdi], 0666);
 				if (fd < 0) {
 					fprintf(stderr, "sh: %s: %s\n", output_files[cmdi], strerror(errno));
+dprint("return %s %s", output_files[cmdi], strerror(errno));
 					return -1;
 				} else {
 					dup2(fd, STDOUT_FILENO);
@@ -1497,6 +1501,7 @@ _nope:
 				int fd = open(err_files[cmdi], err_args[cmdi], 0666);
 				if (fd < 0) {
 					fprintf(stderr, "sh: %s: %s\n", err_files[cmdi], strerror(errno));
+dprint("return %s %s", err_files[cmdi], strerror(errno));
 					return -1;
 				} else {
 					dup2(fd, STDERR_FILENO);
@@ -1518,6 +1523,7 @@ _nope:
 					int fd = open(output_files[cmdi], file_args[cmdi], 0666);
 					if (fd < 0) {
 						fprintf(stderr, "sh: %s: %s\n", output_files[cmdi], strerror(errno));
+dprint("return %s %s", output_files[cmdi], strerror(errno));
 						return -1;
 					} else {
 						dup2(fd, STDOUT_FILENO);
@@ -1527,6 +1533,7 @@ _nope:
 					int fd = open(err_files[cmdi], err_args[cmdi], 0666);
 					if (fd < 0) {
 						fprintf(stderr, "sh: %s: %s\n", err_files[cmdi], strerror(errno));
+dprint("return %s %s", err_files[cmdi], strerror(errno));
 						return -1;
 					} else {
 						dup2(fd, STDERR_FILENO);
@@ -1556,8 +1563,6 @@ _nope:
 		free(args);
 		return 0;
 	}
-
-
 	int ret = wait_for_child(shell_interactive == 1 ? pgid : last_child, arg_starts[0][0]);
 
 	list_free(extra_env);
@@ -1565,6 +1570,7 @@ _nope:
 	list_destroy(args);
 	free(args);
 	return ret;
+
 }
 
 void add_path_contents(char * path) {
@@ -1676,6 +1682,7 @@ int run_script(FILE * f) {
 
 void source_eshrc(void) {
 	char * home = getenv("HOME");
+	dprint("ENVIRON HOME %s",home);
 
 	if (!home) return;
 
@@ -1695,7 +1702,7 @@ extern char **__get_argv();
 
 
 int _main(int argc, char ** argv) {
-    dprint("SH %s", argv[1]);
+ //   dprint("SH %s", argv[1]);
 
 	pid = getpid();
 
@@ -1710,7 +1717,7 @@ int _main(int argc, char ** argv) {
 	gethost();
 
 	install_commands();
- 
+  
 	if (argc > 1) {
 		int c;
 		while ((c = getopt(argc, argv, "Rc:v?")) != -1)
@@ -1752,7 +1759,7 @@ int _main(int argc, char ** argv) {
 		shell_argc = argc - 1;
 		shell_argv = &argv[optind];
 		current_file = argv[optind];
-
+dprint("Run %s %s", current_file, shell_argv[0]);
 		return run_script(f);
 	}
 
