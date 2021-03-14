@@ -6,12 +6,12 @@
 
 bin/
 doc/
-cdboot/krnl32
-cdboot/bin/
-cdboot/boot/grub/stage2_eltorito
-cdboot/mod/
-cdboot/usr/
-cdboot/loader/
+base/krnl32
+base/bin/
+base/boot/grub/stage2_eltorito
+base/mod/
+base/usr/
+
 loader/*.o
 loader/*.exe
  
