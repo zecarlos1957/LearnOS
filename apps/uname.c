@@ -97,6 +97,7 @@ int _main(int argc, char * argv[]) {
 		flags = FLAG_SYSNAME;
 	}
 
+	printf("--------------------------------------------------\n");
 	if (flags & FLAG_SYSNAME) {
 		if (space++) printf(" ");
 		printf("%s", u.sysname);
@@ -127,7 +128,7 @@ int _main(int argc, char * argv[]) {
 		printf("%s", "ToaruOS");
 	}
 
-	printf("\n");
+	printf("\n-----------------------------------------------------------\n");
 
 	return 0;
 }

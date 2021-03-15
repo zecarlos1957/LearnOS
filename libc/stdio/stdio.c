@@ -64,8 +64,8 @@ FILE * stderr = &_stderr;
 
 void __stdio_init_buffers(void) {
 	_stdin.read_buf = malloc(BUFSIZ);
-	//_stdout.read_buf = malloc(BUFSIZ);
-	//_stderr.read_buf = malloc(BUFSIZ);
+//	_stdout.read_buf = malloc(BUFSIZ);
+//	_stderr.read_buf = malloc(BUFSIZ);
 	_stdin._name = strdup("stdin");
 	_stdout._name = strdup("stdout");
 	_stderr._name = strdup("stderr");

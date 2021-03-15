@@ -502,10 +502,8 @@ enter_user_jmp(uintptr_t location, int argc, char ** argv, uintptr_t stack) {
  * @param retval Set the return value to this.
  */
 void task_exit(int retval) {
-	debug_print(WARNING, "TASK_EXIT";
 	/* Free the image memory */
 	if (__builtin_expect(current_process->id == 0,0)) {
-			debug_print(WARNING, "TASK_EXIT BAD";
 		/* This is probably bad... */
 		switch_next();
 		return;

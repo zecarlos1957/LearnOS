@@ -264,6 +264,10 @@ cd ../../apps
     gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/compositor.o compositor.c
     ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/compositor.exe  ../bin/apps/compositor.o  -L../bin -lm  -lc
 
+    gcc   -ffreestanding -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/live-session.o live-session.c
+    ld   -Tlink2.ld -nostdlib -nostdinc -o ../bin/apps/live-session.exe  ../bin/apps/live-session.o  -L../bin -lm  -lc
+
+
 
 
     gcc  -ffreestanding  -nostdlib -nostdinc -fno-builtin -m32 -c  -I../base/usr/include  -o ../bin/apps/linker.o ../linker/linker.c
@@ -301,6 +305,8 @@ cd ../bin
     objcopy  -O elf32-i386 apps/terminal.exe ../base/bin/terminal
     objcopy  -O elf32-i386 apps/terminal-vga.exe ../base/bin/terminal-vga
     objcopy  -O elf32-i386 apps/compositor.exe ../base/bin/compositor
+    objcopy  -O elf32-i386 apps/live-session.exe ../base/bin/live-session
+
 
 if errorlevel 1 goto err_done
  
@@ -310,7 +316,7 @@ cd ../
 :mkiso
 
  rem   mkisofs -R -b boot/isoboot.bin -no-emul-boot  -o learnos.iso  base
-    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table   -o learnos.iso  base
+    mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 24 -boot-info-table   -o learnos.iso  base
 
 
    D:/programas/oracle/virtualbox/vboxmanage startvm LearnOS

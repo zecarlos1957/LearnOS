@@ -108,8 +108,9 @@ void pre_main(int (*_main)(int,char**), int argc, char * argv[]) {
 		/* Statically loaded, must set __argv so __get_argv() works */
 		__argv = argv;
 	}
+	_libc_init();
 ///	_init();
-while(1);
+
 	exit(_main(argc, argv));
 }
 

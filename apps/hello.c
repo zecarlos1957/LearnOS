@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 int _main(int argc, char * argv[]) {
-//	puts("Hello, world.");
+	puts("Hello, world. from user land");
     dprint("Hello world");
 	return 0;
 }

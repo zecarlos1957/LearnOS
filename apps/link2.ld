@@ -1,7 +1,7 @@
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * 
  */
-ENTRY(__main)
+ENTRY(__start)
 
 SECTIONS
 {

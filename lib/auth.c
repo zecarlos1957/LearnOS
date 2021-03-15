@@ -27,18 +27,19 @@ int toaru_auth_check_pass(char * user, char * pass) {
 
 	FILE * master = fopen(MASTER_PASSWD, "r");
 	struct passwd * p;
-
+	if(!master && !*user && !*pass)return 0;
+	
 	while ((p = fgetpwent(master))) {
 		if (!strcmp(p->pw_name, user) && !strcmp(p->pw_passwd, pass)) {
 			fclose(master);
 			return p->pw_uid;
 		}
 	}
-
 	fclose(master);
 	return -1;
 
 }
+
 
 void toaru_auth_set_vars(void) {
 	int uid = getuid();

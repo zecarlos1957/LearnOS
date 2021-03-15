@@ -143,7 +143,7 @@ COBJS = assert/assert.o \
 	wchar/wcstok.o \
 	wchar/wcwidth.o
 
-AOBJS = setjmp.o  crti.o crtn.o main.o 
+AOBJS = setjmp.o  crti.o crtn.o crt0.o main.o 
 
 CC = ccache gcc
 LD = ccache ld

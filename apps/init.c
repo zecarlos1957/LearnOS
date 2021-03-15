@@ -75,7 +75,7 @@ int start_options(char * args[]) {
 		 * (which also end up as children to init)
 		 */
 		pid = waitpid(-1, NULL, WNOKERN);
-dprint("WAIT pid %d", pid);
+
 		if (pid == -1 && errno == ECHILD) {
 			/* There are no more children */
 			break;
@@ -98,14 +98,6 @@ int comparator(const void * c1, const void * c2) {
 	return strcmp(d1->d_name, d2->d_name);
 }
 
-extern char ** environ;
-extern int _environ_size;
-extern char * _argv_0;
-extern int __libc_debug;
-char ** __argv;
- 
-extern char ** __get_argv(void);
-
 //__attribute__((constructor))
 extern char** _libc_init(void);
 extern int setenv(const char *name, const char *value, int overwrite);
@@ -113,7 +105,7 @@ extern int setenv(const char *name, const char *value, int overwrite);
 int _main(int argc, char * argv[]) {
     dprint("init %s",argv[1]);
 	/* Initialize stdin/out/err */
-	_libc_init();
+	//_libc_init();
 	set_console();
 	
 	// Get directory listing for /etc/startup.d  
@@ -150,7 +142,7 @@ int _main(int argc, char * argv[]) {
 			}
 		}
 	}
-while(1);
+
 	/* Self-explanatory */
 	syscall_reboot();
 	return 0;
