@@ -12,7 +12,10 @@ To build on Windows:
 Tools you need: Mingw gcc, ld, mkisofs and VirtualBox.
 Check in file WinBuild.bat the path to these tools.
 Double click WinBuild.bat in the root directory
-    
+
+![Screenshot](images/Hello World.png)
+
+
 ![Screenshot](images/BootLoader.png)   
     
 Have fun.
